@@ -22,6 +22,7 @@ Este aplicativo tem como objetivo monitorar a ingestão diária de calorias e nu
 
 <span id="tecnologias"></span>
 <h1 align="center">Tecnologias</h1>
+<p align="center">
 <img src="https://img.shields.io/badge/node.js-%23339933?style=for-the-badge&logo=nodedotjs&logoColor=black">
 <img src="https://img.shields.io/badge/ts--node.js-%23339933?style=for-the-badge&logo=ts-node&logoColor=black">
 <img src="https://img.shields.io/badge/mongodb-%23339933?style=for-the-badge&logo=mongodb&logoColor=white">
@@ -29,7 +30,7 @@ Este aplicativo tem como objetivo monitorar a ingestão diária de calorias e nu
 <img src="https://img.shields.io/badge/react-%2361DAFB?style=for-the-badge&logo=react&logoColor=black">
 <img src="https://img.shields.io/badge/trello-%234169E1?style=for-the-badge&logo=trello&logoColor=black">
 <img src="https://img.shields.io/badge/Kanban-%234169E1?style=for-the-badge&logo=kanban&logoColor=white">
-
+</p>
 <span id="equipe"></span>
 <h1 align="center">Equipe</h1>
 
