@@ -29,6 +29,27 @@ const UserSchema = new Schema({
 });
 
 // mongoose.model compila o modelo
-const User = mongoose.model("User", UserSchema);
+const PerfilSchema = new Schema({
+  peso: {
+    type: Number, // Alterado para Number para representar pesos de forma mais apropriada
+    required: [true, "O peso é obrigatório"],
+    min: [0, "O peso deve ser um valor positivo"], // Validação para garantir que o peso seja positivo
+  },
+  altura: {
+    type: Number, // Alterado para Number para representar alturas de forma mais apropriada
+    required: [true, "A altura é obrigatória"],
+    min: [0, "A altura deve ser um valor positivo"], // Validação para garantir que a altura seja positiva
+  },
+  idade: {
+    type: Number, // Alterado para Number para representar idades de forma mais apropriada
+    required: [true, "A idade é obrigatória"],
+    min: [0, "A idade deve ser um valor positivo"], // Validação para garantir que a idade seja positiva
+    max: [150, "A idade deve ser um valor razoável (0-150)"], // Validação para garantir que a idade esteja dentro de um intervalo razoável
+  }
+})
 
-export { User };
+// mongoose.model compila o modelo
+const User = mongoose.model("User", UserSchema);
+const Perfil = mongoose.model("Perfil", PerfilSchema)
+export { Perfil,User };
+
