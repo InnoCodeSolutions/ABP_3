@@ -3,12 +3,12 @@
 <h2 align="center"> FATEC Professor Francisco de Moura, Jacareí - 3º Semestre DSM 2024 </h2>
 
 <p align="center">
-    <a href="sobre">Sobre</a> |
-    <a href="tecnologias">Tecnologias</a> |
-    <a href="equipe">Equipe</a> |
-    <a href="entregas">Entregas</a> |
-    <a href="backlog">Backlog</a> |
-    <a href="arquitetura">Arquitetura</a> |
+    <a href="#sobre">Sobre</a> |
+    <a href="#tecnologias">Tecnologias</a> |
+    <a href="#equipe">Equipe</a> |
+    <a href="#entregas">Entregas</a> |
+    <a href="#backlog">Backlog</a> |
+    <a href="#arquitetura">Arquitetura</a> |
 </p>
 
 <span id="sobre"></span>
