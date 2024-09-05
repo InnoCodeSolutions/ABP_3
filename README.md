@@ -1,5 +1,5 @@
 <span id="topo"></span>
-<h1 align="center"> RANG.O </h1>
+<h1 align="center"> RAMG.O </h1>
 <h2 align="center"> FATEC Professor Francisco de Moura, Jacareí - 3º Semestre DSM 2024 </h2>
 
 <p align="center">
