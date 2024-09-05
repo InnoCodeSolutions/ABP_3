@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node ./back/index",
-    "dev": "ts-node-dev ./back/index"
+    "start": "ts-node ./src/index",
+    "dev": "npx ts-node-dev ./src/index"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +13,7 @@
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.6",
     "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.5.4"
   },
   "dependencies": {
