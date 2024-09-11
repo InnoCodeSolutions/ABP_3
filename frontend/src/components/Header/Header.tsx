@@ -17,7 +17,7 @@ const Header: React.FC = () => {
         </p>
       </div>
       <nav className="flex space-x-4">
-        <Button variant="transparent" className="px-4 py-2">
+        <Button variant="transparent" className="px-4 py-2 ">
           Home
         </Button>
         <Button variant="transparent" className="px-4 py-2">
