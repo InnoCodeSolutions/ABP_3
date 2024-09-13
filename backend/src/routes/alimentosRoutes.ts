@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import controller from '../controllers/alimentosController'; // Verifique o caminho do controlador
+import { alimentoController } from '../controllers/alimentosController'; // Verifique o caminho
 
 const router = Router();
 
-router.post('/create', controller.create);  // Criação de alimentos
-router.get('/list', controller.list);       // Listagem de alimentos
-router.put('/update', controller.update);   // Atualização de alimentos
-router.delete('/delete', controller.delete); // Exclusão de alimentos
+router.post('/create', alimentoController.create);  // Criação de alimentos
+router.get('/list', alimentoController.list);       // Listagem de alimentos
+router.put('/update', alimentoController.update);   // Atualização de alimentos
+router.delete('/delete', alimentoController.delete); // Exclusão de alimentos
 
 export default router;

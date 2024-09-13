@@ -1,18 +1,93 @@
 import { Request, Response } from 'express';
-import { Alimento } from '../models/Alimento'; // Importando o modelo Alimento
+import { Alimento } from '../models/Alimento'; // Corrija o caminho se necessário
 
 class AlimentoController {
   public async create(req: Request, res: Response): Promise<Response> {
-    const { nome, energia, proteina, lipideos, carboidratos, fibra } = req.body;
+    const {
+      id,
+      preparacao,
+      energia,
+      proteina,
+      lipidios,
+      carboidrato,
+      fibra,
+      colesterol,
+      agsaturado,
+      agmono,
+      agpoli,
+      aglinoleico,
+      aglinolenico,
+      agtranstotal,
+      acucartotal,
+      acucaradicao,
+      calcio,
+      magnesio,
+      manganes,
+      fosforo,
+      ferro,
+      sodio,
+      sodioadicao,
+      potassio,
+      cobre,
+      zinco,
+      selenio,
+      retinol,
+      vitamina_a,
+      tiamina,
+      riboflavina,
+      niacina,
+      niacina_ne,
+      piridoxina,
+      cobalamina,
+      folato,
+      vitamina_d,
+      vitamina_e,
+      vitamina_c
+    } = req.body;
+
     try {
       const document = new Alimento({
-        nome,
+        id,
+        preparacao,
         energia,
         proteina,
-        lipideos,
-        carboidratos,
-        fibra
+        lipidios,
+        carboidrato,
+        fibra,
+        colesterol,
+        agsaturado,
+        agmono,
+        agpoli,
+        aglinoleico,
+        aglinolenico,
+        agtranstotal,
+        acucartotal,
+        acucaradicao,
+        calcio,
+        magnesio,
+        manganes,
+        fosforo,
+        ferro,
+        sodio,
+        sodioadicao,
+        potassio,
+        cobre,
+        zinco,
+        selenio,
+        retinol,
+        vitamina_a,
+        tiamina,
+        riboflavina,
+        niacina,
+        niacina_ne,
+        piridoxina,
+        cobalamina,
+        folato,
+        vitamina_d,
+        vitamina_e,
+        vitamina_c
       });
+
       const resp = await document.save();
       return res.json(resp);
     } catch (error: any) {
@@ -22,7 +97,7 @@ class AlimentoController {
 
   public async list(_: Request, res: Response): Promise<Response> {
     try {
-      const objects = await Alimento.find().sort({ nome: 'asc' });
+      const objects = await Alimento.find().sort({ nome: 'asc' }); // Ajuste se necessário
       return res.json(objects);
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
@@ -30,9 +105,9 @@ class AlimentoController {
   }
 
   public async delete(req: Request, res: Response): Promise<Response> {
-    const { id: _id } = req.body;
+    const { id } = req.body;
     try {
-      const object = await Alimento.findByIdAndDelete(_id);
+      const object = await Alimento.findByIdAndDelete(id);
       if (object) {
         return res.json({ message: 'Alimento excluído com sucesso' });
       } else {
@@ -44,25 +119,100 @@ class AlimentoController {
   }
 
   public async update(req: Request, res: Response): Promise<Response> {
-    const { id, nome, energia, proteina, lipideos, carboidratos, fibra } = req.body;
+    const {
+      id,
+      preparacao,
+      energia,
+      proteina,
+      lipidios,
+      carboidrato,
+      fibra,
+      colesterol,
+      agsaturado,
+      agmono,
+      agpoli,
+      aglinoleico,
+      aglinolenico,
+      agtranstotal,
+      acucartotal,
+      acucaradicao,
+      calcio,
+      magnesio,
+      manganes,
+      fosforo,
+      ferro,
+      sodio,
+      sodioadicao,
+      potassio,
+      cobre,
+      zinco,
+      selenio,
+      retinol,
+      vitamina_a,
+      tiamina,
+      riboflavina,
+      niacina,
+      niacina_ne,
+      piridoxina,
+      cobalamina,
+      folato,
+      vitamina_d,
+      vitamina_e,
+      vitamina_c
+    } = req.body;
+
     try {
       const document = await Alimento.findById(id);
       if (!document) {
         return res.status(404).json({ message: 'Alimento não encontrado' });
       }
-      document.nome = nome;
-      document.energia = energia;
-      document.proteina = proteina;
-      document.lipideos = lipideos;
-      document.carboidratos = carboidratos;
-      document.fibra = fibra;
-
-      const resp = await document.save();
-      return res.json(resp);
+      document.set({
+        preparacao,
+        energia,
+        proteina,
+        lipidios,
+        carboidrato,
+        fibra,
+        colesterol,
+        agsaturado,
+        agmono,
+        agpoli,
+        aglinoleico,
+        aglinolenico,
+        agtranstotal,
+        acucartotal,
+        acucaradicao,
+        calcio,
+        magnesio,
+        manganes,
+        fosforo,
+        ferro,
+        sodio,
+        sodioadicao,
+        potassio,
+        cobre,
+        zinco,
+        selenio,
+        retinol,
+        vitamina_a,
+        tiamina,
+        riboflavina,
+        niacina,
+        niacina_ne,
+        piridoxina,
+        cobalamina,
+        folato,
+        vitamina_d,
+        vitamina_e,
+        vitamina_c
+      });
+      const updated = await document.save();
+      return res.json(updated);
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
     }
   }
 }
 
-export default new AlimentoController();
+export const alimentoController = new AlimentoController();
+
