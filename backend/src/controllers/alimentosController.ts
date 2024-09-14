@@ -97,7 +97,7 @@ class AlimentoController {
 
   public async list(_: Request, res: Response): Promise<Response> {
     try {
-        const objects = await Alimento.find({},{prodprep:true}); // Ajuste se necessário
+        const objects = await Alimento.find({},{"prodprep.carboidrato": 1,"prodprep.lipidios": 1,"prodprep.proteina": 1}); // Ajuste se necessário
       return res.json(objects);
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
