@@ -45,7 +45,20 @@ const PerfilSchema = new Schema({
     required: [true, "A idade é obrigatória"],
     min: [0, "A idade deve ser um valor positivo"], // Validação para garantir que a idade seja positiva
     max: [150, "A idade deve ser um valor razoável (0-150)"], // Validação para garantir que a idade esteja dentro de um intervalo razoável
-  }
+  },
+  atividade: {
+    type: String, // Alterado para Number para representar idades de forma mais apropriada
+    required: [true, "Atividade é Obrigatória"],
+    min: [0, "A Atividade deve ser um valor positivo"], // Validação para garantir que a idade seja positiva
+    max: [150, "A Atividade deve ser um valor razoável (0-30)"], // Validação para garantir que a idade esteja dentro de um intervalo razoável
+  },
+  genero: {
+    type: String, // Alterado para Number para representar idades de forma mais apropriada
+    required: [true, "Genero é Obrigatória"],
+    min: [0, "A Genero deve ser um valor positivo"], // Validação para garantir que a idade seja positiva
+    max: [12, "A Genero deve ser um valor razoável (0-30)"], // Validação para garantir que a idade esteja dentro de um intervalo razoável
+  },
+  tmb: { type: Number, required: true }
 })
 
 // mongoose.model compila o modelo
