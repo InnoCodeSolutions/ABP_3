@@ -25,7 +25,7 @@ const UserSchema = new Schema({
     maxlength: [10, "A senha precisa ter no máximo 10 caracteres"],
     select: false,
     required: [true, "A senha é obrigatória"],
-  },
+  }
 });
 
 // mongoose.model compila o modelo

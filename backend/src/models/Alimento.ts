@@ -23,88 +23,90 @@ export const Alimento = mongoose.model<IAlimento>('Alimento', AlimentoSchema);
 import { Schema, model, Document } from 'mongoose';
 
 interface IAlimento extends Document {
-  id: number;
+  id: string;
   preparacao: number;
-  energia: number;
-  proteina: number;
-  lipidios: number;
-  carboidrato: number;
-  fibra: number;
-  colesterol: number;
-  agsaturado: number;
-  agmono: number;
-  agpoli: number;
-  aglinoleico: number;
-  aglinolenico: number;
-  agtranstotal: number;
-  acucartotal: number;
-  acucaradicao: number;
-  calcio: number;
-  magnesio: number;
-  manganes: number;
-  fosforo: number;
-  ferro: number;
-  sodio: number;
-  sodioadicao: number;
-  potassio: number;
-  cobre: number;
-  zinco: number;
-  selenio: number;
-  retinol: number;
-  vitamina_a: number;
-  tiamina: number;
-  riboflavina: number;
-  niacina: number;
-  niacina_ne: number;
-  piridoxina: number;
-  cobalamina: number;
-  folato: number;
-  vitamina_d: number;
-  vitamina_e: number;
-  vitamina_c: number;
+  energia_kcal: number;
+  energia_kj: number;
+  proteina_g: number;
+  lipidios_g: number;
+  carboidrato_g: number;
+  fibra_alimentar_g: number;
+  colesterol_mg: number;
+  agsaturado_g: number;
+  agmono_g: number;
+  agpoli_g: number;
+  aglinoleico_g: number;
+  aglinolenico_g: number;
+  agtranstotal_g: number;
+  acucartotal_g: number;
+  acucaradicao_g: number;
+  calcio_mg: number;
+  magnesio_mg: number;
+  manganes_mg: number;
+  fosforo_mg: number;
+  ferro_mg: number;
+  sodio_mg: number;
+  sodioadicao_mg: number;
+  potassio_mg: number;
+  cobre_mg: number;
+  zinco_mg: number;
+  selenio_mg: number;
+  retinol_mcg: number;
+  vitamina_a_mcg: number;
+  tiamina_mg: number;
+  riboflavina_mg: number;
+  niacina_mg: number;
+  niacina_ne_mg: number;
+  piridoxina_mg: number;
+  cobalamina_mg: number;
+  folato_mcg: number;
+  vitamina_d_mcg: number;
+  vitamina_e_mg: number;
+  vitamina_c_mg: number;
 }
 
 const AlimentoSchema = new Schema<IAlimento>({
-  id: { type: Number, required: true, unique: true },
+  id: { type: String, required: true, unique: true },
   preparacao: { type: Number, required: true },
-  energia: { type: Number, required: true },
-  proteina: { type: Number, required: true },
-  lipidios: { type: Number, required: true },
-  carboidrato: { type: Number, required: true },
-  fibra: { type: Number, required: true },
-  colesterol: { type: Number, required: true },
-  agsaturado: { type: Number, required: true },
-  agmono: { type: Number, required: true },
-  agpoli: { type: Number, required: true },
-  aglinoleico: { type: Number, required: true },
-  aglinolenico: { type: Number, required: true },
-  agtranstotal: { type: Number, required: true },
-  acucartotal: { type: Number, required: true },
-  acucaradicao: { type: Number, required: true },
-  calcio: { type: Number, required: true },
-  magnesio: { type: Number, required: true },
-  manganes: { type: Number, required: true },
-  fosforo: { type: Number, required: true },
-  ferro: { type: Number, required: true },
-  sodio: { type: Number, required: true },
-  sodioadicao: { type: Number, required: true },
-  potassio: { type: Number, required: true },
-  cobre: { type: Number, required: true },
-  zinco: { type: Number, required: true },
-  selenio: { type: Number, required: true },
-  retinol: { type: Number, required: true },
-  vitamina_a: { type: Number, required: true },
-  tiamina: { type: Number, required: true },
-  riboflavina: { type: Number, required: true },
-  niacina: { type: Number, required: true },
-  niacina_ne: { type: Number, required: true },
-  piridoxina: { type: Number, required: true },
-  cobalamina: { type: Number, required: true },
-  folato: { type: Number, required: true },
-  vitamina_d: { type: Number, required: true },
-  vitamina_e: { type: Number, required: true },
-  vitamina_c: { type: Number, required: true },
+  energia_kcal: { type: Number, required: true },
+  proteina_g: { type: Number, required: true },
+  lipidios_g: { type: Number, required: true },
+  carboidrato_g: { type: Number, required: true },
+  fibra_alimentar_g: { type: Number, required: true },
+  colesterol_mg: { type: Number, required: true },
+  agsaturado_g: { type: Number, required: true },
+  agmono_g: { type: Number, required: true },
+  agpoli_g: { type: Number, required: true },
+  aglinoleico_g: { type: Number, required: true },
+  aglinolenico_g: { type: Number, required: true },
+  agtranstotal_g: { type: Number, required: true },
+  acucartotal_g: { type: Number, required: true },
+  acucaradicao_g: { type: Number, required: true },
+  calcio_mg: { type: Number, required: true },
+  magnesio_mg: { type: Number, required: true },
+  manganes_mg: { type: Number, required: true },
+  fosforo_mg: { type: Number, required: true },
+  ferro_mg: { type: Number, required: true },
+  sodio_mg: { type: Number, required: true },
+  sodioadicao_mg: { type: Number, required: true },
+  potassio_mg: { type: Number, required: true },
+  cobre_mg: { type: Number, required: true },
+  zinco_mg: { type: Number, required: true },
+  selenio_mg: { type: Number, required: true },
+  retinol_mcg: { type: Number, required: true },
+  vitamina_a_mcg: { type: Number, required: true },
+  tiamina_mg: { type: Number, required: true },
+  riboflavina_mg: { type: Number, required: true },
+  niacina_mg: { type: Number, required: true },
+  niacina_ne_mg: { type: Number, required: true },
+  piridoxina_mg: { type: Number, required: true },
+  cobalamina_mg: { type: Number, required: true },
+  folato_mcg: { type: Number, required: true },
+  vitamina_d_mcg: { type: Number, required: true },
+  vitamina_e_mg: { type: Number, required: true },
+  vitamina_c_mg: { type: Number, required: true }
 });
+
 
 const Alimento = model<IAlimento>('Alimento', AlimentoSchema);
 
