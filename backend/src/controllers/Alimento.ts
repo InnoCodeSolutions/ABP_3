@@ -95,14 +95,25 @@ class AlimentoController {
     }
   }
 
-  public async list(_: Request, res: Response): Promise<Response> {
+  public async list(req: Request, res: Response): Promise<Response> {
     try {
-        const objects = await Alimento.find({},{"prodprep.carboidrato": 1,"prodprep.lipidios": 1,"prodprep.proteina": 1}); // Ajuste se necessário
-      return res.json(objects);
+        // Extraia o parâmetro 'descricao' do corpo da requisição
+        const { descricao } = req.body;
+  
+        // Construa o filtro de pesquisa
+        const filter: any = {};
+        if (descricao) {
+            filter.descricao = new RegExp(descricao, 'i'); // 'i' para pesquisa case-insensitive
+        }
+  
+        // Faça a consulta no banco de dados usando o filtro
+        const objects = await Alimento.find(filter, { descricao: 1, carboidrato_g: 1, proteina_g: 1, lipidios_g: 1, _id:false }).sort(descricao);
+  
+        return res.json(objects);
     } catch (error: any) {
-      return res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
-  }
+}
 
   public async delete(req: Request, res: Response): Promise<Response> {
     const { id } = req.body;

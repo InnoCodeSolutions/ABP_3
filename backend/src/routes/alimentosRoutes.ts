@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { alimentoController } from '../controllers/alimentosController'; // Verifique o caminho
+import { alimentoController } from '../controllers/Alimento'; // Verifique o caminho
 
 const router = Router();
 
