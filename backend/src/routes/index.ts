@@ -14,6 +14,7 @@ const routes = Router();
 // Instanciar o AuthController
 import { AuthService } from '../service/AuthService';
 import { AuthController } from '../controllers/Login';
+import login from './login';
 
 const authService = new AuthService({
   jwtSecret: process.env.JWT_SECRET || 'default_secret',
@@ -24,7 +25,7 @@ const authController = new AuthController(authService);
 // Aplicar o middleware de autenticação apenas nas rotas que requerem autenticação
 routes.use('/cadastro', userRoutes); // Não aplicar authMiddleware, pois é para cadastro
 routes.use('/perfil', authMiddleware, perfilRoutes); // Aplicar authMiddleware
-routes.post('/login', (req, res) => authController.login(req, res)); // Usar o método login do controlador
+routes.post('/login', login); // Usar o método login do controlador
 
 // Rota de listagem de alimentos
 routes.use('/alimento', authMiddleware, alimentosRoutes); // Aplicar authMiddleware
