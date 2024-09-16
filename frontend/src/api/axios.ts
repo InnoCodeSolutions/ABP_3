@@ -44,3 +44,4 @@ export const fetchProjects = async (token: string) => {
 };
 
 export default api;
+
