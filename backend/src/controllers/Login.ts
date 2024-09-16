@@ -9,7 +9,7 @@ export class AuthController {
   }
 
   public async login(req: Request, res: Response) {
-    const { mail, password } = req.body;
+    const { mail, password } = req.params;
 
     if (!mail || !password) {
       return res.status(400).json({ error: 'E-mail e senha são obrigatórios' });

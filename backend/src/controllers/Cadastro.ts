@@ -3,7 +3,7 @@ import { User } from "../models";
 
 class Cadastro {
   public async create(req: Request, res: Response): Promise<Response> {
-    const { mail, password } = req.body;
+    const { mail, password } = req.params;
     try {
       //a instância de um modelo é chamada de documento
       const document = new User({ mail, password });
