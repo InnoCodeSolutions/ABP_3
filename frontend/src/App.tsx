@@ -10,7 +10,7 @@ import NovaRefeicao from './pages/NovaRefeicao';
 
 const ProtectedRoute: React.FC<{ element: JSX.Element }> = ({ element }) => {
   const { isAuthenticated } = useAuth();
-  return isAuthenticated ? element : <Navigate to="/login" />;
+  return isAuthenticated ? element : <Navigate to="/home" />;
 };
 
 const App: React.FC = () => {
@@ -21,14 +21,9 @@ const App: React.FC = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<Navigate to="/login" />} /> {/* Redireciona a rota padrão para /login */}
           <Route path="/cadastro" element={<CadastroPage />} />
-<<<<<<< HEAD
-          <Route path="/alimento" element={<AddAlimentoPage /> } />
-          <Route path="/home" element={<Home /> } />
-=======
-          <Route path="/alimento" element={<ProtectedRoute element={<AddAlimentoPage />} />} />
-          <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
-          <Route path="/novarefeicao" element={<NovaRefeicao/>} />
->>>>>>> f42112d8b8a4edb3ecb3d9b51806644c599c011a
+          <Route path="/alimento" element={<AddAlimentoPage />}/>
+          <Route path="/home" element={<Home />} />
+          <Route path="/refeicao" element={<NovaRefeicao/>} />
           {/* Adicione outras rotas aqui */}
         </Routes>
       </Router>
