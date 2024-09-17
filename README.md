@@ -78,9 +78,10 @@ O projeto tem por base a metodologia ágil SCRUM, por isso foi separado em 3 ent
 | **01** | Alteração de Refeição | Alta |
 | **01** | Exclusão de Refeição | Alta |
 </details>
+<h2>Vídeo de Demonstração</h2>
+[Assista ao vídeo de demonstração aqui](https://www.youtube.com/watch?v=9zNIedji9bk)
 
-[Assista ao vídeo de demonstração aqui:](https://www.youtube.com/watch?v=9zNIedji9bk)
-
+<h2>Gráfico de Burndown</h2>
 ![Gráfico de Burndown](imagem_2024-09-17_150955586.png)
 
 <h2>Tarefas</h2>
