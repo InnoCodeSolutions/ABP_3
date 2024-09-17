@@ -176,51 +176,40 @@ public async list(req: Request, res: Response): Promise<Response> {
       return res.status(500).json({ message: `Erro ao buscar alimentos: ${error.message}` });
   }
 }
-
 public async findOne(req: Request, res: Response): Promise<Response> {
   try {
-      const { _id, descricao, numero_do_alimento } = req.body;
+      const { _id, descricao, numero_do_alimento, categoria } = req.body;
 
-      // Verifica se o ID foi fornecido
+      // Cria um objeto de critérios de busca
+      let searchCriteria: any = {};
+
+      // Adiciona critérios ao objeto de busca com base nos parâmetros fornecidos
       if (_id) {
-          // Busca pelo _id
-          const alimento = await Alimento.findById(_id);
-
-          if (!alimento) {
-              return res.status(404).json({ message: 'Alimento não encontrado' });
-          }
-
-          return res.json(alimento);
+          searchCriteria._id = _id;
       }
-
-      // Busca por número do alimento (código)
       if (numero_do_alimento) {
-          const alimento = await Alimento.findOne({ numero_do_alimento: numero_do_alimento });
-
-          if (!alimento) {
-              return res.status(404).json({ message: 'Alimento não encontrado com esse número' });
-          }
-
-          return res.json(alimento);
+          searchCriteria.numero_do_alimento = numero_do_alimento;
       }
-
-      // Busca por descrição parcial ou completa (usando regex para case-insensitive)
       if (descricao) {
-          const alimentos = await Alimento.find({ descricao: new RegExp(descricao, 'i') });
-
-          if (alimentos.length === 0) {
-              return res.status(404).json({ message: 'Nenhum alimento encontrado com essa descrição' });
-          }
-
-          return res.json(alimentos);
+          searchCriteria.descricao = new RegExp(descricao, 'i');
+      }
+      if (categoria) {
+          searchCriteria.categoria = categoria;
       }
 
-      // Se nenhum critério foi fornecido
-      return res.status(400).json({ message: 'Por favor, forneça um _id, numero_do_alimento ou descricao para a busca' });
+      // Realiza a busca
+      const alimentos = await Alimento.find(searchCriteria);
+
+      if (alimentos.length === 0) {
+          return res.status(404).json({ message: 'Nenhum alimento encontrado com os critérios fornecidos' });
+      }
+
+      return res.json(alimentos);
   } catch (error: any) {
       return res.status(500).json({ message: `Erro ao buscar alimento: ${error.message}` });
   }
 }
+
 
   public async delete(req: Request, res: Response): Promise<Response> {
     const { id } = req.body;
