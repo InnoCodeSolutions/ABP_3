@@ -82,7 +82,7 @@ O projeto tem por base a metodologia ágil SCRUM, por isso foi separado em 3 ent
 [Assista ao vídeo de demonstração aqui](https://www.youtube.com/watch?v=9zNIedji9bk)
 
 ## Gráfico de Burndown
-![Gráfico de Burndown](imagem_2024-09-17_150955586.png)
+![Gráfico de Burndown](/docs/imagem_2024-09-17_150955586.png)
 
 <h2>Tarefas</h2>
 <p>O grupo optou pela organização das tarefas fazendo uso de épicos, User Story, tarefas e subtarefas.</p>
