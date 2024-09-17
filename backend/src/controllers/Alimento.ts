@@ -94,7 +94,7 @@ class AlimentoController {
       return res.status(500).json({ message: error.message });
     }
   }
-
+/*
   public async list(req: Request, res: Response): Promise<Response> {
     try {
         const { descricao, page = 1 } = req.body;  // Get 'page' from the request body
@@ -153,8 +153,74 @@ class AlimentoController {
         return res.status(500).json({ message: error.message });
     }
 }
+*/
+public async list(req: Request, res: Response): Promise<Response> {
+  try {
+      const { descricao } = req.body;  // Não há necessidade de `page` aqui
+      const filter: any = {};
 
+      // Se `descricao` for fornecida, filtra por descrição
+      if (descricao) {
+          filter.descricao = new RegExp(descricao, 'i');  // 'i' para buscar case-insensitive
+      }
 
+      // Buscar todos os documentos correspondentes ao filtro
+      const alimentos = await Alimento.find(filter);
+
+      // Retornar todos os documentos encontrados
+      return res.json({
+          total: alimentos.length,
+          alimentos,
+      });
+  } catch (error: any) {
+      return res.status(500).json({ message: `Erro ao buscar alimentos: ${error.message}` });
+  }
+}
+
+public async findOne(req: Request, res: Response): Promise<Response> {
+  try {
+      const { _id, descricao, numero_do_alimento } = req.body;
+
+      // Verifica se o ID foi fornecido
+      if (_id) {
+          // Busca pelo _id
+          const alimento = await Alimento.findById(_id);
+
+          if (!alimento) {
+              return res.status(404).json({ message: 'Alimento não encontrado' });
+          }
+
+          return res.json(alimento);
+      }
+
+      // Busca por número do alimento (código)
+      if (numero_do_alimento) {
+          const alimento = await Alimento.findOne({ numero_do_alimento: numero_do_alimento });
+
+          if (!alimento) {
+              return res.status(404).json({ message: 'Alimento não encontrado com esse número' });
+          }
+
+          return res.json(alimento);
+      }
+
+      // Busca por descrição parcial ou completa (usando regex para case-insensitive)
+      if (descricao) {
+          const alimentos = await Alimento.find({ descricao: new RegExp(descricao, 'i') });
+
+          if (alimentos.length === 0) {
+              return res.status(404).json({ message: 'Nenhum alimento encontrado com essa descrição' });
+          }
+
+          return res.json(alimentos);
+      }
+
+      // Se nenhum critério foi fornecido
+      return res.status(400).json({ message: 'Por favor, forneça um _id, numero_do_alimento ou descricao para a busca' });
+  } catch (error: any) {
+      return res.status(500).json({ message: `Erro ao buscar alimento: ${error.message}` });
+  }
+}
 
   public async delete(req: Request, res: Response): Promise<Response> {
     const { id } = req.body;
