@@ -97,23 +97,56 @@ class AlimentoController {
 
   public async list(req: Request, res: Response): Promise<Response> {
     try {
-        // Extraia o parâmetro 'descricao' do corpo da requisição
-        const { descricao } = req.body;
-  
-        // Construa o filtro de pesquisa
-        const filter: any = {};
-        if (descricao) {
-            filter.descricao = new RegExp(descricao, 'i'); // 'i' para pesquisa case-insensitive
-        }
-  
-        // Faça a consulta no banco de dados usando o filtro
-        const objects = await Alimento.find(filter, { descricao: 1, carboidrato_g: 1, proteina_g: 1, lipidios_g: 1, _id:false }).sort(descricao);
-  
-        return res.json(objects);
+      const { descricao, page = 1 } = req.body;
+      const pageSize = 10;
+
+
+      const filter: any = {};
+      if (descricao) {
+        filter.descricao = new RegExp(descricao, 'i');
+      }
+
+
+      const total = await Alimento.countDocuments(filter);
+
+      const avgResult = await Alimento.aggregate([
+        { $match: filter },
+        { $group: { _id: null, average: { $avg: "$value" } } }
+      ]);
+
+      let averageSpent = "0.00";
+      if (avgResult.length > 0 && avgResult[0].average !== null) {
+        averageSpent = avgResult[0].average.toFixed(2);
+      }
+
+      const totalPages = Math.ceil(total / pageSize);
+
+      const currentPage = page > totalPages ? totalPages : (page < 1 ? 1 : page);
+      const offset = (currentPage - 1) * pageSize;
+
+      const spents = await Alimento.find(filter, {
+        descricao: 1,
+        carboidrato_g: 1,
+        proteina_g: 1,
+        lipidios_g: 1,
+        _id: false
+      })
+        .sort({ datetime: -1 })
+        .limit(pageSize)
+        .skip(offset);
+
+      return res.json({
+        pages: totalPages,
+        currentPage,
+        count: total,
+        average: averageSpent,
+        spent: spents,
+      });
+
     } catch (error: any) {
-        return res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
-}
+  }
 
   public async delete(req: Request, res: Response): Promise<Response> {
     const { id } = req.body;

@@ -1,47 +1,31 @@
 import React, { useState } from "react";
-
-interface ItemAlimento {
-    id: number;
-    name: string;
-    calorias: number;
-    acucar: number;
-    proteinas: number;
-    carboidratos: number;
-    gordura: number;
-    quantidade: string;
-}
+import { ItemAlimentoBackendProps } from "../../types";
 
 interface ModalProps {
     onClose: () => void;
-    onSave: (alimento: ItemAlimento) => void;
+    onSave: (alimento: ItemAlimentoBackendProps) => void;
 }
 
 const ModalAlimentos: React.FC<ModalProps> = ({ onClose, onSave }) => {
     const [name, setName] = useState("");
-    const [calorias, setCalorias] = useState("");
-    const [acucar, setAcucar] = useState("");
-    const [proteinas, setProteinas] = useState("");
-    const [carboidratos, setCarboidratos] = useState("");
-    const [gordura, setGordura] = useState("");
-    const [quantidade, setQuantidade] = useState("");
+    const [categoria, setCategoria] = useState("");
+    const [descricao, setDescricao] = useState("");
+    const [carboidrato_g, setCarboidratoG] = useState("");
+    const [proteina_g, setProteinaG] = useState("");
+    const [lipideos_g, setLipideosG] = useState("");
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        //Converter para numeros
-        const novoAlimento: ItemAlimento = {
-            id: Date.now(), //Gerador de ID
-            name,
-            calorias: parseFloat(calorias),
-            acucar: parseFloat(acucar),
-            proteinas: parseFloat(proteinas),
-            carboidratos: parseFloat(carboidratos),
-            gordura: parseFloat(gordura),
-            quantidade,
+        // Converter para números e criar novo alimento
+        const novoAlimento: ItemAlimentoBackendProps = {
+            descricao,
+            carboidrato_g: parseFloat(carboidrato_g),
+            proteina_g: parseFloat(proteina_g),
+            lipideos_g: parseFloat(lipideos_g),
         };
 
         onSave(novoAlimento);
-
         onClose();
     };
 
@@ -59,50 +43,42 @@ const ModalAlimentos: React.FC<ModalProps> = ({ onClose, onSave }) => {
                         required
                     />
                     <input
-                        type="number"
-                        value={calorias}
-                        onChange={(e) => setCalorias(e.target.value)}
-                        placeholder="Calorias"
-                        className="w-full p-2 border border-gray-300 rounded"
-                        required
-                    />
-                    <input
-                        type="number"
-                        value={acucar}
-                        onChange={(e) => setAcucar(e.target.value)}
-                        placeholder="Açúcar"
-                        className="w-full p-2 border border-gray-300 rounded"
-                        required
-                    />
-                    <input
-                        type="number"
-                        value={proteinas}
-                        onChange={(e) => setProteinas(e.target.value)}
-                        placeholder="Proteínas"
-                        className="w-full p-2 border border-gray-300 rounded"
-                        required
-                    />
-                    <input
-                        type="number"
-                        value={carboidratos}
-                        onChange={(e) => setCarboidratos(e.target.value)}
-                        placeholder="Carboidratos"
-                        className="w-full p-2 border border-gray-300 rounded"
-                        required
-                    />
-                    <input
-                        type="number"
-                        value={gordura}
-                        onChange={(e) => setGordura(e.target.value)}
-                        placeholder="Gordura"
+                        type="text"
+                        value={categoria}
+                        onChange={(e) => setCategoria(e.target.value)}
+                        placeholder="Categoria"
                         className="w-full p-2 border border-gray-300 rounded"
                         required
                     />
                     <input
                         type="text"
-                        value={quantidade}
-                        onChange={(e) => setQuantidade(e.target.value)}
-                        placeholder="Quantidade"
+                        value={descricao}
+                        onChange={(e) => setDescricao(e.target.value)}
+                        placeholder="Descrição"
+                        className="w-full p-2 border border-gray-300 rounded"
+                        required
+                    />
+                    <input
+                        type="number"
+                        value={carboidrato_g}
+                        onChange={(e) => setCarboidratoG(e.target.value)}
+                        placeholder="Carboidrato (g)"
+                        className="w-full p-2 border border-gray-300 rounded"
+                        required
+                    />
+                    <input
+                        type="number"
+                        value={proteina_g}
+                        onChange={(e) => setProteinaG(e.target.value)}
+                        placeholder="Proteína (g)"
+                        className="w-full p-2 border border-gray-300 rounded"
+                        required
+                    />
+                    <input
+                        type="number"
+                        value={lipideos_g}
+                        onChange={(e) => setLipideosG(e.target.value)}
+                        placeholder="Lipídios (g)"
                         className="w-full p-2 border border-gray-300 rounded"
                         required
                     />

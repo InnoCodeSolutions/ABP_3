@@ -1,34 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import buscaAlimento from "../../services/Alimentos";
 import ItemAlimento from "./ItemAlimento";
-
-interface ItemAlimento {
-    id: number;
-    name: string;
-    calorias: number;
-    acucar: number;
-    proteinas: number;
-    carboidratos: number;
-    gordura: number;
-    quantidade: string;
-}
+import { ItemAlimentoBackendProps } from "../../types";
 
 interface ListaAlimentosProps {
-    itensAlimentos: ItemAlimento[]; 
+    itensAlimentos: ItemAlimentoBackendProps[]; // Use a interface correta aqui
 }
 
-const ListaAlimentos: React.FC<ListaAlimentosProps> = ({ itensAlimentos }) => {
+const ListaAlimentos: React.FC<ListaAlimentosProps> = () => {
+    const [itensAlimentos, setItensAlimentos] = useState<ItemAlimentoBackendProps[]>([]);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchAlimentos = async () => {
+            try {
+                const data = await buscaAlimento.buscaAlimento();
+                if ('erro' in data) {
+                    setError(data.erro);
+                } else {
+                    setItensAlimentos(data);
+                }
+            } catch (err) {
+                setError('Erro ao buscar alimentos.');
+            }
+        };
+
+        fetchAlimentos();
+    }, []);
+
+    if (error) return <p>Erro: {error}</p>;
+
     return (
         <div className="flex flex-col items-center w-full">
-            {itensAlimentos.map((item) => (
+            {itensAlimentos.map((item, index) => (
                 <ItemAlimento
-                    key={item.id}
-                    name={item.name}
-                    calorias={item.calorias}
-                    acucar={item.acucar}
-                    proteinas={item.proteinas}
-                    carboidratos={item.carboidratos}
-                    gordura={item.gordura}
-                    quantidade={item.quantidade}
+                    key={index}
+                    descricao={item.descricao}
+                    carboidrato_g={item.carboidrato_g}
+                    proteina_g={item.proteina_g}
+                    lipideos_g={item.lipideos_g}
                 />
             ))}
         </div>
