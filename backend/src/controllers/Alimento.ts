@@ -97,23 +97,64 @@ class AlimentoController {
 
   public async list(req: Request, res: Response): Promise<Response> {
     try {
-        // Extraia o parâmetro 'descricao' do corpo da requisição
-        const { descricao } = req.body;
-  
-        // Construa o filtro de pesquisa
+        const { descricao, page = 1 } = req.body;  // Get 'page' from the request body
+        const pageSize = 10;  // Number of items per page
+
+        // Step 1: Build the filter
         const filter: any = {};
         if (descricao) {
-            filter.descricao = new RegExp(descricao, 'i'); // 'i' para pesquisa case-insensitive
+            filter.descricao = new RegExp(descricao, 'i'); // 'i' for case-insensitive search
         }
-  
-        // Faça a consulta no banco de dados usando o filtro
-        const objects = await Alimento.find(filter, { descricao: 1, carboidrato_g: 1, proteina_g: 1, lipidios_g: 1, _id:false }).sort(descricao);
-  
-        return res.json(objects);
+
+        // Step 2: Count the total number of matching documents
+        const total = await Alimento.countDocuments(filter);
+
+        // Step 3: Calculate the average 'value' for matching documents
+        const avgResult = await Alimento.aggregate([
+            { $match: filter }, // Match filter criteria
+            { $group: { _id: null, average: { $avg: "$value" } } }
+        ]);
+
+        // Safely handle the case where avgResult is empty or null
+        let averageSpent = "0.00";
+        if (avgResult.length > 0 && avgResult[0].average !== null) {
+            averageSpent = avgResult[0].average.toFixed(2);
+        }
+
+        // Step 4: Calculate pagination
+        const totalPages = Math.ceil(total / pageSize);
+
+        // Ensure the requested page is within the range
+        const currentPage = page > totalPages ? totalPages : (page < 1 ? 1 : page);
+        const offset = (currentPage - 1) * pageSize;
+
+        // Step 5: Fetch data with pagination and filtering
+        const spents = await Alimento.find(filter, { 
+            descricao: 1, 
+            carboidrato_g: 1, 
+            proteina_g: 1, 
+            lipidios_g: 1, 
+            _id: false 
+        })
+        .sort({ datetime: -1 })  // Sort by datetime in descending order
+        .limit(pageSize)
+        .skip(offset);
+
+        // Step 6: Respond with the paginated results and metadata
+        return res.json({
+            pages: totalPages,
+            currentPage,
+            count: total,
+            average: averageSpent,
+            spent: spents,
+        });
+
     } catch (error: any) {
         return res.status(500).json({ message: error.message });
     }
 }
+
+
 
   public async delete(req: Request, res: Response): Promise<Response> {
     const { id } = req.body;

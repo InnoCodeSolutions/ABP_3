@@ -20,8 +20,8 @@ const App: React.FC = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<Navigate to="/login" />} /> {/* Redireciona a rota padrão para /login */}
           <Route path="/cadastro" element={<CadastroPage />} />
-          <Route path="/alimento" element={<ProtectedRoute element={<AddAlimentoPage />} />} />
-          <Route path="/Homes" element={<ProtectedRoute element={<Home />} />} />
+          <Route path="/alimento" element={<AddAlimentoPage /> } />
+          <Route path="/home" element={<Home /> } />
           {/* Adicione outras rotas aqui */}
         </Routes>
       </Router>
