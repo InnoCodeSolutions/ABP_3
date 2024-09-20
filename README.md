@@ -56,6 +56,8 @@ O projeto tem por base a metodologia ágil SCRUM, por isso foi separado em 3 ent
 <summary><h2>Sprint 1</h2></summary>
 <p>Focada no desenvolvimento da aplicação web, mais especificamente os CRUDs de usuário, perfil, alimentos e refeições.</p>
 
+[Assista ao vídeo de demonstração aqui](https://www.youtube.com/watch?v=9zNIedji9bk)
+
 <b>Sprint Backlog:<b>
 
 | Sprint | Funcionalidade | Prioridade |
@@ -77,6 +79,45 @@ O projeto tem por base a metodologia ágil SCRUM, por isso foi separado em 3 ent
 | **01** | Listagem de Refeição | Alta |
 | **01** | Alteração de Refeição | Alta |
 | **01** | Exclusão de Refeição | Alta |
+
+
+## Gráfico de Burndown
+![Gráfico de Burndown](/docs/imagem_2024-09-17_150955586.png)
+
+<h2>Tarefas</h2>
+<p>O grupo optou pela organização das tarefas fazendo uso de épicos, User Story, tarefas e subtarefas.</p>
+<p>Nesta Sprint 1, o foco do grupo foi realizar o CRUD de alimentos, com a User Story relacionado a cadastrar novos alimentos.Foram realizados também o desenvolvimento da 
+tela de edição de dados pessoais, para cálculo da Taxa Metabólica Basal.</p>
+
+| Tipo       | Descrição |
+| :--:       | :--------:| 
+| Épico      | CRUD dos alimentos da tabela nutricional |
+| User Story | Cadastro de novos alimentos para registrar os alimentos consumidos |
+| Subtarefa  | Normalização de dados dos alimentos no banco de dados MongoDB      |
+| Subtarefa  | Criação de Tela para consulta dos alimentos cadastrados            |
+| Subtarefa  | Criação de Formulário na tela para adicionar um novo alimento      |
+| Subtarefa  | Criação de rotas e funções para o CRUD de alimentos no backend     |
+
+| Tipo       | Descrição |
+| :--:       | :--------:| 
+| Épico      | CRUD do perfil do usuário  |
+| User Story | Cadastro de perfil de usuário contendo dados para cálculo das calorias |
+| Subtarefa  | Criação da Tela para adicionar as informações para cálculo de Taxa Metabólica Basal |
+| Subtarefa  | Criação da rota no backend para cadastro das informações e o cálculo das calorias |
+</details>
+
+<details>
+<summary><h2>Sprint 2</h2></summary>
+<p>Focada na entrega de Dashboard,sincronização com aplicativo de exercícios,visto também a necessidade de alertas e histórico de consumo.</p>
+
+<b>Sprint Backlog:<b>
+
+| Sprint | Funcionalidade | Prioridade |
+| :--:   | :-----------:  | :--------: |
+| **02** | Dashboard de Consumo Calórico | US18 | Alta |
+| **02** | Sincronização de com aplicativo de exercício| US19 | Média |
+| **02** | Disparos de Alertas | US20 | Média |
+| **02** | Histórico consumo | US21 | Alta |
 </details>
 
 <span id="backlog"></span>
@@ -105,13 +146,13 @@ O projeto tem por base a metodologia ágil SCRUM, por isso foi separado em 3 ent
 | **02** | Sincronização de com aplicativo de exercício| US19 | Média |
 | **02** | Disparos de Alertas | US20 | Média |
 | **02** | Histórico consumo | US21 | Alta |
-| **02** | Importação de Dados de Alimentos | US22 | Alta |
-| **03** |  Cadastro de Metas | US23 | Média |
-| **03** | Listagem de Metas | US24 | Média |
-| **03** | Alteração de Metas | US25 | Média|
-| **03** | Exclusão de Metas | US26 | Média |
-| **03** | Customização de Interface | US23 | Baixa |
-| **03** | Relatório Personalizado com Base nas Refeições/Consumo Calórico | US24 | Média |
+<!-- | **02** | Importação de Dados de Alimentos | US22 | Alta | -->
+| **03** |  Cadastro de Metas | US22 | Média |
+| **03** | Listagem de Metas | US23 | Média |
+| **03** | Alteração de Metas | US24 | Média|
+| **03** | Exclusão de Metas | US25 | Média |
+| **03** | Customização de Interface | US26 | Baixa |
+| **03** | Relatório Personalizado com Base nas Refeições/Consumo Calórico | US27 | Média |
 
 <b>User Story</b>
 
@@ -134,17 +175,17 @@ O projeto tem por base a metodologia ágil SCRUM, por isso foi separado em 3 ent
 |US15|Como Usuário eu quero visualizar uma lista das refeições que cadastrei para gerenciar minha dieta|
 |US16|Como Usuário eu quero editar as informações das refeições que cadastrei para ajustar meu plano alimentar.|
 |US17|Como Usuário eu quero excluir refeições cadastradas para manter meu plano alimentar atualizado.|
-|US18||
-|US19||
-|US20||
-|US21||
-|US22||
-|US23||
+|US18|Como Usuário eu quero acessar o dashboard para me informar de consumo calórico.|
+|US19|Como Usuário eu quero sincronizar com aplicativo de exercício para acompanhar a perca de peso aliado a exercícios físicos.|
+|US20|Como Usuário quero receber alertas para estar atualiado sobre o consumo calóricos.|
+|US21|Como Usuário quero ter acesso ao histórico de consumo para gerar relátorio de consumo.|
+<!-- |US22||
+ |US23||
 |US24||
 |US25||
 |US26||
 |US27||
-|US28||
+ --> 
 
 
 
