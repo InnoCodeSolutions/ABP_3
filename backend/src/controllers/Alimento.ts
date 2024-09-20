@@ -94,9 +94,56 @@ class AlimentoController {
       return res.status(500).json({ message: error.message });
     }
   }
-
+/*
   public async list(req: Request, res: Response): Promise<Response> {
     try {
+<<<<<<< HEAD
+      const { descricao, page = 1 } = req.body;
+      const pageSize = 10;
+
+
+      const filter: any = {};
+      if (descricao) {
+        filter.descricao = new RegExp(descricao, 'i');
+      }
+
+
+      const total = await Alimento.countDocuments(filter);
+
+      const avgResult = await Alimento.aggregate([
+        { $match: filter },
+        { $group: { _id: null, average: { $avg: "$value" } } }
+      ]);
+
+      let averageSpent = "0.00";
+      if (avgResult.length > 0 && avgResult[0].average !== null) {
+        averageSpent = avgResult[0].average.toFixed(2);
+      }
+
+      const totalPages = Math.ceil(total / pageSize);
+
+      const currentPage = page > totalPages ? totalPages : (page < 1 ? 1 : page);
+      const offset = (currentPage - 1) * pageSize;
+
+      const spents = await Alimento.find(filter, {
+        descricao: 1,
+        carboidrato_g: 1,
+        proteina_g: 1,
+        lipidios_g: 1,
+        _id: false
+      })
+        .sort({ datetime: -1 })
+        .limit(pageSize)
+        .skip(offset);
+
+      return res.json({
+        pages: totalPages,
+        currentPage,
+        count: total,
+        average: averageSpent,
+        spent: spents,
+      });
+=======
         const { descricao, page = 1 } = req.body;  // Get 'page' from the request body
         const pageSize = 10;  // Number of items per page
 
@@ -148,13 +195,73 @@ class AlimentoController {
             average: averageSpent,
             spent: spents,
         });
+>>>>>>> e32584aeff2a84836b5ed7bdb918e618b3a7d7f4
 
     } catch (error: any) {
-        return res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
+<<<<<<< HEAD
+  }
+=======
+}
+*/
+public async list(req: Request, res: Response): Promise<Response> {
+  try {
+      const { descricao } = req.body;  // Não há necessidade de `page` aqui
+      const filter: any = {};
+
+      // Se `descricao` for fornecida, filtra por descrição
+      if (descricao) {
+          filter.descricao = new RegExp(descricao, 'i');  // 'i' para buscar case-insensitive
+      }
+
+      // Buscar todos os documentos correspondentes ao filtro
+      const alimentos = await Alimento.find(filter);
+
+      // Retornar todos os documentos encontrados
+      return res.json({
+          total: alimentos.length,
+          alimentos,
+      });
+  } catch (error: any) {
+      return res.status(500).json({ message: `Erro ao buscar alimentos: ${error.message}` });
+  }
+}
+public async findOne(req: Request, res: Response): Promise<Response> {
+  try {
+      const { _id, descricao, numero_do_alimento, categoria } = req.body;
+
+      // Cria um objeto de critérios de busca
+      let searchCriteria: any = {};
+
+      // Adiciona critérios ao objeto de busca com base nos parâmetros fornecidos
+      if (_id) {
+          searchCriteria._id = _id;
+      }
+      if (numero_do_alimento) {
+          searchCriteria.numero_do_alimento = numero_do_alimento;
+      }
+      if (descricao) {
+          searchCriteria.descricao = new RegExp(descricao, 'i');
+      }
+      if (categoria) {
+          searchCriteria.categoria = categoria;
+      }
+
+      // Realiza a busca
+      const alimentos = await Alimento.find(searchCriteria);
+
+      if (alimentos.length === 0) {
+          return res.status(404).json({ message: 'Nenhum alimento encontrado com os critérios fornecidos' });
+      }
+
+      return res.json(alimentos);
+  } catch (error: any) {
+      return res.status(500).json({ message: `Erro ao buscar alimento: ${error.message}` });
+  }
 }
 
-
+>>>>>>> e32584aeff2a84836b5ed7bdb918e618b3a7d7f4
 
   public async delete(req: Request, res: Response): Promise<Response> {
     const { id } = req.body;
