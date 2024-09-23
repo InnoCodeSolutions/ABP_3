@@ -146,13 +146,13 @@ tela de edição de dados pessoais, para cálculo da Taxa Metabólica Basal.</p>
 | **02** | Sincronização de com aplicativo de exercício| US19 | Média |
 | **02** | Disparos de Alertas | US20 | Média |
 | **02** | Histórico consumo | US21 | Alta |
-<!-- | **02** | Importação de Dados de Alimentos | US22 | Alta | -->
 | **03** |  Cadastro de Metas | US22 | Média |
 | **03** | Listagem de Metas | US23 | Média |
 | **03** | Alteração de Metas | US24 | Média|
 | **03** | Exclusão de Metas | US25 | Média |
 | **03** | Customização de Interface | US26 | Baixa |
 | **03** | Relatório Personalizado com Base nas Refeições/Consumo Calórico | US27 | Média |
+<!-- | **02** | Importação de Dados de Alimentos | US22 | Alta | -->
 
 <b>User Story</b>
 
