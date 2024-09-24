@@ -1,34 +1,13 @@
-import React, { useEffect, useState } from "react";
-import buscaAlimento from "../../services/Alimentos";
+import React from "react";
 import ItemAlimento from "./ItemAlimento";
 import { ItemAlimentoBackendProps } from "../../types";
 
 interface ListaAlimentosProps {
-    itensAlimentos: ItemAlimentoBackendProps[]; // Use a interface correta aqui
+    itensAlimentos: ItemAlimentoBackendProps[]; 
 }
 
-const ListaAlimentos: React.FC<ListaAlimentosProps> = () => {
-    const [itensAlimentos, setItensAlimentos] = useState<ItemAlimentoBackendProps[]>([]);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        const fetchAlimentos = async () => {
-            try {
-                const data = await buscaAlimento.buscaAlimento();
-                if ('erro' in data) {
-                    setError(data.erro);
-                } else {
-                    setItensAlimentos(data);
-                }
-            } catch (err) {
-                setError('Erro ao buscar alimentos.');
-            }
-        };
-
-        fetchAlimentos();
-    }, []);
-
-    if (error) return <p>Erro: {error}</p>;
+const ListaAlimentos: React.FC<ListaAlimentosProps> = ({ itensAlimentos }) => {
+    if (itensAlimentos.length === 0) return <p>Nenhum alimento encontrado.</p>;
 
     return (
         <div className="flex flex-col items-center w-full">

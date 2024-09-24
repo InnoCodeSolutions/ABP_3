@@ -15,6 +15,7 @@ const AddAlimentoPage: React.FC = () => {
         const fetchAlimentos = async () => {
             try {
                 const data = await buscaAlimento.buscaAlimento();
+                console.log("dados recebidos da service", data)
                 if ('erro' in data) {
                     setError(data.erro);
                 } else {
