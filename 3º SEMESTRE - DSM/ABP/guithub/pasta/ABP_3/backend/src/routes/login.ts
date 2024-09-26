@@ -10,6 +10,7 @@ const authService = new AuthService({
   jwtExpiry: process.env.JWT_EXPIRY || '1h',
 });
 
+
 const authController = new AuthController(authService);
 
 routes.post('/login', (req, res) => authController.login(req, res));

@@ -12,4 +12,5 @@ router.post('/', authMiddleware, perfilController.create); // Criar perfil do us
 router.put('/', authMiddleware, perfilController.update); // Atualizar perfil do usuário
 router.delete('/', authMiddleware, perfilController.delete); // Deletar perfil do usuário
 
+
 export default router;

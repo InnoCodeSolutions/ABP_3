@@ -11,4 +11,5 @@ router.get('/', authMiddleware, alimentoController.list); // Listagem de aliment
 router.put('/', authMiddleware, alimentoController.update); // Atualização de alimentos
 router.delete('/', authMiddleware, alimentoController.delete); // Exclusão de alimentos
 
+
 export default router;

@@ -6,6 +6,7 @@ import alimentosRoutes from './alimentosRoutes'; // Importar rotas de alimentos
 import { authMiddleware } from '../middlewares'; // Importar middleware de autenticação
 import dotenv from 'dotenv';
 
+
 // Carregar variáveis de ambiente
 dotenv.config();
 

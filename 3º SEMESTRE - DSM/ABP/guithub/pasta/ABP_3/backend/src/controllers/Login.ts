@@ -8,6 +8,7 @@ export class AuthController {
     this.authService = authService;
   }
 
+  
   public async login(req: Request, res: Response) {
     const { mail, password } = req.body;
 

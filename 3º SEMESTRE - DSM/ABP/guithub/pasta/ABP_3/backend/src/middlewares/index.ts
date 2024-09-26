@@ -31,3 +31,4 @@ export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: N
     next();
   });
 };
+
