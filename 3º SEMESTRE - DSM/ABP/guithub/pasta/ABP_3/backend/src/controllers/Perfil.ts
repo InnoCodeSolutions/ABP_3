@@ -102,6 +102,4 @@ public async create(req: Request, res: Response): Promise<Response> {
   }
 }
 
-
 export default new Perfils();
-

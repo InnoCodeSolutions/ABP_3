@@ -6,6 +6,7 @@ interface JwtPayload {
   userId: string;
 }
 
+
 interface AuthenticatedRequest extends Request {
   user?: string;
 }
@@ -31,4 +32,3 @@ export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: N
     next();
   });
 };
-
