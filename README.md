@@ -37,7 +37,7 @@ Este aplicativo tem como objetivo monitorar a ingestão diária de calorias e nu
 | Função | Foto | Nome | GitHub | LinkedIn |
 | :-: | :-: | :-: | :-: | :-: |
 |Backend Dev||André Flávio de Olivera|[![GitHub Badge](https://img.shields.io/badge/GitHub-111217?style=flat-square&logo=github&logoColor=white)](https://github.com/andreflavio)| [![Linkedin Badge](https://img.shields.io/badge/Linkedin-blue?style=flat-square&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/andr%C3%A9fl%C3%A1vio/)|
-|Scrum Master||Jonatas Filipe Carvalho|[![GitHub Badge](https://img.shields.io/badge/GitHub-111217?style=flat-square&logo=github&logoColor=white)](https://github.com/filipejonatas)| [![Linkedin Badge](https://img.shields.io/badge/Linkedin-blue?style=flat-square&logo=Linkedin&logoColor=white)]()|
+|Scrum Master||Jonatas Filipe Carvalho|[![GitHub Badge](https://img.shields.io/badge/GitHub-111217?style=flat-square&logo=github&logoColor=white)](https://github.com/filipejonatas)| [![Linkedin Badge](https://img.shields.io/badge/Linkedin-blue?style=flat-square&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/jonatas-filipe-aa4534165/)|
 |Frontend Dev||Mauro do Prado Santos|[![GitHub Badge](https://img.shields.io/badge/GitHub-111217?style=flat-square&logo=github&logoColor=white)](https://github.com/omaurosantos)| [![Linkedin Badge](https://img.shields.io/badge/Linkedin-blue?style=flat-square&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/mauro-do-prado-santos-350b2720a/) |
 |Product Owner||Samuel Lucas Vieira de Melo|[![GitHub Badge](https://img.shields.io/badge/GitHub-111217?style=flat-square&logo=github&logoColor=white)](https://github.com/SamuelLucasVieira)| [![Linkedin Badge](https://img.shields.io/badge/Linkedin-blue?style=flat-square&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/samuel-lucas-7a3256144/) |
 |Backend Dev||Vitor Cezar de Souza|[![GitHub Badge](https://img.shields.io/badge/GitHub-111217?style=flat-square&logo=github&logoColor=white)](https://github.com/vooshybee)| [![Linkedin Badge](https://img.shields.io/badge/Linkedin-blue?style=flat-square&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/vitor-souza-29077228b/) |
@@ -119,6 +119,33 @@ tela de edição de dados pessoais, para cálculo da Taxa Metabólica Basal.</p>
 | **02** | Disparos de Alertas | US20 | Média |
 | **02** | Histórico consumo | US21 | Alta |
 </details>
+
+[Assista ao vídeo de demonstração aqui](https://www.youtube.com/watch?v=9zNIedji9bk)
+
+## Gráfico de Burndown
+![Gráfico de Burndown](/docs/imagem_2024-09-17_150955586.png)
+
+<h2>Tarefas</h2>
+<p>O grupo optou pela organização das tarefas fazendo uso de épicos, User Story, tarefas e subtarefas.</p>
+<p>Nesta Sprint 1, o foco do grupo foi realizar o CRUD de alimentos, com a User Story relacionado a cadastrar novos alimentos.Foram realizados também o desenvolvimento da 
+tela de edição de dados pessoais, para cálculo da Taxa Metabólica Basal.</p>
+
+| Tipo       | Descrição |
+| :--:       | :--------:| 
+| Épico      | CRUD dos alimentos da tabela nutricional |
+| User Story | Cadastro de novos alimentos para registrar os alimentos consumidos |
+| Subtarefa  | Normalização de dados dos alimentos no banco de dados MongoDB      |
+| Subtarefa  | Criação de Tela para consulta dos alimentos cadastrados            |
+| Subtarefa  | Criação de Formulário na tela para adicionar um novo alimento      |
+| Subtarefa  | Criação de rotas e funções para o CRUD de alimentos no backend     |
+
+| Tipo       | Descrição |
+| :--:       | :--------:| 
+| Épico      | CRUD do perfil do usuário  |
+| User Story | Cadastro de perfil de usuário contendo dados para cálculo das calorias |
+| Subtarefa  | Criação da Tela para adicionar as informações para cálculo de Taxa Metabólica Basal |
+| Subtarefa  | Criação da rota no backend para cadastro das informações e o cálculo das calorias |
+
 
 <span id="backlog"></span>
 <h1 align="center">Backlog</h1>
