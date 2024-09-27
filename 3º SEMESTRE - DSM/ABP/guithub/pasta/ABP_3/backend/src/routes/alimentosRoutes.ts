@@ -5,7 +5,6 @@ import { authMiddleware } from '../middlewares'; // Importar o middleware
 
 const router = Router();
 
-
 // Aplicar middleware de autenticação nas rotas de alimentos
 router.post('/', authMiddleware, alimentoController.create); // Criação de alimentos
 router.get('/', authMiddleware, alimentoController.list); // Listagem de alimentos

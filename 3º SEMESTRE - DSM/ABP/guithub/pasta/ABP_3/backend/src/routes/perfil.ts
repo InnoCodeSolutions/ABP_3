@@ -6,7 +6,6 @@ import { authMiddleware } from '../middlewares'; // Importar o middleware
 
 const router = Router();
 
-
 // Aplicar middleware de autenticação nas rotas de perfil
 router.get('/', authMiddleware, perfilController.list); // Obter perfil do usuário
 router.post('/', authMiddleware, perfilController.create); // Criar perfil do usuário

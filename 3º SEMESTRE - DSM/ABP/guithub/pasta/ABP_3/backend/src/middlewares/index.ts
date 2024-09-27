@@ -6,7 +6,6 @@ interface JwtPayload {
   userId: string;
 }
 
-
 interface AuthenticatedRequest extends Request {
   user?: string;
 }
