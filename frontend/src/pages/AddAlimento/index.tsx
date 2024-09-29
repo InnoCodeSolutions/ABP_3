@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import BarraPesq from "../../components/AddAlimento/BarraPesquisa";
-import ListaAlimentos from "../../components/AddAlimento/ListaAlimentos";
+import ItemAlimento from "../../components/AddAlimento/ItemAlimento"; // Importe o ItemAlimento
 import ModalAlimentos from "../../components/AddAlimento/ModalAlimento";
 import buscaAlimento from "../../services/Alimentos";
 import { ItemAlimentoBackendProps } from "../../types";
@@ -10,30 +10,30 @@ const AddAlimentoPage: React.FC = () => {
     const [allAlimentos, setAllAlimentos] = useState<ItemAlimentoBackendProps[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [query, setQuery] = useState("");
 
     useEffect(() => {
-        const fetchAlimentos = async () => {
+        const fetchAlimentos = async (query: string) => {
             try {
-                const data = await buscaAlimento.buscaAlimento();
-                console.log("dados recebidos da service", data)
+                const data = await buscaAlimento.buscaAlimento(query);
                 if ('erro' in data) {
                     setError(data.erro);
                 } else {
-                    setAllAlimentos(data);
-                    setAlimentosFiltrados(data);
+                    setAllAlimentos(data.spent);
+                    setAlimentosFiltrados(data.spent);
                 }
             } catch (err) {
                 setError('Erro ao buscar alimentos.');
             }
         };
 
-        fetchAlimentos();
-    }, []);
+        fetchAlimentos(query);
+    }, [query]);
 
     const handleSearch = (query: string) => {
         if (!query) {
             setAlimentosFiltrados(allAlimentos);
-        } else {
+        } else if (Array.isArray(allAlimentos)) {
             const filtrados = allAlimentos.filter((itemAlimento) =>
                 itemAlimento.descricao.toLowerCase().includes(query.toLowerCase())
             );
@@ -55,9 +55,6 @@ const AddAlimentoPage: React.FC = () => {
 
     const handleSaveAlimento = async (alimento: ItemAlimentoBackendProps) => {
         try {
-            // Aqui você pode fazer uma chamada para a API para adicionar o alimento
-            // await api.post('/adicionar', alimento);  // Ajuste conforme sua rota
-
             setAllAlimentos((prevAlimentos) => [...prevAlimentos, alimento]);
             setAlimentosFiltrados((prevAlimentos) => [...prevAlimentos, alimento]);
         } catch (err) {
@@ -71,11 +68,12 @@ const AddAlimentoPage: React.FC = () => {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen space-y-6 p-4 w-full max-w-lg mx-auto">
             <BarraPesq onSearch={handleSearch} onCancel={handleCancel} onAdd={handleAddAlimento} />
-            <ListaAlimentos itensAlimentos={alimentosFiltrados} />
-            <button className="bg-green-500 text-white py-2 px-4 rounded-full w-full">
-                CONCLUIR
-            </button>
-
+            {/* Renderize os itens filtrados diretamente */}
+            <div className="w-full">
+                {alimentosFiltrados.map((item,index) => (
+                    <ItemAlimento key={`${item.descricao}-${index}`} {...item} />
+                ))}
+            </div>
             {isModalOpen && <ModalAlimentos onClose={handleCloseModal} onSave={handleSaveAlimento} />}
         </div>
     );

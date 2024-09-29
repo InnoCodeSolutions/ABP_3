@@ -1,26 +1,23 @@
-import React from "react";
-import ItemAlimento from "./ItemAlimento";
+import React from 'react';
 import { ItemAlimentoBackendProps } from "../../types";
 
 interface ListaAlimentosProps {
-    itensAlimentos: ItemAlimentoBackendProps[]; 
+    itensAlimentos: ItemAlimentoBackendProps[];
 }
 
 const ListaAlimentos: React.FC<ListaAlimentosProps> = ({ itensAlimentos }) => {
-    if (itensAlimentos.length === 0) return <p>Nenhum alimento encontrado.</p>;
+    if (!itensAlimentos || itensAlimentos.length === 0) {
+        return <p>Nenhum alimento encontrado.</p>; 
+    }
 
     return (
-        <div className="flex flex-col items-center w-full">
+        <ul>
             {itensAlimentos.map((item, index) => (
-                <ItemAlimento
-                    key={index}
-                    descricao={item.descricao}
-                    carboidrato_g={item.carboidrato_g}
-                    proteina_g={item.proteina_g}
-                    lipideos_g={item.lipideos_g}
-                />
+                <li key={index}>
+                    {item.descricao} - Carboidratos: {item.carboidrato_g}g, Proteínas: {item.proteina_g}g, Lipídios: {item.lipideos_g}g
+                </li>
             ))}
-        </div>
+        </ul>
     );
 };
 

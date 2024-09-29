@@ -28,7 +28,7 @@ routes.use('/perfil', authMiddleware, perfilRoutes); // Aplicar authMiddleware
 routes.post('/login', login); // Usar o método login do controlador
 
 // Rota de listagem de alimentos
-routes.use('/alimento', authMiddleware, alimentosRoutes); // Aplicar authMiddleware
+routes.use('/alimento', alimentosRoutes); // Aplicar authMiddleware
 
 // Aceita qualquer método HTTP ou URL
 routes.all('*', (req, res) => {

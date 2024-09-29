@@ -97,56 +97,54 @@ class AlimentoController {
 
   public async list(req: Request, res: Response): Promise<Response> {
     try {
-      const { descricao, page = 1 } = req.body;
-      const pageSize = 10;
+        const { descricao } = req.body;
+        const pageSize = 10;
+        let page = 1;
+        let totalPages = 1;
+        const filter: any = {};
 
+        if (descricao) {
+            filter.descricao = new RegExp(descricao, 'i');
+        }
 
-      const filter: any = {};
-      if (descricao) {
-        filter.descricao = new RegExp(descricao, 'i');
-      }
+        let allSpents: any[] = [];
 
+        // Continue buscando até percorrer todas as páginas
+        do {
+            const total = await Alimento.countDocuments(filter);
 
-      const total = await Alimento.countDocuments(filter);
+            totalPages = Math.ceil(total / pageSize);
+            const currentPage = page > totalPages ? totalPages : (page < 1 ? 1 : page);
+            const offset = (currentPage - 1) * pageSize;
 
-      const avgResult = await Alimento.aggregate([
-        { $match: filter },
-        { $group: { _id: null, average: { $avg: "$value" } } }
-      ]);
+            const spents = await Alimento.find(filter, {
+                descricao: 1,
+                carboidrato_g: 1,
+                proteina_g: 1,
+                lipidios_g: 1,
+                _id: false
+            })
+            .sort({ datetime: -1 })
+            .limit(pageSize)
+            .skip(offset);
 
-      let averageSpent = "0.00";
-      if (avgResult.length > 0 && avgResult[0].average !== null) {
-        averageSpent = avgResult[0].average.toFixed(2);
-      }
+            allSpents = [...allSpents, ...spents];
 
-      const totalPages = Math.ceil(total / pageSize);
+            // Incrementa a página
+            page++;
 
-      const currentPage = page > totalPages ? totalPages : (page < 1 ? 1 : page);
-      const offset = (currentPage - 1) * pageSize;
+        } while (page <= totalPages);
 
-      const spents = await Alimento.find(filter, {
-        descricao: 1,
-        carboidrato_g: 1,
-        proteina_g: 1,
-        lipidios_g: 1,
-        _id: false
-      })
-        .sort({ datetime: -1 })
-        .limit(pageSize)
-        .skip(offset);
-
-      return res.json({
-        pages: totalPages,
-        currentPage,
-        count: total,
-        average: averageSpent,
-        spent: spents,
-      });
+        return res.json({
+            totalItems: allSpents.length,
+            spent: allSpents,
+        });
 
     } catch (error: any) {
-      return res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
-  }
+}
+
 
   public async delete(req: Request, res: Response): Promise<Response> {
     const { id } = req.body;
@@ -256,6 +254,7 @@ class AlimentoController {
       return res.status(500).json({ message: error.message });
     }
   }
+
 }
 
 export const alimentoController = new AlimentoController();
