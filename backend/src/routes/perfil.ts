@@ -1,11 +1,15 @@
-import { Router } from "express";
-import controller from "../controllers/Perfil";
+// routes/perfil.ts
+import { Router } from 'express';
+import perfilController from '../controllers/Perfil';
 
-const routes = Router();
+import { authMiddleware } from '../middlewares'; // Importar o middleware
 
-routes.post('/', controller.create);
-routes.get('/', controller.list);
-routes.delete('/', controller.delete);
-routes.put('/', controller.update);
+const router = Router();
 
-export default routes;
+// Aplicar middleware de autenticação nas rotas de perfil
+router.get('/', authMiddleware, perfilController.list); // Obter perfil do usuário
+router.post('/', authMiddleware, perfilController.create); // Criar perfil do usuário
+router.put('/', authMiddleware, perfilController.update); // Atualizar perfil do usuário
+router.delete('/', authMiddleware, perfilController.delete); // Deletar perfil do usuário
+
+export default router;

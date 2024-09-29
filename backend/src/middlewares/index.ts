@@ -1,3 +1,4 @@
+// middlewares/authMiddleware.ts
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -20,6 +21,8 @@ export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: N
     return res.status(401).json({ error: 'Token não fornecido' });
   }
 
+  
+  
   jwt.verify(token, process.env.JWT_SECRET || 'default_secret', (err, decoded) => {
     console.log('Token:', token); // Verificar o token recebido
     console.log('Decoded:', decoded); // Verificar o que foi decodificado
