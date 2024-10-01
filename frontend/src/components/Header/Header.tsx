@@ -20,10 +20,10 @@ const Header: React.FC = () => {
       </div>
       <nav className="flex space-x-4">  
         <Button variant="transparent" className="px-4 py-2">
-          Home
+          <a href='/Home'>Home</a>
         </Button>
         <Button variant="transparent" className="px-4 py-2">
-          Sobre
+          <a href='/Cadastro'>Perfil</a>
         </Button>
         <div
           className="relative"

@@ -23,7 +23,7 @@ const Formulario: React.FC = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
+        <div className="flex justify-center items-center min-h-screen bg-gray-100 p-8 ">
             <form
                 className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
                 onSubmit={handleSubmit}

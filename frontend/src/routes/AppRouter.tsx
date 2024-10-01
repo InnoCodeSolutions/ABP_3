@@ -4,8 +4,8 @@ import ProtectedRoute from './ProtectedRoute';
 import LoginPage from '../pages/Login';
 import CadastroPage from '../pages/Cadastro';
 import AddAlimentoPage from '../pages/AddAlimento';
-import Home from '../pages/Home';
 import NovaRefeicao from '../pages/NovaRefeicao';
+import Home from '../pages/Home';
 
 const AppRoutes: React.FC = () => {
     return (
