@@ -15,11 +15,13 @@ const Header: React.FC = () => {
   return (
     <header className="flex justify-between items-center w-full px-8 py-4 bg-lime-300 text-lime-950">
       <div className="flex items-center space-x-4">
-        <img
-          src="/sapoPreto.png"
-          alt="Logo"
-          className="h-6 object-contain"
-        />
+        <a href="/Home">
+          <img
+            src="/sapoPreto.png"
+            alt="Logo"
+            className="h-6 object-contain"
+          />
+        </a>
         <div className="h-10 border-l border-black"></div>
         <p className="text-3xl font-bold font-nort">
           ramg.o
@@ -34,6 +36,9 @@ const Header: React.FC = () => {
         </Button>
         <Button variant="transparent" className="px-4 py-2">
           <a href='/Cadastro'>Perfil</a>
+        </Button>
+        <Button variant="transparent" className="px-4 py-2">
+          <a href='/Alimento'>Alimentos</a>
         </Button>
         <div
           className="relative"
