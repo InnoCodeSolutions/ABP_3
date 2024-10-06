@@ -11,30 +11,38 @@ const LoginPage: React.FC = () => {
   const handleCreate = async (mail: string, password: string) => {
     try {
       const response = await axios.post('http://localhost:3001/cadastro', { mail, password });
-      console.log('Registration successful:', response.data);
-      navigate('/login');
-    } catch (error) {
-      console.error('Registration failed:', error);
-      alert('Falha ao registrar. Verifique o e-mail e tente novamente.');
+      console.log('Registro bem-sucedido:', response.data);
+      alert('Registro criado com sucesso! Agora você pode fazer login.'); // Alerta de sucesso
+      navigate('/login'); // Redireciona para a página de login após registro
+    } catch (error:any) {
+      console.error('Falha ao registrar:', error);
+      if (error.response && error.response.data.message) {
+        alert(error.response.data.message); // Mostra a mensagem de erro retornada pelo back-end
+      } else {
+        alert('Falha ao registrar. Verifique o e-mail e tente novamente.'); // Mensagem genérica
+      }
     }
   };
 
   const handleLogin = async (mail: string, password: string) => {
     try {
       const response = await axios.post('http://localhost:3001/login', { mail, password });
-      console.log('Login successful:', response.data);
+      console.log('Login bem-sucedido:', response.data);
 
-      
       if (response.data.token) {
-        // Chame a função de login do contexto para armazenar o token e o e-mail
+        // Chama a função de login do contexto para armazenar o token e o e-mail
         login(response.data.token, mail);
-        navigate('/home');
+        navigate('/home'); // Redireciona para a página inicial após login
       } else {
         alert('Falha ao fazer login. Token não recebido.');
       }
-    } catch (error) {
-      console.error('Login failed:', error);
-      alert('Falha ao fazer login. Verifique suas credenciais e tente novamente.');
+    } catch (error:any) {
+      console.error('Falha ao fazer login:', error);
+      if (error.response && error.response.data.message) {
+        alert(error.response.data.message); // Mostra a mensagem de erro retornada pelo back-end
+      } else {
+        alert('Falha ao fazer login. Verifique suas credenciais e tente novamente.'); // Mensagem genérica
+      }
     }
   };
 

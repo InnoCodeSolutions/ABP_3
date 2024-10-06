@@ -19,14 +19,15 @@ const AddAlimentoPage: React.FC = () => {
                 if ('erro' in data) {
                     setError(data.erro);
                 } else {
-                    setAllAlimentos(data.spent);
+                    setAllAlimentos(data.spent); // ou qualquer estrutura que você espera
                     setAlimentosFiltrados(data.spent);
                 }
             } catch (err) {
+                console.error("Erro ao buscar alimentos:", err); // Log de erro geral
                 setError('Erro ao buscar alimentos.');
             }
         };
-
+    
         fetchAlimentos(query);
     }, [query]);
 

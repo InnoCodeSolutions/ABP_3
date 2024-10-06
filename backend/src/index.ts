@@ -10,13 +10,10 @@ dotenv.config();
 // Será usado 3000 se a variável de ambiente não tiver sido definida
 const PORT = process.env.PORT || 3000;
 const app = express(); // Cria o servidor e coloca na variável app
-const corsOptions = {
-    origin: 'http://localhost:3050', // Altere para a origem desejada
-    methods: 'GET,POST,PUT,DELETE', // Métodos permitidos
-  };
+
 // Suportar parâmetros JSON no body da requisição
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser.json());
 // Conecta ao MongoDB no início da aplicação
 connect();

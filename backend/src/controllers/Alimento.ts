@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Alimento } from '../models/Alimento'; // Corrija o caminho se necessário
+import Alimento from '../models/Alimento';
 
 class AlimentoController {
   public async create(req: Request, res: Response): Promise<Response> {
@@ -9,40 +9,8 @@ class AlimentoController {
       energia,
       proteina,
       lipidios,
-      carboidrato
-      // fibra,
-      // colesterol,
-      // agsaturado,
-      // agmono,
-      // agpoli,
-      // aglinoleico,
-      // aglinolenico,
-      // agtranstotal,
-      // acucartotal,
-      // acucaradicao,
-      // calcio,
-      // magnesio,
-      // manganes,
-      // fosforo,
-      // ferro,
-      // sodio,
-      // sodioadicao,
-      // potassio,
-      // cobre,
-      // zinco,
-      // selenio,
-      // retinol,
-      // vitamina_a,
-      // tiamina,
-      // riboflavina,
-      // niacina,
-      // niacina_ne,
-      // piridoxina,
-      // cobalamina,
-      // folato,
-      // vitamina_d,
-      // vitamina_e,
-      // vitamina_c
+      carboidrato,
+      // Add other fields as needed
     } = req.body;
 
     try {
@@ -52,40 +20,8 @@ class AlimentoController {
         energia,
         proteina,
         lipidios,
-        carboidrato
-        // fibra,
-        // colesterol,
-        // agsaturado,
-        // agmono,
-        // agpoli,
-        // aglinoleico,
-        // aglinolenico,
-        // agtranstotal,
-        // acucartotal,
-        // acucaradicao,
-        // calcio,
-        // magnesio,
-        // manganes,
-        // fosforo,
-        // ferro,
-        // sodio,
-        // sodioadicao,
-        // potassio,
-        // cobre,
-        // zinco,
-        // selenio,
-        // retinol,
-        // vitamina_a,
-        // tiamina,
-        // riboflavina,
-        // niacina,
-        // niacina_ne,
-        // piridoxina,
-        // cobalamina,
-        // folato,
-        // vitamina_d,
-        // vitamina_e,
-        // vitamina_c
+        carboidrato,
+        // Add other fields as needed
       });
 
       const resp = await document.save();
@@ -97,54 +33,33 @@ class AlimentoController {
 
   public async list(req: Request, res: Response): Promise<Response> {
     try {
-        const { descricao } = req.body;
-        const pageSize = 10;
-        let page = 1;
-        let totalPages = 1;
-        const filter: any = {};
+        const { descricao, page = 1 } = req.body;
+        const pageSize = 100; // Set the number of items per page
 
+        const filter: any = {};
         if (descricao) {
             filter.descricao = new RegExp(descricao, 'i');
         }
 
-        let allSpents: any[] = [];
+        const total = await Alimento.countDocuments(filter);
+        const totalPages = Math.ceil(total / pageSize);
+        const offset = (page - 1) * pageSize;
 
-        // Continue buscando até percorrer todas as páginas
-        do {
-            const total = await Alimento.countDocuments(filter);
-
-            totalPages = Math.ceil(total / pageSize);
-            const currentPage = page > totalPages ? totalPages : (page < 1 ? 1 : page);
-            const offset = (currentPage - 1) * pageSize;
-
-            const spents = await Alimento.find(filter, {
-                descricao: 1,
-                carboidrato_g: 1,
-                proteina_g: 1,
-                lipidios_g: 1,
-                _id: false
-            })
+        const spents = await Alimento.find(filter)
             .sort({ datetime: -1 })
             .limit(pageSize)
             .skip(offset);
 
-            allSpents = [...allSpents, ...spents];
-
-            // Incrementa a página
-            page++;
-
-        } while (page <= totalPages);
-
         return res.json({
-            totalItems: allSpents.length,
-            spent: allSpents,
+            pages: totalPages,
+            currentPage: page,
+            count: total,
+            spent: spents,
         });
-
     } catch (error: any) {
         return res.status(500).json({ message: error.message });
     }
 }
-
 
   public async delete(req: Request, res: Response): Promise<Response> {
     const { id } = req.body;
@@ -167,40 +82,8 @@ class AlimentoController {
       energia,
       proteina,
       lipidios,
-      carboidrato
-      // fibra,
-      // colesterol,
-      // agsaturado,
-      // agmono,
-      // agpoli,
-      // aglinoleico,
-      // aglinolenico,
-      // agtranstotal,
-      // acucartotal,
-      // acucaradicao,
-      // calcio,
-      // magnesio,
-      // manganes,
-      // fosforo,
-      // ferro,
-      // sodio,
-      // sodioadicao,
-      // potassio,
-      // cobre,
-      // zinco,
-      // selenio,
-      // retinol,
-      // vitamina_a,
-      // tiamina,
-      // riboflavina,
-      // niacina,
-      // niacina_ne,
-      // piridoxina,
-      // cobalamina,
-      // folato,
-      // vitamina_d,
-      // vitamina_e,
-      // vitamina_c
+      carboidrato,
+      // Add other fields as needed
     } = req.body;
 
     try {
@@ -213,49 +96,16 @@ class AlimentoController {
         energia,
         proteina,
         lipidios,
-        carboidrato
-        // fibra,
-        // colesterol,
-        // agsaturado,
-        // agmono,
-        // agpoli,
-        // aglinoleico,
-        // aglinolenico,
-        // agtranstotal,
-        // acucartotal,
-        // acucaradicao,
-        // calcio,
-        // magnesio,
-        // manganes,
-        // fosforo,
-        // ferro,
-        // sodio,
-        // sodioadicao,
-        // potassio,
-        // cobre,
-        // zinco,
-        // selenio,
-        // retinol,
-        // vitamina_a,
-        // tiamina,
-        // riboflavina,
-        // niacina,
-        // niacina_ne,
-        // piridoxina,
-        // cobalamina,
-        // folato,
-        // vitamina_d,
-        // vitamina_e,
-        // vitamina_c
+        carboidrato,
+        // Add other fields as needed
       });
+
       const updated = await document.save();
       return res.json(updated);
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
     }
   }
-
 }
 
 export const alimentoController = new AlimentoController();
-

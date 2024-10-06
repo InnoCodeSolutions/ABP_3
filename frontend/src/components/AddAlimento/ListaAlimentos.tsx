@@ -14,7 +14,7 @@ const ListaAlimentos: React.FC<ListaAlimentosProps> = ({ itensAlimentos }) => {
         <ul>
             {itensAlimentos.map((item, index) => (
                 <li key={index}>
-                    {item.descricao} - Carboidratos: {item.carboidrato_g}g, Proteínas: {item.proteina_g}g, Lipídios: {item.lipideos_g}g
+                    {item.descricao} - Carboidratos: {item.carboidrato}g, Proteínas: {item.proteina}g, Lipídios: {item.lipidios}g
                 </li>
             ))}
         </ul>

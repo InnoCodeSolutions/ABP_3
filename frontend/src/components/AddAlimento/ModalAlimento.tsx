@@ -10,9 +10,9 @@ const ModalAlimentos: React.FC<ModalProps> = ({ onClose, onSave }) => {
     const [name, setName] = useState("");
     const [categoria, setCategoria] = useState("");
     const [descricao, setDescricao] = useState("");
-    const [carboidrato_g, setCarboidratoG] = useState("");
-    const [proteina_g, setProteinaG] = useState("");
-    const [lipideos_g, setLipideosG] = useState("");
+    const [carboidrato, setCarboidratoG] = useState("");
+    const [proteina, setProteinaG] = useState("");
+    const [lipidios, setLipideosG] = useState("");
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -20,9 +20,9 @@ const ModalAlimentos: React.FC<ModalProps> = ({ onClose, onSave }) => {
         // Converter para números e criar novo alimento
         const novoAlimento: ItemAlimentoBackendProps = {
             descricao,
-            carboidrato_g: parseFloat(carboidrato_g),
-            proteina_g: parseFloat(proteina_g),
-            lipideos_g: parseFloat(lipideos_g),
+            carboidrato: parseFloat(carboidrato),
+            proteina: parseFloat(proteina),
+            lipidios: parseFloat(lipidios),
         };
 
         onSave(novoAlimento);
@@ -60,7 +60,7 @@ const ModalAlimentos: React.FC<ModalProps> = ({ onClose, onSave }) => {
                     />
                     <input
                         type="number"
-                        value={carboidrato_g}
+                        value={carboidrato}
                         onChange={(e) => setCarboidratoG(e.target.value)}
                         placeholder="Carboidrato (g)"
                         className="w-full p-2 border border-gray-300 rounded"
@@ -68,7 +68,7 @@ const ModalAlimentos: React.FC<ModalProps> = ({ onClose, onSave }) => {
                     />
                     <input
                         type="number"
-                        value={proteina_g}
+                        value={proteina}
                         onChange={(e) => setProteinaG(e.target.value)}
                         placeholder="Proteína (g)"
                         className="w-full p-2 border border-gray-300 rounded"
@@ -76,7 +76,7 @@ const ModalAlimentos: React.FC<ModalProps> = ({ onClose, onSave }) => {
                     />
                     <input
                         type="number"
-                        value={lipideos_g}
+                        value={lipidios}
                         onChange={(e) => setLipideosG(e.target.value)}
                         placeholder="Lipídios (g)"
                         className="w-full p-2 border border-gray-300 rounded"
