@@ -4,6 +4,7 @@ import ItemAlimento from "../../components/AddAlimento/ItemAlimento"; // Importe
 import ModalAlimentos from "../../components/AddAlimento/ModalAlimento";
 import buscaAlimento from "../../services/Alimentos";
 import { ItemAlimentoBackendProps } from "../../types";
+import Header from "../../components/Header/Header";
 
 const AddAlimentoPage: React.FC = () => {
     const [alimentosFiltrados, setAlimentosFiltrados] = useState<ItemAlimentoBackendProps[]>([]);
@@ -67,15 +68,18 @@ const AddAlimentoPage: React.FC = () => {
     if (error) return <p>Erro: {error}</p>;
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen space-y-6 p-4 w-full max-w-lg mx-auto">
-            <BarraPesq onSearch={handleSearch} onCancel={handleCancel} onAdd={handleAddAlimento} />
-            {/* Renderize os itens filtrados diretamente */}
-            <div className="w-full">
-                {alimentosFiltrados.map((item,index) => (
-                    <ItemAlimento key={`${item.descricao}-${index}`} {...item} />
-                ))}
+        <div>
+            <Header/>
+            <div className="flex flex-col items-center justify-center min-h-screen space-y-6 p-4 w-full max-w-lg mx-auto">
+                <BarraPesq onSearch={handleSearch} onCancel={handleCancel} onAdd={handleAddAlimento} />
+                {/* Renderize os itens filtrados diretamente */}
+                <div className="w-full">
+                    {alimentosFiltrados.map((item,index) => (
+                        <ItemAlimento key={`${item.descricao}-${index}`} {...item} />
+                    ))}
             </div>
             {isModalOpen && <ModalAlimentos onClose={handleCloseModal} onSave={handleSaveAlimento} />}
+        </div>
         </div>
     );
 };
