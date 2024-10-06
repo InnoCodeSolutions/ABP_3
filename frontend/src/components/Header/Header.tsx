@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 import { Button } from '../Button';
 import '../../index.css';
+import { useAuth } from '../../context/AuthContext'; // Importa o contexto de autenticação
 
 const Header: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { logout } = useAuth(); // Usa o hook de autenticação
+
+  const handleLogout = () => {
+    logout(); // Chama a função de logout
+    window.location.href = '/'; // Redireciona para a página inicial após logout
+  };
 
   return (
     <header className="flex justify-between items-center w-full px-8 py-4 bg-lime-300 text-lime-950">
@@ -21,6 +28,9 @@ const Header: React.FC = () => {
       <nav className="flex space-x-4">  
         <Button variant="transparent" className="px-4 py-2">
           <a href='/Home'>Home</a>
+        </Button>
+        <Button variant="transparent" className="px-4 py-2">
+          <a href='/Alimento'>Alimento</a>
         </Button>
         <Button variant="transparent" className="px-4 py-2">
           <a href='/Cadastro'>Perfil</a>
@@ -53,6 +63,9 @@ const Header: React.FC = () => {
             </div>
           )}
         </div>
+        <Button variant="transparent" className="px-4 py-2" onClick={handleLogout}>
+          Logout
+        </Button>
       </nav>
     </header>
   );

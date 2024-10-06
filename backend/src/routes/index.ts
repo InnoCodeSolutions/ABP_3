@@ -27,8 +27,8 @@ routes.use('/cadastro', userRoutes); // Cadastro de usuários
 routes.post('/login', login); // Rota de login
 
 // Rotas que requerem autenticação
-routes.use('/perfil', perfilRoutes); // Perfil do usuário
-routes.use('/alimento', alimentosRoutes); // Rotas de alimentos
+routes.use('/perfil',authMiddleware, perfilRoutes); // Perfil do usuário
+routes.use('/alimento', authMiddleware ,alimentosRoutes); // Rotas de alimentos
 
 // Aceita qualquer método HTTP ou URL não definida
 routes.all('*', (req, res) => {

@@ -1,10 +1,16 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import InputCampo from "./InputCampo";
 import SelectCampo from "./SelectCampo";
-import { useAuth } from '../../context/AuthContext'; // Importe o hook useAuth para acessar o token
 
 const Formulario: React.FC = () => {
-    const { token } = useAuth(); // Obtenha o token do contexto de autenticação
+    // Função para pegar o token do localStorage
+    const getTokenFromLocalStorage = () => {
+        const token = localStorage.getItem('authToken');
+        console.log("Token obtido do localStorage:", token); // Verifique se o token está correto
+        return token;
+    };
+    
+
     const [formData, setFormData] = useState({
         genero: '',
         nome: '',
@@ -25,6 +31,7 @@ const Formulario: React.FC = () => {
         // Cria o payload que será enviado ao servidor
         const payload = {
             genero: formData.genero,
+            nome: formData.nome,
             peso: Number(formData.peso), // Certifique-se de que o peso é um número
             altura: Number(formData.altura), // Certifique-se de que a altura é um número
             idade: Number(formData.idade), // Certifique-se de que a idade é um número
@@ -34,6 +41,8 @@ const Formulario: React.FC = () => {
         console.log("Dados que estão sendo enviados:", payload); // Log dos dados que estão sendo enviados
 
         try {
+            const token = getTokenFromLocalStorage(); // Obtém o token do localStorage
+
             const response = await fetch('http://localhost:3001/perfil', {
                 method: 'POST',
                 headers: {

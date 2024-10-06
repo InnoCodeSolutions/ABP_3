@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import GaugeChart from 'react-gauge-chart';
 import Header from '../../components/Header/Header';
 
@@ -24,18 +25,62 @@ const getEmojiByClassificacao = (classificacao: string) => {
 };
 
 const Home: React.FC = () => {
+  const navigate = useNavigate();
   const [userData, setUserData] = useState<UserData>({
-    nome: 'Mauro', // Exemplo, deve vir do backend
-    tmb: 1800,     // Exemplo, taxa metabólica basal
-    imc: 22.5,     // Exemplo, IMC
-    peso: 70,      // Exemplo, peso em kg
-    classificacao: 'Peso Ideal' // Exemplo, classificação com base no IMC
+    nome: '',
+    tmb: 0,
+    imc: 0,
+    peso: 0,
+    classificacao: ''
   });
 
   useEffect(() => {
-    // Requisição ao backend para pegar os dados do usuário
-    // Exemplo: fetch('API_URL').then(response => setUserData(response.data));
-  }, []);
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+  
+    fetch('http://localhost:3001/perfil', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(async response => {
+        if (!response.ok) {
+          const errorText = await response.text();  
+          throw new Error(`Erro HTTP: ${response.status}, ${errorText}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Extract the first user from the array
+        const user = data[0]; // Assuming the response is an array
+        
+        const peso = user.peso || 0;
+        const altura = user.altura || 1;  // Avoid division by zero
+        
+        const imc = peso / ((altura) * (altura)); // Use altura directly in meters
+        let classificacao = '';
+
+        if (imc < 18.5) classificacao = 'Abaixo do Peso';
+        else if (imc >= 18.5 && imc < 24.9) classificacao = 'Peso Ideal';
+        else classificacao = 'Acima do Peso';
+
+        setUserData({
+          nome: user.nome || 'Usuário', // Handle missing name
+          tmb: user.tmb || 0,
+          imc: imc,
+          peso: peso,
+          classificacao: classificacao
+        });
+      })
+      .catch(error => {
+        console.error('Erro ao buscar os dados do perfil:', error.message);
+      });
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -44,18 +89,17 @@ const Home: React.FC = () => {
         <div className="w-full max-w-4xl bg-white bg-opacity-80 rounded-lg shadow-lg p-8">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-semibold text-gray-800">Olá, {userData.nome}</h1>
-            {/* Gráfico IMC tipo meia rosca */}
             <div className="w-1/3">
-            <GaugeChart 
-              id="imc-gauge"
-              nrOfLevels={1}  // Ajusta o número de níveis para uma transição suave
-              percent={userData.imc / 40}  // Supondo que o IMC máximo seja 40
-              textColor="#000"
-              colors={['#FF5F6D', '#FFC107', '#00FF00', '#FFC107', '#FF5F6D']}  // Vermelho -> Amarelo -> Verde -> Amarelo -> Vermelho
-              arcWidth={0.3}  // Para manter o estilo meia rosca
-              arcPadding={0.00}  // Pequeno espaço entre os arcos
-              arcsLength={[0.2, 0.2, 0.2, 0.2, 0.2]}  // Distribuição igual das cores
-            />
+              <GaugeChart 
+                id="imc-gauge"
+                nrOfLevels={1}
+                percent={userData.imc / 40} // Adjust according to your desired scale
+                textColor="#000"
+                colors={['#FF5F6D', '#FFC107', '#00FF00', '#FFC107', '#FF5F6D']}
+                arcWidth={0.3}
+                arcPadding={0.00}
+                arcsLength={[0.2, 0.2, 0.2, 0.2, 0.2]}
+              />
             </div>
           </div>
 
@@ -66,7 +110,7 @@ const Home: React.FC = () => {
             </div>
             <div className="p-4 bg-white bg-opacity-90 rounded-lg shadow-lg hover:shadow-xl transition-transform transform hover:-translate-y-2">
               <h2 className="text-xl font-semibold text-gray-800">IMC</h2>
-              <p className="text-lg text-gray-600">{userData.imc}</p>
+              <p className="text-lg text-gray-600">{userData.imc.toFixed(2)}</p>
             </div>
             <div className="p-4 bg-white bg-opacity-90 rounded-lg shadow-lg hover:shadow-xl transition-transform transform hover:-translate-y-2">
               <h2 className="text-xl font-semibold text-gray-800">Peso</h2>

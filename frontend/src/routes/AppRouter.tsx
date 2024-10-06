@@ -1,6 +1,5 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import ProtectedRoute from './ProtectedRoute';
 import LoginPage from '../pages/Login';
 import CadastroPage from '../pages/Cadastro';
 import AddAlimentoPage from '../pages/AddAlimento';

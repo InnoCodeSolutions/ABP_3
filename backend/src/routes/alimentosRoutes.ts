@@ -7,10 +7,10 @@ const router = Router();
 
 
 // Aplicar middleware de autenticação nas rotas de alimentos
-router.post('/', authMiddleware, alimentoController.create); // Criação de alimentos
+router.post('/', alimentoController.create); // Criação de alimentos
 router.get('/', alimentoController.list); // Listagem de alimentos
-router.put('/', authMiddleware, alimentoController.update); // Atualização de alimentos
-router.delete('/', authMiddleware, alimentoController.delete); // Exclusão de alimentos
+router.put('/',  alimentoController.update); // Atualização de alimentos
+router.delete('/',  alimentoController.delete); // Exclusão de alimentos
 
 
 

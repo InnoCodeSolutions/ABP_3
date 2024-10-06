@@ -26,7 +26,7 @@ function calculateAdjustedTMB(peso: number, altura: number, idade: number, gener
 
 class Perfils {
   public async create(req: Request, res: Response): Promise<Response> {
-    const { id, genero, peso, idade, altura, atividade } = req.body;
+    const { id, genero,nome, peso, idade, altura, atividade } = req.body;
 
     try {
       // Verifica se já existe um perfil associado ao usuário (usando o ID do usuário)
@@ -39,7 +39,7 @@ class Perfils {
       const tmb = calculateAdjustedTMB(peso, altura, idade, genero, atividade);
 
       // Cria uma instância do modelo com o valor de TMB calculado
-      const document = new Perfil({ id, genero, peso, idade, altura, atividade, tmb });
+      const document = new Perfil({ id, genero, peso, nome, idade, altura, atividade, tmb });
 
       // Salva o documento no banco de dados
       const resp = await document.save();
