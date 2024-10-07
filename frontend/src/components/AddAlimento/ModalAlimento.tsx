@@ -7,10 +7,10 @@ interface ModalProps {
 }
 
 const ModalAlimentos: React.FC<ModalProps> = ({ onClose, onSave }) => {
-    const [name, setName] = useState("");
-    const [categoria, setCategoria] = useState("");
     const [descricao, setDescricao] = useState("");
-    const [carboidrato, setCarboidratoG] = useState("");
+    const [preparacao, setPreparacao] = useState(""); 
+    const [energia, setEnergia] = useState(""); 
+    const [carboidrato, setCarboidrato] = useState("");
     const [proteina, setProteinaG] = useState("");
     const [lipidios, setLipideosG] = useState("");
 
@@ -20,6 +20,8 @@ const ModalAlimentos: React.FC<ModalProps> = ({ onClose, onSave }) => {
         // Converter para números e criar novo alimento
         const novoAlimento: ItemAlimentoBackendProps = {
             descricao,
+            preparacao,
+            energia: parseFloat(energia),
             carboidrato: parseFloat(carboidrato),
             proteina: parseFloat(proteina),
             lipidios: parseFloat(lipidios),
@@ -36,22 +38,6 @@ const ModalAlimentos: React.FC<ModalProps> = ({ onClose, onSave }) => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
                         type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="Nome"
-                        className="w-full p-2 border border-gray-300 rounded"
-                        required
-                    />
-                    <input
-                        type="text"
-                        value={categoria}
-                        onChange={(e) => setCategoria(e.target.value)}
-                        placeholder="Categoria"
-                        className="w-full p-2 border border-gray-300 rounded"
-                        required
-                    />
-                    <input
-                        type="text"
                         value={descricao}
                         onChange={(e) => setDescricao(e.target.value)}
                         placeholder="Descrição"
@@ -59,9 +45,25 @@ const ModalAlimentos: React.FC<ModalProps> = ({ onClose, onSave }) => {
                         required
                     />
                     <input
+                        type="text"
+                        value={preparacao}
+                        onChange={(e) => setPreparacao(e.target.value)}
+                        placeholder="Preparação"
+                        className="w-full p-2 border border-gray-300 rounded"
+                        required
+                    />
+                    <input
+                        type="text"
+                        value={energia}
+                        onChange={(e) => setEnergia(e.target.value)}
+                        placeholder="Energia (kcal)"
+                        className="w-full p-2 border border-gray-300 rounded"
+                        required
+                    />
+                    <input
                         type="number"
                         value={carboidrato}
-                        onChange={(e) => setCarboidratoG(e.target.value)}
+                        onChange={(e) => setCarboidrato(e.target.value)}
                         placeholder="Carboidrato (g)"
                         className="w-full p-2 border border-gray-300 rounded"
                         required
@@ -83,10 +85,17 @@ const ModalAlimentos: React.FC<ModalProps> = ({ onClose, onSave }) => {
                         required
                     />
                     <div className="flex justify-end space-x-4">
-                        <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-500 text-white rounded">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="px-4 py-2 bg-gray-500 text-white rounded"
+                        >
                             Cancelar
                         </button>
-                        <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded">
+                        <button
+                            type="submit"
+                            className="px-4 py-2 bg-green-500 text-white rounded"
+                        >
                             Adicionar
                         </button>
                     </div>
