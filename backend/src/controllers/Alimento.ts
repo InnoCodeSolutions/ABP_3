@@ -34,10 +34,11 @@ class AlimentoController {
   public async list(req: Request, res: Response): Promise<Response> {
     try {
         const { descricao, page = 1 } = req.body;
-        const pageSize = 100; // Set the number of items per page
+        const pageSize = 100; // Defina o número de itens por página
 
         const filter: any = {};
-        if (descricao) {
+        // Verifique se 'descricao' é uma string antes de criar a expressão regular
+        if (typeof descricao === 'string') {
             filter.descricao = new RegExp(descricao, 'i');
         }
 
@@ -60,6 +61,7 @@ class AlimentoController {
         return res.status(500).json({ message: error.message });
     }
 }
+
 
   public async delete(req: Request, res: Response): Promise<Response> {
     const { id } = req.body;
