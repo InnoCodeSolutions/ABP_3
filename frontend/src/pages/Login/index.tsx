@@ -8,9 +8,9 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth(); // Usa o hook de autenticação
 
-  const handleCreate = async (mail: string, password: string) => {
+  const handleCreate = async (mail: string, password: string,name:string,lastName:string) => {
     try {
-      const response = await axios.post('http://localhost:3001/cadastro', { mail, password });
+      const response = await axios.post('http://localhost:3001/cadastro', { mail, password,name,lastName });
       console.log('Registro bem-sucedido:', response.data);
       alert('Registro criado com sucesso! Agora você pode fazer login.'); // Alerta de sucesso
       navigate('/login'); // Redireciona para a página de login após registro

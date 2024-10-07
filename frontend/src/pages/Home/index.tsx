@@ -35,8 +35,9 @@ const Home: React.FC = () => {
   });
 
   useEffect(() => {
+    const mail = localStorage.getItem('mail');
     const token = localStorage.getItem('authToken');
-    if (!token) {
+    if (!token || !mail) {
       navigate('/login');
       return;
     }
@@ -56,13 +57,17 @@ const Home: React.FC = () => {
         return response.json();
       })
       .then(data => {
-        // Extract the first user from the array
-        const user = data[0]; // Assuming the response is an array
-        
+        // Filtra o usuário cujo mail corresponde ao mail no localStorage
+        const user = data.find((u: any) => u.mail === mail);
+
+        if (!user) {
+          throw new Error('Usuário não encontrado');
+        }
+
         const peso = user.peso || 0;
-        const altura = user.altura || 1;  // Avoid division by zero
+        const altura = user.altura || 1;  // Evitar divisão por zero
         
-        const imc = peso / ((altura) * (altura)); // Use altura directly in meters
+        const imc = peso / ((altura / 100) * (altura / 100)); // Converte altura de cm para metros
         let classificacao = '';
 
         if (imc < 18.5) classificacao = 'Abaixo do Peso';
@@ -70,7 +75,7 @@ const Home: React.FC = () => {
         else classificacao = 'Acima do Peso';
 
         setUserData({
-          nome: user.nome || 'Usuário', // Handle missing name
+          nome: user.nome || 'Usuário', // Lida com nome ausente
           tmb: user.tmb || 0,
           imc: imc,
           peso: peso,
@@ -93,7 +98,7 @@ const Home: React.FC = () => {
               <GaugeChart 
                 id="imc-gauge"
                 nrOfLevels={1}
-                percent={userData.imc / 40} // Adjust according to your desired scale
+                percent={userData.imc / 40} // Ajuste conforme sua escala desejada
                 textColor="#000"
                 colors={['#FF5F6D', '#FFC107', '#00FF00', '#FFC107', '#FF5F6D']}
                 arcWidth={0.3}

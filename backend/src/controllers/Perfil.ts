@@ -2,23 +2,23 @@ import { Request, Response } from "express";
 import { Perfil } from "../models";
 
 const activityFactors: { [key: string]: number } = {
-  sedentario: 1.2,
-  pouca: 1.375,
-  medio: 1.55,
-  muito: 1.725,
-  extra: 1.9
+  "Sedentário": 1.2,
+  "Baixa Atividade - 1 a 3 vezes na semana": 1.375,
+  "Ativo - 3 a 5 vezes na semana": 1.55,
+  "Alto - mais de 5 vezes na semana": 1.725,
+  "Alto Desempenho - Intensidade todos os dias": 1.9
 };
 
 // Função para calcular a TMB usando a fórmula de Mifflin-St Jeor
-function calculateTMB(peso: number, altura: number, idade: number, genero: 'masculino' | 'feminino'): number {
-  if (genero !== 'masculino') {
+function calculateTMB(peso: number, altura: number, idade: number, genero: 'Masculino' | 'Feminino'): number {
+  if (genero === 'Feminino') {
     return 10 * peso + 6.25 * altura - 5 * idade - 161;
   }
   return 10 * peso + 6.25 * altura - 5 * idade + 5;
 }
 
 // Função para calcular a TMB ajustada com base no nível de atividade física
-function calculateAdjustedTMB(peso: number, altura: number, idade: number, genero: 'masculino' | 'feminino', atividade: string): number {
+function calculateAdjustedTMB(peso: number, altura: number, idade: number, genero: 'Masculino' | 'Feminino', atividade: string): number {
   const tmb = calculateTMB(peso, altura, idade, genero);
   const activityFactor = activityFactors[atividade] || 1.2; // Usar fator sedentário por padrão se não encontrado
   return tmb * activityFactor;
@@ -26,11 +26,11 @@ function calculateAdjustedTMB(peso: number, altura: number, idade: number, gener
 
 class Perfils {
   public async create(req: Request, res: Response): Promise<Response> {
-    const { id, genero,nome, peso, idade, altura, atividade } = req.body;
+    const { id, mail, genero, nome, peso, idade, altura, atividade } = req.body;
 
     try {
-      // Verifica se já existe um perfil associado ao usuário (usando o ID do usuário)
-      const existingProfile = await Perfil.findOne({ id });
+      // Verifica se já existe um perfil associado ao usuário (usando o mail do usuário)
+      const existingProfile = await Perfil.findOne({ mail });
       if (existingProfile) {
         return res.status(400).json({ message: "Já existe um perfil criado para este usuário." });
       }
@@ -39,7 +39,7 @@ class Perfils {
       const tmb = calculateAdjustedTMB(peso, altura, idade, genero, atividade);
 
       // Cria uma instância do modelo com o valor de TMB calculado
-      const document = new Perfil({ id, genero, peso, nome, idade, altura, atividade, tmb });
+      const document = new Perfil({ id, mail, genero, nome, peso, idade, altura, atividade, tmb });
 
       // Salva o documento no banco de dados
       const resp = await document.save();
@@ -47,12 +47,13 @@ class Perfils {
       return res.json(resp);
     } catch (error: any) {
       if (error.code === 11000 || error.code === 11001) {
-        // Código 11000 e 11001 indicam violação de restrição única (índice duplicado)
         return res.status(400).json({ message: "Erro ao cadastrar perfil. O perfil pode já existir." });
       } else if (error && error.errors["peso"]) {
         return res.status(400).json({ message: error.errors["peso"].message });
       } else if (error && error.errors["idade"]) {
         return res.status(400).json({ message: error.errors["idade"].message });
+      }else if (error && error.errors["nome"]) {
+        return res.status(400).json({ message: error.errors["nome"].message });
       }
       return res.status(500).json({ message: error.message });
     }

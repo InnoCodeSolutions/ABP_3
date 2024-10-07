@@ -9,9 +9,25 @@ const Formulario: React.FC = () => {
         console.log("Token obtido do localStorage:", token); // Verifique se o token está correto
         return token;
     };
-    
+
+    // Função para pegar o mail do localStorage
+    const getMailFromLocalStorage = () => {
+        const mail = localStorage.getItem('mail');
+        console.log("Mail obtido do localStorage:", mail); // Verifique se o mail está correto
+        return mail;
+    };
 
     const [formData, setFormData] = useState({
+        genero: '',
+        nome: '',
+        peso: '',
+        altura: '',
+        idade: '',
+        atividade: ''
+    });
+
+    // Estado para armazenar erros de validação
+    const [errors, setErrors] = useState({
         genero: '',
         nome: '',
         peso: '',
@@ -23,13 +39,35 @@ const Formulario: React.FC = () => {
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+
+        // Limpa o erro quando o usuário começa a digitar
+        setErrors({ ...errors, [name]: '' });
     };
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
+        // Validação dos campos
+        const newErrors: any = {};
+        if (!formData.genero) newErrors.genero = "Por favor, selecione o seu gênero.";
+        if (!formData.nome) newErrors.nome = "Por favor, insira o seu nome.";
+        if (!formData.peso) newErrors.peso = "Por favor, insira o seu peso.";
+        if (!formData.altura) newErrors.altura = "Por favor, insira a sua altura.";
+        if (!formData.idade) newErrors.idade = "Por favor, insira a sua idade.";
+        if (!formData.atividade) newErrors.atividade = "Por favor, selecione o nível de atividade física.";
+
+        // Se houver erros, atualiza o estado de erros
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        // Obtém o mail do localStorage
+        const mail = getMailFromLocalStorage();
+
         // Cria o payload que será enviado ao servidor
         const payload = {
+            mail,  // Inclui o mail no payload
             genero: formData.genero,
             nome: formData.nome,
             peso: Number(formData.peso), // Certifique-se de que o peso é um número
@@ -80,6 +118,7 @@ const Formulario: React.FC = () => {
                     onChange={handleChange}
                     options={['Masculino', 'Feminino']}
                 />
+                {errors.genero && <p className="text-red-500 text-sm mt-1">{errors.genero}</p>}
 
                 <InputCampo
                     label="Insira aqui o seu nome"
@@ -89,6 +128,7 @@ const Formulario: React.FC = () => {
                     placeholder="Nome"
                     type="text"
                 />
+                {errors.nome && <p className="text-red-500 text-sm mt-1">{errors.nome}</p>}
 
                 <InputCampo
                     label="Insira aqui o seu peso (em kg)"
@@ -98,15 +138,17 @@ const Formulario: React.FC = () => {
                     placeholder="Peso"
                     type="number"
                 />
+                {errors.peso && <p className="text-red-500 text-sm mt-1">{errors.peso}</p>}
 
                 <InputCampo
-                    label="Insira aqui a sua altura (em metros)"
+                    label="Insira aqui a sua altura (em centímetros)"
                     name="altura"
                     value={formData.altura}
                     onChange={handleChange}
-                    placeholder="Altura"
+                    placeholder="Altura em centímetros"
                     type="number"
                 />
+                {errors.altura && <p className="text-red-500 text-sm mt-1">{errors.altura}</p>}
 
                 <InputCampo
                     label="Insira aqui a sua idade em anos"
@@ -116,6 +158,7 @@ const Formulario: React.FC = () => {
                     placeholder="Idade"
                     type="number"
                 />
+                {errors.idade && <p className="text-red-500 text-sm mt-1">{errors.idade}</p>}
 
                 <SelectCampo
                     label="Selecione o seu nível de atividade física"
@@ -129,6 +172,7 @@ const Formulario: React.FC = () => {
                         'Alto - mais de 5 vezes na semana'
                     ]}
                 />
+                {errors.atividade && <p className="text-red-500 text-sm mt-1">{errors.atividade}</p>}
 
                 <button
                     type="submit"
