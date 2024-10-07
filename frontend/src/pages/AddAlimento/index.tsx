@@ -24,7 +24,7 @@ const AddAlimentoPage: React.FC = () => {
                     setAlimentosFiltrados(data.spent);
                 }
             } catch (err) {
-                console.error("Erro ao buscar alimentos:", err); // Log de erro geral
+                console.error("Erro ao buscar alimentos:", err); 
                 setError('Erro ao buscar alimentos.');
             }
         };

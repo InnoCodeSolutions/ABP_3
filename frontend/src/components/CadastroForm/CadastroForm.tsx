@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import InputCampo from "./InputCampo";
 import SelectCampo from "./SelectCampo";
+import Perfil from "../../services/Perfil"
 
 const Formulario: React.FC = () => {
     // Função para pegar o token do localStorage
@@ -26,7 +27,6 @@ const Formulario: React.FC = () => {
         atividade: ''
     });
 
-    // Estado para armazenar erros de validação
     const [errors, setErrors] = useState({
         genero: '',
         nome: '',
@@ -79,25 +79,11 @@ const Formulario: React.FC = () => {
         console.log("Dados que estão sendo enviados:", payload); // Log dos dados que estão sendo enviados
 
         try {
-            const token = getTokenFromLocalStorage(); // Obtém o token do localStorage
-
-            const response = await fetch('http://localhost:3001/perfil', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Adicione o token no cabeçalho se necessário
-                },
-                body: JSON.stringify(payload),
-            });
-
-            if (!response.ok) {
-                throw new Error('Erro ao enviar os dados');
-            }
-
-            const data = await response.json();
-            console.log("Dados enviados com sucesso", data);
-        } catch (error) {
-            console.error("Erro ao enviar dados:", error);
+            const response = await Perfil.fazerCadastro(payload);
+            console.log("Dados enviados com sucesso", response);
+        } catch (error: any) {
+            // Detalhe adicional do erro
+            console.error("Erro ao enviar dados:", error?.response?.data || error.message);
         }
     };
 
