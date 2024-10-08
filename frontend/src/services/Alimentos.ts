@@ -2,7 +2,7 @@ import api from "../api/axios";
 import { AlimentosApiResposta, ErrorProps, ItemAlimentoBackendProps } from "../types";
 
 class Alimento {
-    async buscaAlimento(query: string = "", page: number = 1, pageSize: number = 100): Promise<AlimentosApiResposta | ErrorProps> {
+    async buscaAlimento(query: string = "", page: number = 1, pageSize: number = 2000): Promise<AlimentosApiResposta | ErrorProps> {
         try {
             const token = localStorage.getItem("authToken");
             // Realiza a requisição GET com o token no header
