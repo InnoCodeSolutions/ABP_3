@@ -32,9 +32,6 @@ const Header: React.FC = () => {
           <a href='/Home'>Home</a>
         </Button>
         <Button variant="transparent" className="px-4 py-2">
-          <a href='/Alimento'>Alimento</a>
-        </Button>
-        <Button variant="transparent" className="px-4 py-2">
           <a href='/Cadastro'>Perfil</a>
         </Button>
         <Button variant="transparent" className="px-4 py-2">

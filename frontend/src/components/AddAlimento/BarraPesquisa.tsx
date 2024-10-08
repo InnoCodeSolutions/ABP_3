@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "../Button";
 
 interface BarraPesquisaProps {
     onSearch: (query: string) => void;
@@ -43,13 +44,15 @@ const BarraPesq: React.FC<BarraPesquisaProps> = ({ onSearch, onCancel, onAdd }) 
                 />
             </div>
 
-            <button onClick={onCancel} className="text-black font-semibold ml-4">
-                Cancelar
-            </button>
+            <Button variant='secondary' className="ml-2 pl- bg-green-500 text-white rounded-lg">
+                Pesquisar
+            </Button>
 
-            <button onClick={onAdd} className="ml-2 p-2 bg-green-500 text-white rounded-lg">
-                Adicionar
-            </button>
+            <Button variant='transparent' onClick={onAdd} className="text-black font-semibold ml-4">
+                +
+            </Button>
+
+
         </div>
     );
 };

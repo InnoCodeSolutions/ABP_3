@@ -1,18 +1,35 @@
 import React from "react";
 import { ItemAlimentoBackendProps } from "../../types";
 
-const ItemAlimento: React.FC<ItemAlimentoBackendProps> = ({
-    descricao,
-    carboidrato,
-    proteina,
-    lipidios,
-}) => {
+interface ItemAlimentoProps {
+    alimentos: ItemAlimentoBackendProps[];
+}
+
+const ItemAlimento: React.FC<ItemAlimentoProps> = ({ alimentos }) => {
     return (
-        <div className="bg-green-500 border-2 border-green-700 rounded-lg p-4 mb-4 w-full">
-            <h3 className="text-xl font-bold text-black">{descricao}</h3>
-            <p className="text-black">Carboidratos: {carboidrato}g</p>
-            <p className="text-black">Proteínas: {proteina}g</p>
-            <p className="text-black">Lipídeos (gordura): {lipidios}g</p>
+        <div className="w-full">
+            {/* Cabeçalho da planilha */}
+            <div className="grid grid-cols-4 bg-zinc-800 text-zinc-200 font-bold py-2 text-center border border-black">
+                <div>Descrição</div>
+                <div>Carboidratos (g)</div>
+                <div>Proteínas (g)</div>
+                <div>Lipídeos (g)</div>
+            </div>
+
+            {/* Linhas dos alimentos */}
+            {alimentos.map((alimento, index) => (
+                <div
+                    key={index}
+                    className={`grid grid-cols-4 text-center py-2 border border-black ${
+                        index % 2 === 0 ? 'bg-lime-50' : 'bg-lime-200'
+                    }`}
+                >
+                    <div className='border-r-2 border-black'>{alimento.descricao}</div>
+                    <div className='border-r-2 border-black'>{alimento.carboidrato}</div>
+                    <div className='border-r-2 border-black'>{alimento.proteina}</div>
+                    <div>{alimento.lipidios}</div>
+                </div>
+            ))}
         </div>
     );
 };

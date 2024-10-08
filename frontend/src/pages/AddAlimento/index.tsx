@@ -20,7 +20,7 @@ const AddAlimentoPage: React.FC = () => {
                 if ('erro' in data) {
                     setError(data.erro);
                 } else {
-                    setAllAlimentos(data.spent); // ou qualquer estrutura que você espera
+                    setAllAlimentos(data.spent); 
                     setAlimentosFiltrados(data.spent);
                 }
             } catch (err) {
@@ -68,15 +68,12 @@ const AddAlimentoPage: React.FC = () => {
     if (error) return <p>Erro: {error}</p>;
 
     return (
-        <div><Header />
-            <div className="flex flex-col items-center justify-center min-h-screen space-y-6 p-4 w-full max-w-lg mx-auto">
+        <div>
+            <Header />
+            <div className="flex flex-col items-center justify-center min-h-screen space-y-6 p-4 w-full max-w-6xl mx-auto">
                 <BarraPesq onSearch={handleSearch} onCancel={handleCancel} onAdd={handleAddAlimento} />
                 {/* Renderize os itens filtrados diretamente */}
-                <div className="w-full">
-                    {alimentosFiltrados.map((item, index) => (
-                        <ItemAlimento key={`${item.descricao}-${index}`} {...item} />
-                    ))}
-                </div>
+                <ItemAlimento alimentos={alimentosFiltrados} />
                 {isModalOpen && <ModalAlimentos onClose={handleCloseModal} onSave={handleSaveAlimento} />}
             </div>
         </div>

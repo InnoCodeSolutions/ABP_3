@@ -34,7 +34,7 @@ class AlimentoController {
   public async list(req: Request, res: Response): Promise<Response> {
     try {
         const { descricao, page = 1 } = req.body;
-        const pageSize = 100; // Defina o número de itens por página
+        const pageSize = 20; // Defina o número de itens por página
 
         const filter: any = {};
         // Verifique se 'descricao' é uma string antes de criar a expressão regular

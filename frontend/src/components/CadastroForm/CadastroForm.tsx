@@ -44,6 +44,8 @@ const Formulario: React.FC = () => {
         setErrors({ ...errors, [name]: '' });
     };
 
+    const [successMessage, setSuccessMessage] = useState<string>(''); // Aviso de perfil cadastrado com sucesso
+
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
@@ -81,6 +83,15 @@ const Formulario: React.FC = () => {
         try {
             const response = await Perfil.fazerCadastro(payload);
             console.log("Dados enviados com sucesso", response);
+            setSuccessMessage('Perfil cadastrado com sucesso!');
+            setFormData({
+                genero: '',
+                nome: '',
+                peso: '',
+                altura: '',
+                idade: '',
+                atividade: ''
+            });
         } catch (error: any) {
             // Detalhe adicional do erro
             console.error("Erro ao enviar dados:", error?.response?.data || error.message);
@@ -166,6 +177,7 @@ const Formulario: React.FC = () => {
                 >
                     Enviar
                 </button>
+                {successMessage && <p className="text-green-500 text-center mt-4">{successMessage}</p>}
             </form>
         </div>
     );
