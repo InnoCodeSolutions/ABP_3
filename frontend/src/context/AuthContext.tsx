@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -15,45 +15,35 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [token, setToken] = useState<string | null>(null);
   const [mail, setMail] = useState<string | null>(null);
 
-
   useEffect(() => {
-    // Verificar se os dados de autenticação estão no localStorage e atualizar o estado
     const savedToken = localStorage.getItem('authToken');
     const savedMail = localStorage.getItem('mail');
-
 
     if (savedToken && savedMail) {
       setToken(savedToken);
       setMail(savedMail);
-
       setIsAuthenticated(true);
     }
   }, []);
 
   const login = (token: string, mail: string) => {
-    // Salvar os dados no localStorage
     localStorage.setItem('authToken', token);
     localStorage.setItem('mail', mail);
-
-    // Atualizar os estados locais
     setToken(token);
     setMail(mail);
     setIsAuthenticated(true);
   };
 
   const logout = () => {
-    // Remover os dados do localStorage
     localStorage.removeItem('authToken');
     localStorage.removeItem('mail');
-
-    // Limpar os estados locais
     setToken(null);
     setMail(null);
     setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, token, mail}}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, token, mail }}>
       {children}
     </AuthContext.Provider>
   );

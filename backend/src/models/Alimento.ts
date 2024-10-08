@@ -1,13 +1,13 @@
-import { Schema, model, Document } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
-interface IAlimento extends Document {
+interface Alimento extends Document {
   id: string;
-  preparacao: number;
-  energia_kcal: number;
-  energia_kj: number;
-  proteina_g: number;
-  lipidios_g: number;
-  carboidrato_g: number;
+  preparacao: string;
+  descricao:string
+  energia: number;
+  proteina: number;
+  lipidios: number;
+  carboidrato: number;
   fibra_alimentar_g: number;
   colesterol_mg: number;
   agsaturado_g: number;
@@ -43,13 +43,14 @@ interface IAlimento extends Document {
   vitamina_c_mg: number;
 }
 
-const AlimentoSchema = new Schema<IAlimento>({
+const AlimentoSchema: Schema = new Schema({
   id: { type: String, required: true, unique: true },
-  preparacao: { type: Number, required: true },
-  energia_kcal: { type: Number, required: true },
-  proteina_g: { type: Number, required: true },
-  lipidios_g: { type: Number, required: true },
-  carboidrato_g: { type: Number, required: true },
+  preparacao: { type: String, required: true },
+  descricao: { type: String, required: true },
+  energia: { type: Number, required: true },
+  proteina: { type: Number, required: true },
+  lipidios: { type: Number, required: true },
+  carboidrato: { type: Number, required: true },
   fibra_alimentar_g: { type: Number, required: true },
   colesterol_mg: { type: Number, required: true },
   agsaturado_g: { type: Number, required: true },
@@ -82,11 +83,9 @@ const AlimentoSchema = new Schema<IAlimento>({
   folato_mcg: { type: Number, required: true },
   vitamina_d_mcg: { type: Number, required: true },
   vitamina_e_mg: { type: Number, required: true },
-  vitamina_c_mg: { type: Number, required: true }
+  vitamina_c_mg: { type: Number, required: true },
 });
 
-
-const Alimento = model<IAlimento>('Alimento', AlimentoSchema);
-
-export { Alimento };
-
+// Exporta o modelo
+const AlimentoModel = mongoose.model<Alimento>('Alimento', AlimentoSchema);
+export default AlimentoModel;

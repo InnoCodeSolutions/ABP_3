@@ -1,47 +1,21 @@
 import axios, { AxiosInstance } from "axios";
 
 const api: AxiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_URL_SERVER || "",
+  baseURL: "http://localhost:3001",  // URL da API local
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// o interceptor de é chamado a cada requisição
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token"); // ou outra forma de obter o token
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
+// Interceptor para adicionar o token a todas as requisições
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("authToken");  // Obtém o token do localStorage
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;  // Adiciona o token no cabeçalho
   }
-);
-
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response) {
-      return Promise.reject({ message: error.response });
-    } else if (error.request) {
-      // O servidor não está respondendo
-      return Promise.reject({ message: "Servidor inoperante" });
-    } else {
-      // Algo aconteceu ao configurar a requisição
-      return Promise.reject({ message: error.message });
-    }
-  }
-);
-
-export const fetchProjects = async (token: string) => {
-  const response = await api.get('/home', {
-    headers: { Authorization: token },
-  });
-  return response.data;
-};
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
 
 export default api;
-

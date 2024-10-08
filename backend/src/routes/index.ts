@@ -1,9 +1,9 @@
+// routes/index.ts
 import { Router } from 'express';
 import userRoutes from './usuario'; // Importar rotas de usuário
 import perfilRoutes from './perfil'; // Importar rotas de perfil
-
 import alimentosRoutes from './alimentosRoutes'; // Importar rotas de alimentos
-import { authMiddleware } from '../middlewares';
+import { authMiddleware } from '../middlewares'; // Importar middleware de autenticação
 import dotenv from 'dotenv';
 
 // Carregar variáveis de ambiente
@@ -15,6 +15,7 @@ const routes = Router();
 import { AuthService } from '../service/AuthService';
 import { AuthController } from '../controllers/Login';
 import login from './login';
+import Refeicao from './calcKcal';
 
 const authService = new AuthService({
   jwtSecret: process.env.JWT_SECRET || 'default_secret',
@@ -22,15 +23,16 @@ const authService = new AuthService({
 });
 const authController = new AuthController(authService);
 
-// Aplicar o middleware de autenticação apenas nas rotas que requerem autenticação
-routes.use('/cadastro', userRoutes); // Não aplicar authMiddleware, pois é para cadastro
-routes.use('/perfil', authMiddleware, perfilRoutes); // Aplicar authMiddleware
-routes.post('/login', login); // Usar o método login do controlador
+// Rotas que não requerem autenticação
+routes.use('/cadastro', userRoutes); // Cadastro de usuários
+routes.post('/login', login); // Rota de login
+routes.use('/Refeicao', Refeicao);
 
-// Rota de listagem de alimentos
-routes.use('/alimento', authMiddleware, alimentosRoutes); // Aplicar authMiddleware
+// Rotas que requerem autenticação
+routes.use('/perfil',authMiddleware, perfilRoutes); // Perfil do usuário
+routes.use('/alimento', authMiddleware ,alimentosRoutes); // Rotas de alimentos
 
-// Aceita qualquer método HTTP ou URL
+// Aceita qualquer método HTTP ou URL não definida
 routes.all('*', (req, res) => {
   res.status(404).json({ error: 'Rota não encontrada' });
 });

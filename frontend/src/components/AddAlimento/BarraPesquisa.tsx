@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { Button } from "../Button";
 
 interface BarraPesquisaProps {
     onSearch: (query: string) => void;
@@ -7,15 +8,17 @@ interface BarraPesquisaProps {
 }
 
 const BarraPesq: React.FC<BarraPesquisaProps> = ({ onSearch, onCancel, onAdd }) => {
-    const [query, setQuery] = React.useState("");
+    const [query, setQuery] = useState(""); 
 
-    const handleSearch = () => {
-        onSearch(query);
+    // Função que será chamada quando o usuário pressionar "Enter"
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            onSearch(query); // Executa a pesquisa quando "Enter" for pressionado
+        }
     };
 
     return (
         <div className="flex items-center justify-between w-full">
-
             <div className="flex items-center border border-black rounded-full w-full">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -34,19 +37,22 @@ const BarraPesq: React.FC<BarraPesquisaProps> = ({ onSearch, onCancel, onAdd }) 
                 <input
                     type="text"
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(e) => setQuery(e.target.value)} 
+                    onKeyDown={handleKeyDown} 
                     placeholder="Alimento"
-                    className="bg-transparent text-white p-2 w-full focus:outline-none"
+                    className="bg-transparent text-black p-2 w-full focus:outline-none"
                 />
             </div>
 
-            <button onClick={onCancel} className="text-black font-semibold ml-4">
-                Cancelar
-            </button>
+            <Button variant='secondary' className="ml-2 pl- bg-green-500 text-white rounded-lg">
+                Pesquisar
+            </Button>
 
-            <button onClick={onAdd} className="ml-2 p-2 bg-green-500 text-white rounded-lg">
-                Adicionar
-            </button>
+            <Button variant='transparent' onClick={onAdd} className="text-black font-semibold ml-4">
+                +
+            </Button>
+
+
         </div>
     );
 };

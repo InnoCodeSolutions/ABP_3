@@ -1,18 +1,27 @@
 import React, { useState } from 'react';
 import { Button } from '../Button';
 import '../../index.css';
+import { useAuth } from '../../context/AuthContext'; // Importa o contexto de autenticação
 
 const Header: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { logout } = useAuth(); // Usa o hook de autenticação
+
+  const handleLogout = () => {
+    logout(); // Chama a função de logout
+    window.location.href = '/'; // Redireciona para a página inicial após logout
+  };
 
   return (
     <header className="flex justify-between items-center w-full px-8 py-4 bg-lime-300 text-lime-950">
       <div className="flex items-center space-x-4">
-        <img
-          src="/sapoPreto.png"
-          alt="Logo"
-          className="h-6 object-contain"
-        />
+        <a href="/Home">
+          <img
+            src="/sapoPreto.png"
+            alt="Logo"
+            className="h-6 object-contain"
+          />
+        </a>
         <div className="h-10 border-l border-black"></div>
         <p className="text-3xl font-bold font-nort">
           ramg.o
@@ -20,10 +29,13 @@ const Header: React.FC = () => {
       </div>
       <nav className="flex space-x-4">  
         <Button variant="transparent" className="px-4 py-2">
-          Home
+          <a href='/Home'>Home</a>
         </Button>
         <Button variant="transparent" className="px-4 py-2">
-          Sobre
+          <a href='/Cadastro'>Perfil</a>
+        </Button>
+        <Button variant="transparent" className="px-4 py-2">
+          <a href='/Alimento'>Alimentos</a>
         </Button>
         <div
           className="relative"
@@ -53,6 +65,9 @@ const Header: React.FC = () => {
             </div>
           )}
         </div>
+        <Button variant="transparent" className="px-4 py-2" onClick={handleLogout}>
+          Logout
+        </Button>
       </nav>
     </header>
   );

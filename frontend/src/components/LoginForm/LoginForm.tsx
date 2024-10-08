@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import { Button } from '../Button';
 
+
 interface LoginFormProps {
   onLogin: (mail: string, password: string) => void;
-  onRegister: (mail: string, password: string, profile: string) => void;
+  onRegister: (mail: string, password: string, name: string,lastName: string) => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onRegister }) => {
   const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
-  const [profile, setProfile] = useState('user');
+  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isRegistering) {
-      onRegister(mail, password, profile);
+      onRegister(mail, password, name,lastName);
     } else {
       onLogin(mail, password);
     }
@@ -51,11 +53,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onRegister }) => {
                     <input
                       type="text"
                       placeholder="Nome"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                       className="w-1/2 p-2 border border-gray-300 rounded-md"
                     />
                     <input
                       type="text"
                       placeholder="Sobrenome"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
                       className="w-1/2 p-2 border border-gray-300 rounded-md"
                     />
                   </div>

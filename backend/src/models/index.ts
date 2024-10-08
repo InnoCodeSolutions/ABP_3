@@ -25,11 +25,38 @@ const UserSchema = new Schema({
     maxlength: [10, "A senha precisa ter no máximo 10 caracteres"],
     select: false,
     required: [true, "A senha é obrigatória"],
+  },
+  name: {
+    type: String,
+    trim: true,
+    select: false,
+  required: [true, "O nome é obrigatório"],
+  },  
+  lastName: {
+    type: String,
+    trim: true,
+    select: false,
+    required: [true, "O sobrenome é obrigatório"],
   }
+
 });
 
 // mongoose.model compila o modelo
 const PerfilSchema = new Schema({
+  mail: {
+    type: String,
+    maxlength: [50, "O e-mail pode ter no máximo 30 caracteres"],
+    unique: true,
+    required: [true, "O e-mail é obrigatório"],
+    validate: {
+      validator: function (value: string) {
+        // expressão regular para validar o formato do e-mail
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(value);
+      },
+      message: (props: any) =>
+        `${props.value} não é um formato de e-mail válido`,
+    }},
   peso: {
     type: Number, // Alterado para Number para representar pesos de forma mais apropriada
     required: [true, "O peso é obrigatório"],

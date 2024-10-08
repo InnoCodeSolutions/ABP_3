@@ -1,47 +1,33 @@
 import React, { useState } from "react";
-
-interface ItemAlimento {
-    id: number;
-    name: string;
-    calorias: number;
-    acucar: number;
-    proteinas: number;
-    carboidratos: number;
-    gordura: number;
-    quantidade: string;
-}
+import { ItemAlimentoBackendProps } from "../../types";
 
 interface ModalProps {
     onClose: () => void;
-    onSave: (alimento: ItemAlimento) => void;
+    onSave: (alimento: ItemAlimentoBackendProps) => void;
 }
 
 const ModalAlimentos: React.FC<ModalProps> = ({ onClose, onSave }) => {
-    const [name, setName] = useState("");
-    const [calorias, setCalorias] = useState("");
-    const [acucar, setAcucar] = useState("");
-    const [proteinas, setProteinas] = useState("");
-    const [carboidratos, setCarboidratos] = useState("");
-    const [gordura, setGordura] = useState("");
-    const [quantidade, setQuantidade] = useState("");
+    const [descricao, setDescricao] = useState("");
+    const [preparacao, setPreparacao] = useState(""); 
+    const [energia, setEnergia] = useState(""); 
+    const [carboidrato, setCarboidrato] = useState("");
+    const [proteina, setProteinaG] = useState("");
+    const [lipidios, setLipideosG] = useState("");
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        //Converter para numeros
-        const novoAlimento: ItemAlimento = {
-            id: Date.now(), //Gerador de ID
-            name,
-            calorias: parseFloat(calorias),
-            acucar: parseFloat(acucar),
-            proteinas: parseFloat(proteinas),
-            carboidratos: parseFloat(carboidratos),
-            gordura: parseFloat(gordura),
-            quantidade,
+        // Converter para números e criar novo alimento
+        const novoAlimento: ItemAlimentoBackendProps = {
+            descricao,
+            preparacao,
+            energia: parseFloat(energia),
+            carboidrato: parseFloat(carboidrato),
+            proteina: parseFloat(proteina),
+            lipidios: parseFloat(lipidios),
         };
 
         onSave(novoAlimento);
-
         onClose();
     };
 
@@ -52,65 +38,64 @@ const ModalAlimentos: React.FC<ModalProps> = ({ onClose, onSave }) => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
                         type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="Nome"
-                        className="w-full p-2 border border-gray-300 rounded"
-                        required
-                    />
-                    <input
-                        type="number"
-                        value={calorias}
-                        onChange={(e) => setCalorias(e.target.value)}
-                        placeholder="Calorias"
-                        className="w-full p-2 border border-gray-300 rounded"
-                        required
-                    />
-                    <input
-                        type="number"
-                        value={acucar}
-                        onChange={(e) => setAcucar(e.target.value)}
-                        placeholder="Açúcar"
-                        className="w-full p-2 border border-gray-300 rounded"
-                        required
-                    />
-                    <input
-                        type="number"
-                        value={proteinas}
-                        onChange={(e) => setProteinas(e.target.value)}
-                        placeholder="Proteínas"
-                        className="w-full p-2 border border-gray-300 rounded"
-                        required
-                    />
-                    <input
-                        type="number"
-                        value={carboidratos}
-                        onChange={(e) => setCarboidratos(e.target.value)}
-                        placeholder="Carboidratos"
-                        className="w-full p-2 border border-gray-300 rounded"
-                        required
-                    />
-                    <input
-                        type="number"
-                        value={gordura}
-                        onChange={(e) => setGordura(e.target.value)}
-                        placeholder="Gordura"
+                        value={descricao}
+                        onChange={(e) => setDescricao(e.target.value)}
+                        placeholder="Descrição"
                         className="w-full p-2 border border-gray-300 rounded"
                         required
                     />
                     <input
                         type="text"
-                        value={quantidade}
-                        onChange={(e) => setQuantidade(e.target.value)}
-                        placeholder="Quantidade"
+                        value={preparacao}
+                        onChange={(e) => setPreparacao(e.target.value)}
+                        placeholder="Preparação"
+                        className="w-full p-2 border border-gray-300 rounded"
+                        required
+                    />
+                    <input
+                        type="text"
+                        value={energia}
+                        onChange={(e) => setEnergia(e.target.value)}
+                        placeholder="Energia (kcal)"
+                        className="w-full p-2 border border-gray-300 rounded"
+                        required
+                    />
+                    <input
+                        type="number"
+                        value={carboidrato}
+                        onChange={(e) => setCarboidrato(e.target.value)}
+                        placeholder="Carboidrato (g)"
+                        className="w-full p-2 border border-gray-300 rounded"
+                        required
+                    />
+                    <input
+                        type="number"
+                        value={proteina}
+                        onChange={(e) => setProteinaG(e.target.value)}
+                        placeholder="Proteína (g)"
+                        className="w-full p-2 border border-gray-300 rounded"
+                        required
+                    />
+                    <input
+                        type="number"
+                        value={lipidios}
+                        onChange={(e) => setLipideosG(e.target.value)}
+                        placeholder="Lipídios (g)"
                         className="w-full p-2 border border-gray-300 rounded"
                         required
                     />
                     <div className="flex justify-end space-x-4">
-                        <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-500 text-white rounded">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="px-4 py-2 bg-gray-500 text-white rounded"
+                        >
                             Cancelar
                         </button>
-                        <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded">
+                        <button
+                            type="submit"
+                            className="px-4 py-2 bg-green-500 text-white rounded"
+                        >
                             Adicionar
                         </button>
                     </div>

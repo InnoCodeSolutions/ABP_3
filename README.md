@@ -56,6 +56,8 @@ O projeto tem por base a metodologia ágil SCRUM, por isso foi separado em 3 ent
 <summary><h2>Sprint 1</h2></summary>
 <p>Focada no desenvolvimento da aplicação web, mais especificamente os CRUDs de usuário, perfil, alimentos e refeições.</p>
 
+[Assista ao vídeo de demonstração aqui](https://www.youtube.com/watch?v=9zNIedji9bk)
+
 <b>Sprint Backlog:<b>
 
 | Sprint | Funcionalidade | Prioridade |
@@ -77,9 +79,7 @@ O projeto tem por base a metodologia ágil SCRUM, por isso foi separado em 3 ent
 | **01** | Listagem de Refeição | Alta |
 | **01** | Alteração de Refeição | Alta |
 | **01** | Exclusão de Refeição | Alta |
-</details>
 
-[Assista ao vídeo de demonstração aqui](https://www.youtube.com/watch?v=9zNIedji9bk)
 
 ## Gráfico de Burndown
 ![Gráfico de Burndown](/docs/imagem_2024-09-17_150955586.png)
@@ -104,10 +104,45 @@ tela de edição de dados pessoais, para cálculo da Taxa Metabólica Basal.</p>
 | User Story | Cadastro de perfil de usuário contendo dados para cálculo das calorias |
 | Subtarefa  | Criação da Tela para adicionar as informações para cálculo de Taxa Metabólica Basal |
 | Subtarefa  | Criação da rota no backend para cadastro das informações e o cálculo das calorias |
+</details>
 
+<details>
+<summary><h2>Sprint 2</h2></summary>
+<p>Focada na entrega de Dashboard,sincronização com aplicativo de exercícios,visto também a necessidade de alertas e histórico de consumo.</p>
+
+<b>Sprint Backlog:<b>
+
+| Sprint | Funcionalidade | Prioridade |
+| :--:   | :-----------:  | :--------: |
+| **02** | Dashboard de Consumo Calórico | Alta |
+| **02** | Sincronização de com aplicativo de exercício | Média |
+| **02** | Disparos de Alertas  | Média |
+| **02** | Histórico consumo | Alta |
+
+## Gráfico de Burndown
+![Gráfico de Burndown](/docs/burndown_spt2.png)
+
+<h2>Tarefas</h2>
+<p>Optando por dar continuidade a metodologia adotada na sprint 1 , com utilização de épicos, User Story, tarefas e subtarefas</p>
+<p> Na Sprint 2, o grupo direcionou seus esforços para o desenvolvimento da tela de dashboard com o limite de consumo diário, além de acesso a histórico de consumo do usuário.</p>
+
+| Tipo       | Descrição |
+| :--:       | :--------:| 
+| Épico      | Criação de Dashboard para monitoramento de calorias |
+| User Story | Acesso as informações de consumo calórico do usuário |
+| Subtarefa  | Criação da Tela para visualização do consumo calórico (Dashboard) |
+| Subtarefa  | Integração das informações do usuário no backend com a tela de perfil |
+| Subtarefa  | Conexão das informações do dashboard no backend para exibir a meta diária de calorias |
+| Subtarefa  | Conexão da tela de alimentos no backend para retornar busca |
+| Subtarefa  | Criação de rota POST para gravar dados do perfil do usuário no backend |
+| Subtarefa  | Busca de alimentos conectada com o backend |
+
+</details>
+
+[Link para o design no Figma](https://www.figma.com/design/UkagBqobEihk0MpPQKeJ6N/Untitled?node-id=0-1&node-type=canvas)
 
 <span id="backlog"></span>
-<h1 align="center">Backlog</h1>
+<h1 align="center">Backlog do Projeto</h1>
 
 | Sprint | Funcionalidade | User Story | Prioridade |
 | :--:   | :-----------:  | :--------: | :--------: |
@@ -132,13 +167,13 @@ tela de edição de dados pessoais, para cálculo da Taxa Metabólica Basal.</p>
 | **02** | Sincronização de com aplicativo de exercício| US19 | Média |
 | **02** | Disparos de Alertas | US20 | Média |
 | **02** | Histórico consumo | US21 | Alta |
-| **02** | Importação de Dados de Alimentos | US22 | Alta |
-| **03** |  Cadastro de Metas | US23 | Média |
-| **03** | Listagem de Metas | US24 | Média |
-| **03** | Alteração de Metas | US25 | Média|
-| **03** | Exclusão de Metas | US26 | Média |
-| **03** | Customização de Interface | US23 | Baixa |
-| **03** | Relatório Personalizado com Base nas Refeições/Consumo Calórico | US24 | Média |
+| **03** |  Cadastro de Metas | US22 | Média |
+| **03** | Listagem de Metas | US23 | Média |
+| **03** | Alteração de Metas | US24 | Média|
+| **03** | Exclusão de Metas | US25 | Média |
+| **03** | Customização de Interface | US26 | Baixa |
+| **03** | Relatório Personalizado com Base nas Refeições/Consumo Calórico | US27 | Média |
+<!-- | **02** | Importação de Dados de Alimentos | US22 | Alta | -->
 
 <b>User Story</b>
 
@@ -161,16 +196,17 @@ tela de edição de dados pessoais, para cálculo da Taxa Metabólica Basal.</p>
 |US15|Como Usuário eu quero visualizar uma lista das refeições que cadastrei para gerenciar minha dieta|
 |US16|Como Usuário eu quero editar as informações das refeições que cadastrei para ajustar meu plano alimentar.|
 |US17|Como Usuário eu quero excluir refeições cadastradas para manter meu plano alimentar atualizado.|
-<!-- |US18||
-|US19||
-|US20||
-|US21||
-|US22||
-|US23||
+|US18|Como Usuário eu quero acessar o dashboard para me informar de consumo calórico.|
+|US19|Como Usuário eu quero sincronizar com aplicativo de exercício para acompanhar a perca de peso aliado a exercícios físicos.|
+|US20|Como Usuário quero receber alertas para estar atualiado sobre o consumo calóricos.|
+|US21|Como Usuário quero ter acesso ao histórico de consumo para gerar relátorio de consumo.|
+<!-- |US22||
+ |US23||
 |US24||
 |US25||
 |US26||
 |US27||
-|US28|| -->
+ --> 
+
 
 

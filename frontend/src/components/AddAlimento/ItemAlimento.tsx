@@ -1,33 +1,35 @@
 import React from "react";
+import { ItemAlimentoBackendProps } from "../../types";
 
 interface ItemAlimentoProps {
-    name: string;
-    calorias: number;
-    acucar: number;
-    proteinas: number;
-    carboidratos: number;
-    gordura: number;
-    quantidade: string;
+    alimentos: ItemAlimentoBackendProps[];
 }
 
-const ItemAlimento: React.FC<ItemAlimentoProps> = ({ 
-    name, 
-    calorias, 
-    acucar, 
-    proteinas, 
-    carboidratos, 
-    gordura, 
-    quantidade 
-}) => {
+const ItemAlimento: React.FC<ItemAlimentoProps> = ({ alimentos }) => {
     return (
-        <div className="bg-green-500 border-2 border-green-700 rounded-lg p-4 mb-4 w-full">
-            <h3 className="text-xl font-bold text-black">{name}</h3>
-            <p className="text-black">{calorias} Kcal</p>
-            <p className="text-black">Açúcar: {acucar}g</p>
-            <p className="text-black">Proteínas: {proteinas}g</p>
-            <p className="text-black">Carboidratos: {carboidratos}g</p>
-            <p className="text-black">Gordura: {gordura}g</p>
-            <p className="text-black">Quantidade: {quantidade}</p>
+        <div className="w-full">
+            {/* Cabeçalho da planilha */}
+            <div className="grid grid-cols-4 bg-zinc-800 text-zinc-200 font-bold py-2 text-center border border-black">
+                <div>Descrição</div>
+                <div>Carboidratos (g)</div>
+                <div>Proteínas (g)</div>
+                <div>Lipídeos (g)</div>
+            </div>
+
+            {/* Linhas dos alimentos */}
+            {alimentos.map((alimento, index) => (
+                <div
+                    key={index}
+                    className={`grid grid-cols-4 text-center py-2 border border-black ${
+                        index % 2 === 0 ? 'bg-lime-50' : 'bg-lime-200'
+                    }`}
+                >
+                    <div className='border-r-2 border-black'>{alimento.descricao}</div>
+                    <div className='border-r-2 border-black'>{alimento.carboidrato}</div>
+                    <div className='border-r-2 border-black'>{alimento.proteina}</div>
+                    <div>{alimento.lipidios}</div>
+                </div>
+            ))}
         </div>
     );
 };

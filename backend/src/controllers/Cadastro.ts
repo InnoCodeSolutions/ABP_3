@@ -3,10 +3,10 @@ import { User } from "../models";
 
 class Cadastro {
   public async create(req: Request, res: Response): Promise<Response> {
-    const { mail, password } = req.body;
+    const { mail, password,name, lastName } = req.body;
     try {
       //a instância de um modelo é chamada de documento
-      const document = new User({ mail, password });
+      const document = new User({ mail, password, name, lastName });
       // ao salvar serão aplicadas as validações do esquema
       const resp = await document.save();
       return res.json(resp);
@@ -18,7 +18,11 @@ class Cadastro {
         return res.json({ message: error.errors["mail"].message });
       } else if (error && error.errors["password"]) {
         return res.json({ message: error.errors["password"].message });
-      }
+      }else if (error && error.errors["name"]) {
+        return res.json({ message: error.errors["name"].message });
+      }else if (error && error.errors["lastName"]) {
+        return res.json({ message: error.errors["lastName"].message });
+      }  
       return res.json({ message: error.message });
     }
   }
