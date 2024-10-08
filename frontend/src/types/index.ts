@@ -1,7 +1,9 @@
 import { ReactNode } from "react";
 
 export interface ItemAlimentoBackendProps {
+    preparacao: string;
     descricao: string;
+    energia: number;
     carboidrato: number;
     proteina: number;
     lipidios: number;

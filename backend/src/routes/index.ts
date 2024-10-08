@@ -15,6 +15,7 @@ const routes = Router();
 import { AuthService } from '../service/AuthService';
 import { AuthController } from '../controllers/Login';
 import login from './login';
+import Refeicao from './calcKcal';
 
 const authService = new AuthService({
   jwtSecret: process.env.JWT_SECRET || 'default_secret',
@@ -25,6 +26,7 @@ const authController = new AuthController(authService);
 // Rotas que não requerem autenticação
 routes.use('/cadastro', userRoutes); // Cadastro de usuários
 routes.post('/login', login); // Rota de login
+routes.use('/Refeicao', Refeicao);
 
 // Rotas que requerem autenticação
 routes.use('/perfil',authMiddleware, perfilRoutes); // Perfil do usuário
