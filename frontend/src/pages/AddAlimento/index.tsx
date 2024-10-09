@@ -48,14 +48,17 @@ const AddAlimentoPage: React.FC = () => {
     // Atualiza os alimentos filtrados de acordo com a query
     useEffect(() => {
         if (query) {
-            const filtrados = allAlimentos.filter((itemAlimento) =>
-                itemAlimento.descricao.toLowerCase().includes(query.toLowerCase())
-            );
+            const filtrados = allAlimentos.filter((itemAlimento) => {
+                // Verifica se itemAlimento.descricao está definido antes de chamar toLowerCase
+                const descricao = itemAlimento.descricao ?? ""; // Usando coalescência nula para garantir que haja um valor
+                return descricao.toLowerCase().includes(query.toLowerCase());
+            });
             setAlimentosFiltrados(filtrados);
         } else {
             setAlimentosFiltrados(allAlimentos);
         }
     }, [query, allAlimentos]);
+    
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
