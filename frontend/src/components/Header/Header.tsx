@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Button } from '../Button';
 import '../../index.css';
 import { useAuth } from '../../context/AuthContext'; // Importa o contexto de autenticação
@@ -6,10 +6,27 @@ import { useAuth } from '../../context/AuthContext'; // Importa o contexto de au
 const Header: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { logout } = useAuth(); // Usa o hook de autenticação
+  const dropdownTimeout = useRef<number | null>(null);
 
   const handleLogout = () => {
     logout(); // Chama a função de logout
     window.location.href = '/'; // Redireciona para a página inicial após logout
+  };
+
+  const handleMouseEnter = () => {
+    // Limpa o timeout anterior se o mouse entrar novamente
+    if (dropdownTimeout.current) {
+      clearTimeout(dropdownTimeout.current);
+      dropdownTimeout.current = null;
+    }
+    setIsDropdownOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    // Configura um timeout para fechar o menu após um pequeno atraso
+    dropdownTimeout.current = window.setTimeout(() => {
+      setIsDropdownOpen(false);
+    }, 200); // Atraso de 200ms
   };
 
   return (
@@ -27,7 +44,7 @@ const Header: React.FC = () => {
           ramg.o
         </p>
       </div>
-      <nav className="flex space-x-4">  
+      <nav className="flex space-x-4">
         <Button variant="transparent" className="px-4 py-2">
           <a href='/Home'>Home</a>
         </Button>
@@ -39,8 +56,8 @@ const Header: React.FC = () => {
         </Button>
         <div
           className="relative"
-          onMouseEnter={() => setIsDropdownOpen(true)}
-          onMouseLeave={() => setIsDropdownOpen(false)}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           <Button variant="transparent" className="px-4 py-2 flex items-center">
             Refeições
@@ -55,7 +72,11 @@ const Header: React.FC = () => {
             </svg>
           </Button>
           {isDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
+            <div
+              className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg"
+              onMouseEnter={handleMouseEnter}  // Mantém o menu aberto enquanto o mouse estiver nele
+              onMouseLeave={handleMouseLeave}  // Fecha o menu quando o mouse sair do dropdown
+            >
               <a href="/novarefeicao" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
                 Monte sua refeição
               </a>
