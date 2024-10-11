@@ -32,6 +32,7 @@ const AddAlimentoPage: React.FC = () => {
                 setError('Erro ao buscar alimentos.');
             }
         };
+        
 
         fetchAlimentos(query);
     }, [query]);

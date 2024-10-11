@@ -30,11 +30,46 @@ class AlimentoController {
       return res.status(500).json({ message: error.message });
     }
   }
+  
+public async list(req: Request, res: Response): Promise<Response> {
+  try {
+      const { descricao, page = 1, dataSize } = req.body; // Permite dataSize ser opcional
+      const filter: any = {};
 
+      // Verifique se 'descricao' é uma string antes de criar a expressão regular
+      if (typeof descricao === 'string') {
+          filter.descricao = new RegExp(descricao, 'i');
+      }
+
+      // Conte o total de documentos
+      const total = await Alimento.countDocuments(filter);
+      const sizePerPage = dataSize || total; // Se dataSize for passado, usa ele, senão usa total
+      const totalPages = Math.ceil(total / sizePerPage);
+      const offset = (page - 1) * sizePerPage;
+
+      // Busque os itens do banco com limite dinâmico
+      const spents = await Alimento.find(filter)
+          .sort({ datetime: -1 })
+          .limit(sizePerPage) // Limita ao tamanho dinâmico
+          .skip(offset); // Controla a página atual
+
+      return res.json({
+          pages: totalPages,
+          currentPage: page,
+          count: total,
+          spent: spents,
+      });
+  } catch (error: any) {
+      return res.status(500).json({ message: error.message });
+  }
+}
+
+// antigo list que pode ou não ser usado. 
+/*
   public async list(req: Request, res: Response): Promise<Response> {
     try {
         const { descricao, page = 1 } = req.body;
-        const pageSize = 2000; // Defina o número de itens por página
+        const dataSize = 20000; // Defina o número de itens por página
 
         const filter: any = {};
         // Verifique se 'descricao' é uma string antes de criar a expressão regular
@@ -43,12 +78,12 @@ class AlimentoController {
         }
 
         const total = await Alimento.countDocuments(filter);
-        const totalPages = Math.ceil(total / pageSize);
-        const offset = (page - 1) * pageSize;
+        const totalPages = Math.ceil(total / dataSize);
+        const offset = (page - 1) * dataSize;
 
         const spents = await Alimento.find(filter)
             .sort({ datetime: -1 })
-            .limit(pageSize)
+            .limit(dataSize)
             .skip(offset);
 
         return res.json({
@@ -61,6 +96,7 @@ class AlimentoController {
         return res.status(500).json({ message: error.message });
     }
 }
+    */
 
 
   public async delete(req: Request, res: Response): Promise<Response> {
