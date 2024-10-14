@@ -17,6 +17,11 @@ const BarraPesq: React.FC<BarraPesquisaProps> = ({ onSearch, onCancel, onAdd }) 
         }
     };
 
+    // Função que será chamada ao clicar no botão "Pesquisar"
+    const handleSearchClick = () => {
+        onSearch(query);
+    };
+
     return (
         <div className="flex items-center justify-between w-full">
             <div className="flex items-center border border-black rounded-full w-full">
@@ -44,15 +49,22 @@ const BarraPesq: React.FC<BarraPesquisaProps> = ({ onSearch, onCancel, onAdd }) 
                 />
             </div>
 
-            <Button variant='secondary' className="ml-2 pl- bg-green-500 text-white rounded-lg">
+            <Button 
+                variant='pesquisar' 
+                onClick={handleSearchClick} // Chama a função de pesquisa
+                className="ml-2 pl-2 pr-2 bg-green-500 text-white rounded-lg" // Adiciona padding lateral
+            >
                 Pesquisar
             </Button>
 
-            <Button variant='transparent' onClick={onAdd} className="text-black font-semibold ml-4">
+            <Button 
+                variant='redonded' 
+                size='default'
+                onClick={onAdd} 
+                className="text-black font-semibold ml-4"
+            >
                 +
             </Button>
-
-
         </div>
     );
 };
