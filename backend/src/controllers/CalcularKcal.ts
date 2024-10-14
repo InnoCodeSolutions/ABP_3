@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import  Alimento from '../models/Alimento';
+import Alimento from '../models/Alimento';
 
 // Classe Refeicao
 class Refeicao {
@@ -37,16 +37,18 @@ class Refeicao {
                 return res.status(404).json({ message: 'Nenhum alimento encontrado com os filtros fornecidos.' });
             }
 
-            // Inicializar variáveis para somar os valores de macronutrientes
+            // Inicializar variáveis para somar os valores de macronutrientes e energia
+            let totalEnergia = 0;
             let totalLipidios = 0;
             let totalProteina = 0;
             let totalCarboidrato = 0;
 
             // Iterar sobre os alimentos e somar os valores
             alimentos.forEach(alimento => {
-                totalLipidios += alimento.lipidios;
-                totalProteina += alimento.proteina;
-                totalCarboidrato += alimento.carboidrato;
+                totalEnergia += alimento.energia || 0;
+                totalLipidios += alimento.lipidios || 0;
+                totalProteina += alimento.proteina || 0;
+                totalCarboidrato += alimento.carboidrato || 0;
             });
 
             // Calcular as calorias totais chamando a função calcularCalorias diretamente
@@ -55,7 +57,13 @@ class Refeicao {
             // Retornar a lista de alimentos filtrados e as calorias totais
             return res.json({
                 alimentos,
-                caloriasTotais: {
+                somatorioMacronutrientes: {
+                    totalEnergia,
+                    totalLipidios,
+                    totalProteina,
+                    totalCarboidrato
+                },
+                caloriasConvertidas: {
                     caloriasLipidio,
                     caloriasProteina,
                     caloriasCarboidrato,
@@ -109,8 +117,7 @@ class Refeicao {
 // Função para converter macronutrientes em calorias (fora da classe Refeicao)
 function calcularCalorias(lipidios: number, proteina: number, carboidrato: number): {
     caloriasLipidio: number; caloriasProteina: number; caloriasCarboidrato: number; totalCalorias: number;
-}
-{
+} {
     const caloriasLipidio = lipidios * 9; // 1g de lipídio = 9 calorias
     const caloriasProteina = proteina * 4; // 1g de proteína = 4 calorias
     const caloriasCarboidrato = carboidrato * 4; // 1g de carboidrato = 4 calorias
