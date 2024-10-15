@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import InputCampo from "./InputCampo";
 import SelectCampo from "./SelectCampo";
 import Perfil from "../../services/Perfil"
+import { Button } from "../Button";
 
 const Formulario: React.FC = () => {
     // Função para pegar o token do localStorage
@@ -171,12 +172,13 @@ const Formulario: React.FC = () => {
                 />
                 {errors.atividade && <p className="text-red-500 text-sm mt-1">{errors.atividade}</p>}
 
-                <button
+                <Button
+                    variant='secondary'
                     type="submit"
-                    className="bg-blue-500 text-white py-2 px-4 rounded-lg w-full mt-4"
+                    size='full'
                 >
                     Enviar
-                </button>
+                </Button>
                 {successMessage && <p className="text-green-500 text-center mt-4">{successMessage}</p>}
             </form>
         </div>

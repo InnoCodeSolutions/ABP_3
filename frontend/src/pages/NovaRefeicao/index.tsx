@@ -8,6 +8,7 @@ type Food = {
 
 const NovaRefeicao: React.FC = () => {
   const [mealType, setMealType] = useState<string | null>(null);
+  const [mealName, setMealName] = useState<string>('');
   const [selectedFoods, setSelectedFoods] = useState<Food[]>([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
@@ -22,11 +23,12 @@ const NovaRefeicao: React.FC = () => {
   // Calcular total de calorias
   const totalCalories = selectedFoods.reduce((sum, food) => sum + food.calories, 0);
 
-  const mealIcons = {
-    'Café da Manhã': '☕',
-    Almoço: '🍽️',
-    'Café da Tarde': '🍵',
-    Janta: '🍲',
+  // Dicionário com imagens para as refeições
+  const mealImages: { [key: string]: string } = {
+    'Café da Manhã': '/images/cafe-da-manha.png', // substitua com o caminho correto da sua imagem
+    Almoço: '/images/almoco.png', // substitua com o caminho correto da sua imagem
+    'Café da Tarde': '/images/cafe-da-tarde.png', // substitua com o caminho correto da sua imagem
+    Janta: '/images/janta.png', // substitua com o caminho correto da sua imagem
   };
 
   return (
@@ -36,6 +38,16 @@ const NovaRefeicao: React.FC = () => {
         {!mealType ? (
           <div className="text-center">
             <h1 className="text-4xl font-bold mb-4 text-gray-800">Monte sua Refeição</h1>
+            
+            {/* Campo de Nome da Refeição */}
+            <input
+              type="text"
+              className="w-full max-w-md px-4 py-2 border rounded mb-6"
+              placeholder="Digite o nome da refeição..."
+              value={mealName}
+              onChange={(e) => setMealName(e.target.value)}
+            />
+            
             <p className="text-lg text-gray-600 mb-6">Escolha a refeição:</p>
             <div className="flex space-x-4">
               {['Café da Manhã', 'Almoço', 'Café da Tarde', 'Janta'].map((meal) => (
@@ -44,7 +56,7 @@ const NovaRefeicao: React.FC = () => {
                   className="flex flex-col items-center justify-center w-40 h-40 bg-blue-500 text-white rounded shadow-lg transition-transform transform hover:scale-105"
                   onClick={() => setMealType(meal)}
                 >
-                  <div className="text-5xl mb-2">{mealIcons[meal as keyof typeof mealIcons]}</div>
+                  <img src={mealImages[meal]} alt={meal} className="w-16 h-16 mb-2" />
                   <span className="text-lg font-semibold">{meal}</span>
                 </button>
               ))}
@@ -52,7 +64,7 @@ const NovaRefeicao: React.FC = () => {
           </div>
         ) : (
           <div className="w-full max-w-lg">
-            <h2 className="text-2xl font-bold mb-4 text-gray-800">Selecione os alimentos para {mealType}</h2>
+            <h2 className="text-2xl font-bold mb-4 text-gray-800">1. Selecione os alimentos para {mealType}</h2>
             {/* Campo de busca de alimentos */}
             <div className="mb-6">
               <input
@@ -104,7 +116,7 @@ const NovaRefeicao: React.FC = () => {
           <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-6 rounded shadow-lg text-center">
               <h3 className="text-2xl font-bold mb-4">Refeição Cadastrada!</h3>
-              <p>Refeição: {mealType}</p>
+              <p>Refeição: {mealName} - {mealType}</p>
               <p>Total de Calorias: {totalCalories} kcal</p>
               <p>Alimentos:</p>
               <ul className="mb-4">

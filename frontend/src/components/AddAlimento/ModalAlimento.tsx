@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ItemAlimentoBackendProps } from "../../types";
+import { Button } from "../Button";
 
 interface ModalProps {
     onClose: () => void;
@@ -34,7 +35,7 @@ const ModalAlimentos: React.FC<ModalProps> = ({ onClose, onSave }) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-                <h2 className="text-2xl font-bold mb-4">Adicionar Alimento</h2>
+                <h2 className="text-2xl font-bold mb-4">Cadastrar alimento</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
                         type="text"
@@ -85,19 +86,21 @@ const ModalAlimentos: React.FC<ModalProps> = ({ onClose, onSave }) => {
                         required
                     />
                     <div className="flex justify-end space-x-4">
-                        <button
+                        <Button
+                            variant='secondary'
                             type="button"
                             onClick={onClose}
                             className="px-4 py-2 bg-gray-500 text-white rounded"
                         >
                             Cancelar
-                        </button>
-                        <button
+                        </Button>
+                        <Button
+                            variant='primary'
                             type="submit"
                             className="px-4 py-2 bg-green-500 text-white rounded"
                         >
                             Adicionar
-                        </button>
+                        </Button>
                     </div>
                 </form>
             </div>
