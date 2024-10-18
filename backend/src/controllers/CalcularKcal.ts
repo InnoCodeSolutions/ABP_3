@@ -1,87 +1,86 @@
 import { Request, Response } from 'express';
-import Alimento from '../models/Alimento';
+import RefeicaoModel from '../models/Refeicao';
+import AlimentoModel from '../models/Alimento';
 
 // Classe Refeicao
 class Refeicao {
-    constructor() {
-        // Inicialização de propriedades, se necessário
-    }
-
-    // Rota para cadastrar um alimento (Create)
-    public async create(req: Request, res: Response): Promise<Response> {
+    // Método para adicionar um alimento a uma refeição específica
+    public create = async (req: Request, res: Response): Promise<Response> => {
         try {
-            const novoAlimento = new Alimento({
-                energia: req.body.energia,
-                lipidios: req.body.lipidios,
-                proteina: req.body.proteina,
-                carboidrato: req.body.carboidrato
-            });
+            const { refeicao, descricao } = req.body;
 
-            const alimentoSalvo = await novoAlimento.save();
-            return res.status(201).json(alimentoSalvo);
-        } catch (error: any) {
-            return res.status(500).json({ message: 'Erro ao cadastrar alimento', error });
-        }
-    }
-
-    // Rota para listar alimentos filtrados e calcular as calorias totais (Read)
-    public async list(req: Request, res: Response): Promise<Response> {
-        try {
-            // Captura os filtros enviados no corpo da requisição
-            const filtros = req.body;
-
-            // Filtra alimentos no banco de dados usando os parâmetros enviados no body
-            const alimentos = await Alimento.find(filtros);
-
-            if (alimentos.length === 0) {
-                return res.status(404).json({ message: 'Nenhum alimento encontrado com os filtros fornecidos.' });
+            // Busca o alimento pela descrição no banco de dados
+            const alimento = await AlimentoModel.findOne({ descricao });
+            if (!alimento) {
+                return res.status(404).json({ message: 'Alimento não encontrado' });
             }
 
-            // Inicializar variáveis para somar os valores de macronutrientes e energia
-            let totalEnergia = 0;
-            let totalLipidios = 0;
-            let totalProteina = 0;
-            let totalCarboidrato = 0;
+            // Cria uma nova refeição ou adiciona à existente
+            const novaRefeicao = await RefeicaoModel.findOneAndUpdate(
+                { tipo: refeicao },
+                { $push: { alimentos: alimento } },
+                { new: true, upsert: true }
+            );
 
-            // Iterar sobre os alimentos e somar os valores
-            alimentos.forEach(alimento => {
-                totalEnergia += alimento.energia || 0;
-                totalLipidios += alimento.lipidios || 0;
-                totalProteina += alimento.proteina || 0;
-                totalCarboidrato += alimento.carboidrato || 0;
-            });
+            return res.status(201).json({ message: `Alimento adicionado à ${refeicao} com sucesso!`, refeicao: novaRefeicao });
+        } catch (error: any) {
+            console.error('Erro ao adicionar alimento à refeição:', error);
+            return res.status(500).json({ message: 'Erro ao adicionar alimento à refeição', error: error.message || error });
+        }
+    };
 
-            // Calcular as calorias totais chamando a função calcularCalorias diretamente
-            const { caloriasLipidio, caloriasProteina, caloriasCarboidrato, totalCalorias } = calcularCalorias(totalLipidios, totalProteina, totalCarboidrato);
+    // Método para listar os alimentos em uma refeição específica e calcular calorias
+    public async list(req: Request, res: Response): Promise<Response> {
+        try {
+            const { refeicao } = req.body;
 
-            // Retornar a lista de alimentos filtrados e as calorias totais
-            return res.json({
-                alimentos,
-                somatorioMacronutrientes: {
-                    totalEnergia,
-                    totalLipidios,
-                    totalProteina,
-                    totalCarboidrato
-                },
-                caloriasConvertidas: {
+            // Busca a refeição pelo tipo especificado
+            const refeicaoEncontrada = await RefeicaoModel.findOne({ tipo: refeicao }).populate('alimentos');
+
+            if (!refeicaoEncontrada || refeicaoEncontrada.alimentos.length === 0) {
+                return res.status(404).json({ message: `Nenhum alimento encontrado para a refeição: ${refeicao}.` });
+            }
+
+            // Calcula as calorias totais da refeição baseada nos macronutrientes de cada alimento
+            let totalCalorias = 0;
+            const alimentosComCalorias = refeicaoEncontrada.alimentos.map((alimento: any) => {
+                const {
+                    lipidios,
+                    proteina,
+                    carboidrato,
                     caloriasLipidio,
                     caloriasProteina,
                     caloriasCarboidrato,
-                    totalCalorias
-                }
+                    totalCalorias: caloriasTotais
+                } = calcularCalorias(alimento.lipidios, alimento.proteina, alimento.carboidrato);
+                
+                totalCalorias += caloriasTotais;
+                return {
+                    descricao: alimento.descricao,
+                    lipidios,
+                    proteina,
+                    carboidrato,
+                    caloriasLipidio,
+                    caloriasProteina,
+                    caloriasCarboidrato,
+                    totalCalorias: caloriasTotais, // Total de calorias do alimento
+                    caloriasAlimento: alimento.energia, // Calorias do alimento como está no banco de dados
+                };
             });
+
+            return res.json({ refeicao: refeicaoEncontrada.tipo, alimentos: alimentosComCalorias, totalCaloriasRefeicao: totalCalorias });
         } catch (error: any) {
-            return res.status(500).json({ message: 'Erro ao listar alimentos', error });
+            return res.status(500).json({ message: 'Erro ao listar alimentos', error: error.message || error });
         }
     }
 
-    // Rota para atualizar um alimento (Update)
+    // Método para atualizar as informações de um alimento específico
     public async update(req: Request, res: Response): Promise<Response> {
         const { energia, lipidios, carboidrato, proteina } = req.body;
         const { id } = req.params;
 
         try {
-            const alimento = await Alimento.findById(id);
+            const alimento = await AlimentoModel.findById(id);
             if (!alimento) {
                 return res.status(404).json({ message: "Alimento não encontrado" });
             }
@@ -98,12 +97,12 @@ class Refeicao {
         }
     }
 
-    // Rota para deletar um alimento (Delete)
+    // Método para deletar um alimento específico
     public async delete(req: Request, res: Response): Promise<Response> {
         const { id } = req.params;
 
         try {
-            const alimentoDeletado = await Alimento.findByIdAndDelete(id);
+            const alimentoDeletado = await AlimentoModel.findByIdAndDelete(id);
             if (!alimentoDeletado) {
                 return res.status(404).json({ message: 'Alimento não encontrado' });
             }
@@ -116,7 +115,13 @@ class Refeicao {
 
 // Função para converter macronutrientes em calorias (fora da classe Refeicao)
 function calcularCalorias(lipidios: number, proteina: number, carboidrato: number): {
-    caloriasLipidio: number; caloriasProteina: number; caloriasCarboidrato: number; totalCalorias: number;
+    lipidios: number;
+    proteina: number;
+    carboidrato: number;
+    caloriasLipidio: number;
+    caloriasProteina: number;
+    caloriasCarboidrato: number;
+    totalCalorias: number;
 } {
     const caloriasLipidio = lipidios * 9; // 1g de lipídio = 9 calorias
     const caloriasProteina = proteina * 4; // 1g de proteína = 4 calorias
@@ -124,6 +129,9 @@ function calcularCalorias(lipidios: number, proteina: number, carboidrato: numbe
     const totalCalorias = caloriasLipidio + caloriasProteina + caloriasCarboidrato;
 
     return {
+        lipidios,
+        proteina,
+        carboidrato,
         caloriasLipidio,
         caloriasProteina,
         caloriasCarboidrato,

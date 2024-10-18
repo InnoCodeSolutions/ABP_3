@@ -88,8 +88,10 @@ const PerfilSchema = new Schema({
   tmb: { type: Number, required: true }
 })
 
+
+
 // mongoose.model compila o modelo
 const User = mongoose.model("User", UserSchema);
 const Perfil = mongoose.model("Perfil", PerfilSchema)
-export { Perfil,User };
+export { Perfil,User};
 
