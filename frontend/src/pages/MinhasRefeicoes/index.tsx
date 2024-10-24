@@ -50,8 +50,8 @@ const RefeicaoPage: React.FC = () => {
                     
                     <div className="flex justify-center items-center pt-3">
                         <h1 className="text-md text-gray-800">
-                            Seus dados não carregaram? Cadastre-os 
-                            <a href="/Cadastro" className="text-blue-600 hover:underline"> aqui</a>
+                            Precisa Cadastrar sua Refeição? Cadastre-os 
+                            <a href="/novarefeicao" className="text-blue-600 hover:underline"> aqui</a>
                         </h1>
                     </div>
                 </div>

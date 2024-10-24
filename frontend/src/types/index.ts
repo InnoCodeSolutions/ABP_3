@@ -14,6 +14,7 @@ export interface ErrorProps {
 }
 
 export interface AlimentosApiResposta {
+    alimentos(alimentos: any): unknown;
     pages: number;
     currentPage: number;
     count: number;
