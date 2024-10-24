@@ -30,7 +30,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="flex justify-between items-center w-full px-8 py-4 bg-lime-300 text-lime-950">
+    <header className="fixed top-0 left-0 right-0 flex justify-between items-center w-full h-22 px-8 py-4 bg-lime-300 text-lime-950">
       <div className="flex items-center space-x-4">
         <a href="/Home">
           <img

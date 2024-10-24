@@ -25,10 +25,10 @@ const NovaRefeicao: React.FC = () => {
 
   // Dicionário com imagens para as refeições
   const mealImages: { [key: string]: string } = {
-    'Café da Manhã': '/images/cafe-da-manha.png', // substitua com o caminho correto da sua imagem
-    Almoço: '/images/almoco.png', // substitua com o caminho correto da sua imagem
-    'Café da Tarde': '/images/cafe-da-tarde.png', // substitua com o caminho correto da sua imagem
-    Janta: '/images/janta.png', // substitua com o caminho correto da sua imagem
+    'Café da Manhã': '/img/cafeDaManha.png', 
+    Almoço: '/img/almoco.png', 
+    'Café da Tarde': '/img/cafeDaTarde.png', 
+    Janta: '/img/janta.png', 
   };
 
   return (

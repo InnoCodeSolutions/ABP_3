@@ -100,9 +100,9 @@ const Home: React.FC = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen flex flex-col bg-gray-100">
       <Header />
-      <main className="flex items-center justify-center pt-16 pb-16 h-[calc(100vh-80px)]"> {/* Aumente o padding-top conforme necessário */}
+      <main className="flex-grow flex items-center justify-center pb-16" style={{ paddingTop: '88px' }}>
         <div className="w-full max-w-5xl bg-white bg-opacity-80 rounded-lg shadow-lg p-8">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-semibold text-gray-800 pb-8">Olá, {userData.nome}</h1>
@@ -122,7 +122,7 @@ const Home: React.FC = () => {
                 <GaugeChart 
                   id="imc-gauge"
                   nrOfLevels={1}
-                  percent={userData.imc / 40} // Ajuste conforme sua escala desejada
+                  percent={userData.imc / 40}
                   textColor="#000"
                   colors={['#FF5F6D', '#FFC107', '#00FF00', '#FFC107', '#FF5F6D']}
                   arcWidth={0.3}
@@ -143,14 +143,14 @@ const Home: React.FC = () => {
               <h2 className="text-xl font-semibold text-gray-800">Classificação</h2>
               <div className="flex justify-center pt-2">
                 <img 
-                  src={getImageByClassificacao(userData.classificacao)} 
+                  src="/img/corpo-gordo.png" // Corrigir imagem para se adequar à classificação
                   width="100" 
                   height="100" 
-                  alt={userData.classificacao}
+                  alt="Classificação"
                 />
               </div>
               <p className="text-lg text-gray-600">
-                {userData.classificacao} {getEmojiByClassificacao(userData.classificacao)}
+                {userData.classificacao}
               </p>
             </div>
           </div>
