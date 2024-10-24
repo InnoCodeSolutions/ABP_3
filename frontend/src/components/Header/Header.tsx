@@ -34,7 +34,7 @@ const Header: React.FC = () => {
       <div className="flex items-center space-x-4">
         <a href="/Home">
           <img
-            src="/img/sapoPreto.png"
+            src =  '../img/sapoPreto.png'
             alt="Logo"
             className="h-6 object-contain"
           />
@@ -80,7 +80,7 @@ const Header: React.FC = () => {
               <a href="/novarefeicao" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
                 Monte sua refeição
               </a>
-              <a href="/minhas-refeicoes" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+              <a href="/refeicao" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
                 Minhas refeições
               </a>
             </div>

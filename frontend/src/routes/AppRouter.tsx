@@ -29,7 +29,7 @@ const AppRoutes: React.FC = () => {
                 element={<NovaRefeicao />} />
 
             <Route
-                path="/minhas-refeicoes"
+                path="/refeicao"
                 element={<RefeicaoPage />} />
 
         </Routes>
