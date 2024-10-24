@@ -37,47 +37,70 @@ class Refeicao {
     // Método para listar os alimentos em uma refeição específica e calcular calorias
     public async list(req: Request, res: Response): Promise<Response> {
         try {
-            const { refeicao } = req.body;
-
-            // Busca a refeição pelo tipo especificado
-            const refeicaoEncontrada = await RefeicaoModel.findOne({ tipo: refeicao }).populate('alimentos');
-
-            if (!refeicaoEncontrada || refeicaoEncontrada.alimentos.length === 0) {
-                return res.status(404).json({ message: `Nenhum alimento encontrado para a refeição: ${refeicao}.` });
+            // Pega o parâmetro de consulta para filtrar refeições pelo tipo
+            const { tipo } = req.query;
+    
+            // Busca todas as refeições com os alimentos associados
+            const refeicoesEncontradas = await RefeicaoModel.find({}).populate('alimentos');
+    
+            if (!refeicoesEncontradas || refeicoesEncontradas.length === 0) {
+                return res.status(404).json({ message: `Nenhuma refeição encontrada.` });
             }
-
-            // Calcula as calorias totais da refeição baseada nos macronutrientes de cada alimento
-            let totalCalorias = 0;
-            const alimentosComCalorias = refeicaoEncontrada.alimentos.map((alimento: any) => {
-                const {
-                    lipidios,
-                    proteina,
-                    carboidrato,
-                    caloriasLipidio,
-                    caloriasProteina,
-                    caloriasCarboidrato,
-                    totalCalorias: caloriasTotais
-                } = calcularCalorias(alimento.lipidios, alimento.proteina, alimento.carboidrato);
-                
-                totalCalorias += caloriasTotais;
+    
+            // Filtra as refeições se um tipo for fornecido
+            const refeicoesFiltradas = tipo
+                ? refeicoesEncontradas.filter(refeicao => 
+                    refeicao.tipo.toLowerCase().includes(tipo.toString().toLowerCase())
+                )
+                : refeicoesEncontradas; // Se não houver tipo, usa todas as refeições
+    
+            // Mapeia cada refeição para calcular as calorias totais e estruturar os dados
+            const refeicoesComAlimentos = await Promise.all(refeicoesFiltradas.map(async (refeicao) => {
+                let totalCalorias = 0;
+                const alimentosComCalorias = refeicao.alimentos.map((alimento: any) => {
+                    const {
+                        lipidios,
+                        proteina,
+                        carboidrato,
+                        caloriasLipidio,
+                        caloriasProteina,
+                        caloriasCarboidrato,
+                        totalCalorias: caloriasTotais
+                    } = calcularCalorias(alimento.lipidios, alimento.proteina, alimento.carboidrato);
+                    
+                    totalCalorias += caloriasTotais;
+    
+                    return {
+                        descricao: alimento.descricao,
+                        lipidios,
+                        proteina,
+                        carboidrato,
+                        caloriasLipidio,
+                        caloriasProteina,
+                        caloriasCarboidrato,
+                        totalCalorias: caloriasTotais, // Total de calorias do alimento
+                        caloriasAlimento: alimento.energia, // Calorias do alimento como está no banco de dados
+                    };
+                });
+    
                 return {
-                    descricao: alimento.descricao,
-                    lipidios,
-                    proteina,
-                    carboidrato,
-                    caloriasLipidio,
-                    caloriasProteina,
-                    caloriasCarboidrato,
-                    totalCalorias: caloriasTotais, // Total de calorias do alimento
-                    caloriasAlimento: alimento.energia, // Calorias do alimento como está no banco de dados
+                    tipo: refeicao.tipo,
+                    alimentos: alimentosComCalorias,
+                    totalCaloriasRefeicao: totalCalorias,
                 };
-            });
-
-            return res.json({ refeicao: refeicaoEncontrada.tipo, alimentos: alimentosComCalorias, totalCaloriasRefeicao: totalCalorias });
+            }));
+    
+            // Se não houver refeições filtradas, retorna uma mensagem
+            if (refeicoesComAlimentos.length === 0) {
+                return res.status(404).json({ message: `Nenhuma refeição encontrada para o tipo: "${tipo}"` });
+            }
+    
+            return res.json(refeicoesComAlimentos); // Retorna todas as refeições com os dados
         } catch (error: any) {
             return res.status(500).json({ message: 'Erro ao listar alimentos', error: error.message || error });
         }
     }
+    
 
     // Método para atualizar as informações de um alimento específico
     public async update(req: Request, res: Response): Promise<Response> {
