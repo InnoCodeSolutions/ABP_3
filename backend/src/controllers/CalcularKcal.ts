@@ -9,6 +9,11 @@ class Refeicao {
         try {
             const { refeicao, descricao } = req.body;
 
+            // Verificação se o tipo de refeição não é nulo ou vazio
+            if (!refeicao || refeicao.trim() === '') {
+                return res.status(400).json({ message: 'O tipo de refeição é obrigatório e não pode ser nulo ou vazio.' });
+            }
+
             // Busca o alimento pela descrição no banco de dados
             const alimento = await AlimentoModel.findOne({ descricao });
             if (!alimento) {

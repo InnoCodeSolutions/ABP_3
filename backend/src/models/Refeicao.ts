@@ -52,11 +52,19 @@ interface Refeicao extends Document {
 
 // Definição do RefeicaoSchema
 const RefeicaoSchema: Schema = new Schema({
-  tipo: { 
-    type: String, 
-    required: true, 
-    enum: ['cafeDaManha', 'almoco', 'cafeDaTarde', 'jantar'] // Tipos permitidos de refeição
-  },
+  tipo: {
+    type: String,
+    required: [true, 'O tipo de refeição é obrigatório'],
+    enum: {
+      values: ['cafeDaManha', 'almoco', 'cafeDaTarde', 'jantar'],
+      message: '{VALUE} não é um tipo de refeição válido'
+    },
+    validate: {
+      validator: (v: string) => v !== null && v.trim() !== '',
+      message: 'O tipo de refeição não pode ser nulo ou vazio'
+    }
+  }
+  ,
   alimentos: [
     {
       id: { type: String, required: true },
