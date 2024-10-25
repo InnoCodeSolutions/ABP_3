@@ -1,20 +1,19 @@
 import React, { useState, useRef } from 'react';
 import { Button } from '../Button';
 import '../../index.css';
-import { useAuth } from '../../context/AuthContext'; // Importa o contexto de autenticação
+import { useAuth } from '../../context/AuthContext';
 
 const Header: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { logout } = useAuth(); // Usa o hook de autenticação
+  const { logout } = useAuth();
   const dropdownTimeout = useRef<number | null>(null);
 
   const handleLogout = () => {
-    logout(); // Chama a função de logout
-    window.location.href = '/'; // Redireciona para a página inicial após logout
+    logout();
+    window.location.href = '/';
   };
 
   const handleMouseEnter = () => {
-    // Limpa o timeout anterior se o mouse entrar novamente
     if (dropdownTimeout.current) {
       clearTimeout(dropdownTimeout.current);
       dropdownTimeout.current = null;
@@ -23,28 +22,30 @@ const Header: React.FC = () => {
   };
 
   const handleMouseLeave = () => {
-    // Configura um timeout para fechar o menu após um pequeno atraso
     dropdownTimeout.current = window.setTimeout(() => {
       setIsDropdownOpen(false);
-    }, 200); // Atraso de 200ms
+    }, 200);
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 flex justify-between items-center w-full h-22 px-8 py-4 bg-lime-300 text-lime-950">
-      <div className="flex items-center space-x-4">
+    <header className="flex flex-wrap justify-between items-center w-full h-auto px-8 py-4 bg-lime-300 text-lime-950">
+      {/* Logo e Título */}
+      <div className="flex items-center space-x-4 w-full sm:w-auto">
         <a href="/Home">
           <img
-            src =  '../img/sapoPreto.png'
+            src='../img/sapoPreto.png'
             alt="Logo"
             className="h-6 object-contain"
           />
         </a>
-        <div className="h-10 border-l border-black"></div>
-        <p className="text-3xl font-bold font-nort">
+        <div className="h-10 border-l border-black hidden sm:block"></div>
+        <p className="text-2xl sm:text-3xl font-bold font-nort">
           ramg.o
         </p>
       </div>
-      <nav className="flex space-x-4">
+
+      {/* Nav - Itens de navegação */}
+      <nav className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 w-full sm:w-auto mt-4 sm:mt-0">
         <Button variant="transparent" className="px-4 py-2">
           <a href='/Home'>Home</a>
         </Button>
@@ -54,6 +55,8 @@ const Header: React.FC = () => {
         <Button variant="transparent" className="px-4 py-2">
           <a href='/Alimento'>Alimentos</a>
         </Button>
+
+        {/* Dropdown para Refeições */}
         <div
           className="relative"
           onMouseEnter={handleMouseEnter}
@@ -74,8 +77,8 @@ const Header: React.FC = () => {
           {isDropdownOpen && (
             <div
               className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg"
-              onMouseEnter={handleMouseEnter}  // Mantém o menu aberto enquanto o mouse estiver nele
-              onMouseLeave={handleMouseLeave}  // Fecha o menu quando o mouse sair do dropdown
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
               <a href="/novarefeicao" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
                 Monte sua refeição
@@ -86,6 +89,8 @@ const Header: React.FC = () => {
             </div>
           )}
         </div>
+
+        {/* Botão de Logout */}
         <Button variant="transparent" className="px-4 py-2" onClick={handleLogout}>
           Logout
         </Button>

@@ -27,27 +27,29 @@ const RefeicaoPage: React.FC = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-gray-80">
             <Header />
-            <main className="flex items-center justify-center pt-16 pb-16 h-[calc(100vh-80px)]"> 
-                <div className="w-full max-w-5xl bg-white bg-opacity-80 rounded-lg shadow-lg p-8">
+            <main className="flex items-center justify-center pt-16 pb-16">
+                <div className="bg-white bg-opacity-80 rounded-lg shadow-lg p-8 w-full max-w-4xl">
                     <h1 className="text-3xl font-semibold text-gray-800 pb-8">Minhas Refeições</h1>
 
                     {loading ? (
                         <div className="text-gray-600">Carregando...</div>
                     ) : refeicoes.length > 0 ? (
-                        refeicoes.map((refeicao) => (
-                            <ItemRefeicao
-                                key={refeicao.id} // Adicione uma chave única
-                                tipo={refeicao.tipo} // Passando o tipo da refeição
-                                alimentos={refeicao.alimentos} // Passando a lista de alimentos
-                                totalCaloriasRefeicao={refeicao.totalCaloriasRefeicao} // Passando o total de calorias da refeição
-                            />
-                        ))
+                        <div className="max-h-[60vh] overflow-y-auto"> {/* Container com overflow */}
+                            {refeicoes.map((refeicao) => (
+                                <ItemRefeicao
+                                    key={refeicao.id} // Adicione uma chave única
+                                    tipo={refeicao.tipo} // Passando o tipo da refeição
+                                    alimentos={refeicao.alimentos} // Passando a lista de alimentos
+                                    totalCaloriasRefeicao={refeicao.totalCaloriasRefeicao} // Passando o total de calorias da refeição
+                                />
+                            ))}
+                        </div>
                     ) : (
                         <div className="text-gray-600">Nenhuma refeição encontrada.</div>
                     )}
-                    
+
                     <div className="flex justify-center items-center pt-3">
                         <h1 className="text-md text-gray-800">
                             Precisa Cadastrar sua Refeição? Cadastre-os 

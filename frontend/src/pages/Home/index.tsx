@@ -143,14 +143,14 @@ const Home: React.FC = () => {
               <h2 className="text-xl font-semibold text-gray-800">Classificação</h2>
               <div className="flex justify-center pt-2">
                 <img 
-                  src="/img/corpo-gordo.png" // Corrigir imagem para se adequar à classificação
+                  src={getImageByClassificacao(userData.classificacao)}
                   width="100" 
                   height="100" 
                   alt="Classificação"
                 />
               </div>
               <p className="text-lg text-gray-600">
-                {userData.classificacao}
+                {userData.classificacao}{getEmojiByClassificacao(userData.classificacao)}
               </p>
             </div>
           </div>
