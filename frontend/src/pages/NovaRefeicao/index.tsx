@@ -1,12 +1,18 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import Header from '../../components/Header/Header';
 import buscaAlimento from '../../services/Alimentos';
+import refeicaoService from '../../services/Refeicao';
 import { ItemAlimentoBackendProps } from '../../types';
 
 type Food = {
   name: string;
   calories: number;
 };
+
+interface FoodData {
+  refeicao: string;
+  descricao: string;
+}
 
 const NovaRefeicao: React.FC = () => {
   const [mealType, setMealType] = useState<string | null>(null);
@@ -15,7 +21,7 @@ const NovaRefeicao: React.FC = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [foodOptions, setFoodOptions] = useState<Food[]>([]);
-  const [allFoods, setAllFoods] = useState<Food[]>([]); // Novo estado para armazenar todos os alimentos
+  const [allFoods, setAllFoods] = useState<Food[]>([]);
 
   const addFood = useCallback((food: Food) => {
     setSelectedFoods((prevFoods) => [...prevFoods, food]);
@@ -28,43 +34,64 @@ const NovaRefeicao: React.FC = () => {
   const totalCalories = selectedFoods.reduce((sum, food) => sum + food.calories, 0);
 
   const mealImages: { [key: string]: string } = {
-    'Café da Manhã': '/img/cafeDaManha.png', 
-    Almoço: '/img/almoco.png', 
-    'Café da Tarde': '/img/cafeDaTarde.png', 
-    Janta: '/img/janta.png', 
+    'Café da Manhã': '/img/cafeDaManha.png',
+    Almoço: '/img/almoco.png',
+    'Café da Tarde': '/img/cafeDaTarde.png',
+    Janta: '/img/janta.png',
   };
 
-  // Função para buscar todos os alimentos
   const fetchAllFoods = async () => {
-    const result = await buscaAlimento.buscaAlimento(); // Busque todos os alimentos no início
+    const result = await buscaAlimento.buscaAlimento();
     if ('erro' in result) {
       console.error(result.erro);
     } else if (Array.isArray(result.spent)) {
       const options = result.spent.map((item: ItemAlimentoBackendProps) => ({
-        name: item.descricao || "", // Garante que seja uma string, mesmo se `descricao` for undefined
-        calories: item.energia || 0, // Define um valor padrão se `energia` for undefined
+        name: item.descricao || "",
+        calories: item.energia || 0,
       }));
-      setAllFoods(options); // Armazena todos os alimentos
+      setAllFoods(options);
     } else {
       console.error("Erro: o resultado esperado não é um array");
     }
   };
 
   useEffect(() => {
-    fetchAllFoods(); // Chama a função ao montar o componente
+    fetchAllFoods();
   }, []);
 
-  // Efeito para filtrar alimentos com base na consulta de pesquisa
   useEffect(() => {
     if (searchQuery) {
       const filteredOptions = allFoods.filter(food =>
-        food.name && food.name.toLowerCase().includes(searchQuery.toLowerCase()) // Filtro case-insensitive com verificação
+        food.name && food.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setFoodOptions(filteredOptions);
     } else {
       setFoodOptions([]);
     }
   }, [searchQuery, allFoods]);
+
+  const handleFinalizeMeal = useCallback(async () => {
+    try {
+      for (const food of selectedFoods) {
+        const foodData: FoodData = {
+          descricao: food.name,
+          refeicao: mealType || "",
+        };
+  
+        console.log("Dados enviados para a API", foodData);
+  
+        const response = await refeicaoService.adicionarRefeicao(foodData);
+  
+        if ("erro" in response) {
+          console.error("Erro ao adicionar alimento:", response.erro);
+        }
+      }
+  
+      setShowConfirmation(true);
+    } catch (error) {
+      console.error("Erro ao finalizar refeição:", error);
+    }
+  }, [mealType, selectedFoods]);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -88,7 +115,10 @@ const NovaRefeicao: React.FC = () => {
                 <button
                   key={meal}
                   className="flex flex-col items-center justify-center w-40 h-40 bg-blue-500 text-white rounded shadow-lg transition-transform transform hover:scale-105"
-                  onClick={() => setMealType(meal)}
+                  onClick={() => {
+                    setMealType(meal); // Atualiza o mealType com o nome da refeição clicada
+                    setMealName(meal);  // Atualiza mealName para refletir a refeição selecionada
+                  }}
                 >
                   <img src={mealImages[meal]} alt={meal} className="w-16 h-16 mb-2" />
                   <span className="text-lg font-semibold">{meal}</span>
@@ -114,8 +144,8 @@ const NovaRefeicao: React.FC = () => {
                     className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
                     onClick={() => {
                       addFood(food);
-                      setSearchQuery(''); // Limpa a busca após a seleção
-                      setFoodOptions([]); // Limpa as opções após a seleção
+                      setSearchQuery('');
+                      setFoodOptions([]);
                     }}
                   >
                     {food.name} - {food.calories} kcal
@@ -143,7 +173,7 @@ const NovaRefeicao: React.FC = () => {
 
             <button
               className="mt-4 px-4 py-2 bg-green-500 text-white rounded"
-              onClick={() => setShowConfirmation(true)}
+              onClick={handleFinalizeMeal}
             >
               Finalizar Refeição
             </button>
@@ -155,7 +185,6 @@ const NovaRefeicao: React.FC = () => {
             <div className="bg-white p-6 rounded shadow-lg text-center">
               <h3 className="text-2xl font-bold mb-4">Refeição Cadastrada!</h3>
               <p>Refeição: {mealName} - {mealType}</p>
-              <p>Total de Calorias: {totalCalories} kcal</p>
               <p>Alimentos:</p>
               <ul className="mb-4">
                 {selectedFoods.map((food, index) => (

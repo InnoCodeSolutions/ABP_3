@@ -8,6 +8,7 @@ class Refeicao {
     public create = async (req: Request, res: Response): Promise<Response> => {
         try {
             const { refeicao, descricao } = req.body;
+            console.log("dados vindo do frontend",req.body);
 
             // Verificação se o tipo de refeição não é nulo ou vazio
             if (!refeicao || refeicao.trim() === '') {

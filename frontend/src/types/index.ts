@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 
 export interface ItemAlimentoBackendProps {
     preparacao: string;
@@ -14,10 +13,20 @@ export interface ErrorProps {
 }
 
 export interface AlimentosApiResposta {
-    alimentos(alimentos: any): unknown;
     pages: number;
     currentPage: number;
     count: number;
     average: string;
     spent: ItemAlimentoBackendProps[];
+}
+
+export interface RefeicoesApiResposta {
+    refeicao: string;
+    alimentos: ItemAlimentoBackendProps[];
+    totalCaloriasRefeicao: number;
+}
+
+export interface RefeicaoRequest {
+    refeicao: string;
+    descricao: string;
 }
