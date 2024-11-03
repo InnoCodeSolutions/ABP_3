@@ -1,30 +1,42 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
 import ItemRefeicao from "../../components/Refeicao/ItemRefeicao";
-import axios from "axios";
+import refeicaoService from "../../services/Refeicao";
+import { RefeicoesApiResposta, Alimento, ItemAlimentoBackendProps } from "../../types";
 
 const RefeicaoPage: React.FC = () => {
-    // Estado para armazenar a lista de refeições e o estado de carregamento
-    const [refeicoes, setRefeicoes] = useState<any[]>([]); // Mudamos para um array
+    const [refeicoes, setRefeicoes] = useState<RefeicoesApiResposta[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-
+    const [error, setError] = useState<string | null>(null);
     useEffect(() => {
-        // Função para buscar as refeições
         const fetchRefeicoes = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/refeicao');
-                console.log(response.data); // Verifique os dados recebidos
-                setRefeicoes(response.data); // Define a lista de refeições recebida
+                const response = await refeicaoService.buscarRefeicoes();
+                if (Array.isArray(response)) {
+                    const refeicoesFormatadas = response.map((refeicao) => ({
+                        refeicao: refeicao.tipo,
+                        totalCaloriasRefeicao: refeicao.totalCaloriasRefeicao,
+                        alimentos: refeicao.alimentos.map((alimento: ItemAlimentoBackendProps) => ({
+                            ...alimento,
+                            id: alimento.descricao, // Gera um ID único com base em 'descricao'
+                            totalCalorias: alimento.totalCalorias, // Usa 'totalCalorias' da resposta da API
+                        })) as Alimento[],
+                    }));
+                    setRefeicoes(refeicoesFormatadas);
+                } else {
+                    setError("Erro ao buscar as refeições. Tente novamente.");
+                }
             } catch (error) {
-                console.error('Erro ao buscar as refeições:', error);
-                setRefeicoes([]); // Em caso de erro, garante que o estado das refeições seja um array vazio
+                setError("Erro ao buscar as refeições. Tente novamente.");
             } finally {
-                setLoading(false); // Atualiza o estado de carregamento
+                setLoading(false);
             }
         };
-
-        fetchRefeicoes(); // Chama a função para buscar as refeições
+    
+        fetchRefeicoes();
     }, []);
+    
+    
 
     return (
         <div className="min-h-screen bg-gray-80">
@@ -35,14 +47,16 @@ const RefeicaoPage: React.FC = () => {
 
                     {loading ? (
                         <div className="text-gray-600">Carregando...</div>
+                    ) : error ? (
+                        <div className="text-red-600">{error}</div>
                     ) : refeicoes.length > 0 ? (
-                        <div className="max-h-[60vh] overflow-y-auto"> {/* Container com overflow */}
+                        <div className="max-h-[60vh] overflow-y-auto">
                             {refeicoes.map((refeicao) => (
                                 <ItemRefeicao
-                                    key={refeicao.id} // Adicione uma chave única
-                                    tipo={refeicao.tipo} // Passando o tipo da refeição
-                                    alimentos={refeicao.alimentos} // Passando a lista de alimentos
-                                    totalCaloriasRefeicao={refeicao.totalCaloriasRefeicao} // Passando o total de calorias da refeição
+                                    key={refeicao.refeicao} // Usa o nome da refeição como chave única
+                                    tipo={refeicao.refeicao} 
+                                    alimentos={refeicao.alimentos}
+                                    totalCaloriasRefeicao={refeicao.totalCaloriasRefeicao}
                                 />
                             ))}
                         </div>

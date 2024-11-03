@@ -6,6 +6,7 @@ export interface ItemAlimentoBackendProps {
     carboidrato: number;
     proteina: number;
     lipidios: number;
+    totalCalorias?:number;
 }
 
 export interface ErrorProps {
@@ -22,11 +23,27 @@ export interface AlimentosApiResposta {
 
 export interface RefeicoesApiResposta {
     refeicao: string;
-    alimentos: ItemAlimentoBackendProps[];
+    alimentos: Alimento[];
     totalCaloriasRefeicao: number;
 }
 
 export interface RefeicaoRequest {
     refeicao: string;
     descricao: string;
+}
+
+export interface Alimento {
+    id: number; // ID do alimento
+    descricao: string; // Descrição do alimento
+    lipidios: number; // Quantidade de lipídios
+    proteina: number; // Quantidade de proteína
+    carboidrato: number; // Quantidade de carboidratos
+    totalCalorias: number; // Total de calorias do alimento
+    tipo: string; // Tipo do alimento
+}
+
+export interface ItemRefeicaoProps {
+    tipo: string; // Tipo da refeição
+    alimentos: Alimento[]; // Lista de alimentos
+    totalCaloriasRefeicao: number; // Total de calorias da refeição
 }
