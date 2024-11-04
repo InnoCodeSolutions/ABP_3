@@ -84,6 +84,8 @@ const AlimentoSchema: Schema = new Schema({
   vitamina_d_mcg: { type: Number, required: true },
   vitamina_e_mg: { type: Number, required: true },
   vitamina_c_mg: { type: Number, required: true },
+}, {
+  timestamps: true // Habilita createdAt e updatedAt automaticamente
 });
 
 // Exporta o modelo

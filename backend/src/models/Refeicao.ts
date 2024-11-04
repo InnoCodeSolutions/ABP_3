@@ -109,6 +109,8 @@ const RefeicaoSchema: Schema = new Schema({
       vitamina_c_mg: { type: Number, required: true },
     }
   ]
+}, {
+  timestamps: true // Habilita createdAt e updatedAt automaticamente
 });
 
 // Exporta o modelo de Refeição
