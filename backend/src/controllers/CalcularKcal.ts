@@ -101,43 +101,36 @@ class Refeicao {
             return res.status(500).json({ message: 'Erro ao listar alimentos', error: error.message || error });
         }
     }
-    
 
-    // Método para atualizar as informações de um alimento específico
-    public async update(req: Request, res: Response): Promise<Response> {
-        const { energia, lipidios, carboidrato, proteina } = req.body;
-        const { id } = req.params;
-
-        try {
-            const alimento = await AlimentoModel.findById(id);
-            if (!alimento) {
-                return res.status(404).json({ message: "Alimento não encontrado" });
-            }
-
-            alimento.energia = energia;
-            alimento.lipidios = lipidios;
-            alimento.carboidrato = carboidrato;
-            alimento.proteina = proteina;
-
-            const alimentoAtualizado = await alimento.save();
-            return res.json(alimentoAtualizado);
-        } catch (error: any) {
-            return res.status(500).json({ message: error.message });
-        }
-    }
-
-    // Método para deletar um alimento específico
+    // Método para deletar os alimentos que estão nas refeições criadas
     public async delete(req: Request, res: Response): Promise<Response> {
-        const { id } = req.params;
-
+        const { refeicao, descricao } = req.body;
         try {
-            const alimentoDeletado = await AlimentoModel.findByIdAndDelete(id);
-            if (!alimentoDeletado) {
-                return res.status(404).json({ message: 'Alimento não encontrado' });
+            // Remove o alimento da refeição pelo tipo e descrição
+            const refeicaoAtualizada = await RefeicaoModel.findOneAndUpdate(
+                { tipo: refeicao },
+                { $pull: { alimentos: { descricao: descricao } } },
+                { new: true }
+            );
+
+            // Se não encontrar a refeição ou o alimento, retorna erro
+            if (!refeicaoAtualizada) {
+                return res.status(404).json({ message: 'Refeição não encontrada' });
             }
-            return res.status(204).send(); // 204 No Content
+
+            // Busca novamente a refeição com alimentos atualizados para confirmar a remoção
+            const refeicaoConfirmada = await RefeicaoModel.findOne({ tipo: refeicao }).populate('alimentos');
+            
+            // Confirma se o alimento foi realmente removido
+            const alimentoRemovido = !refeicaoConfirmada?.alimentos.some((alimento: any) => alimento.descricao === descricao);
+            if (!alimentoRemovido) {
+                return res.status(404).json({ message: 'Alimento não encontrado na refeição' });
+            }
+
+            return res.status(200).json({ message: `Alimento '${descricao}' removido da refeição '${refeicao}' com sucesso`, refeicao: refeicaoConfirmada });
         } catch (error: any) {
-            return res.status(500).json({ message: 'Erro ao deletar alimento', error });
+            console.error('Erro ao deletar alimento da refeição:', error);
+            return res.status(500).json({ message: 'Erro ao deletar alimento da refeição', error: error.message || error });
         }
     }
 }
