@@ -47,7 +47,8 @@ interface AlimentoNaRefeicao {
 // Interface para a Refeição
 interface Refeicao extends Document {
   tipo: string;
-  alimentos: AlimentoNaRefeicao[]; // Array de objetos de Alimento diretamente na refeição
+  nomePersonalizado?: string;  // Novo campo opcional
+  alimentos: AlimentoNaRefeicao[];
 }
 
 // Definição do RefeicaoSchema
@@ -63,8 +64,8 @@ const RefeicaoSchema: Schema = new Schema({
       validator: (v: string) => v !== null && v.trim() !== '',
       message: 'O tipo de refeição não pode ser nulo ou vazio'
     }
-  }
-  ,
+  },
+  nomePersonalizado: { type: String }, // Campo opcional para nome personalizado
   alimentos: [
     {
       id: { type: String, required: true },

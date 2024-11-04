@@ -7,8 +7,8 @@ class Refeicao {
     // Método para adicionar um alimento a uma refeição específica
     public create = async (req: Request, res: Response): Promise<Response> => {
         try {
-            const { refeicao, descricao } = req.body;
-            console.log("dados vindo do frontend",req.body);
+            const { refeicao, nomePersonalizado, descricao } = req.body;
+            console.log("dados vindo do frontend", req.body);
 
             // Verificação se o tipo de refeição não é nulo ou vazio
             if (!refeicao || refeicao.trim() === '') {
@@ -21,14 +21,21 @@ class Refeicao {
                 return res.status(404).json({ message: 'Alimento não encontrado' });
             }
 
-            // Cria uma nova refeição ou adiciona à existente
+            // Cria ou atualiza uma refeição específica com o nome personalizado, se fornecido
+            const query = nomePersonalizado
+                ? { tipo: refeicao, nomePersonalizado }
+                : { tipo: refeicao };
+                
             const novaRefeicao = await RefeicaoModel.findOneAndUpdate(
-                { tipo: refeicao },
+                query,
                 { $push: { alimentos: alimento } },
                 { new: true, upsert: true }
             );
 
-            return res.status(201).json({ message: `Alimento adicionado à ${refeicao} com sucesso!`, refeicao: novaRefeicao });
+            return res.status(201).json({ 
+                message: `Alimento adicionado à ${refeicao} com sucesso!`, 
+                refeicao: novaRefeicao 
+            });
         } catch (error: any) {
             console.error('Erro ao adicionar alimento à refeição:', error);
             return res.status(500).json({ message: 'Erro ao adicionar alimento à refeição', error: error.message || error });
@@ -38,25 +45,23 @@ class Refeicao {
     // Método para listar os alimentos em uma refeição específica e calcular calorias
     public async list(req: Request, res: Response): Promise<Response> {
         try {
-            // Pega o parâmetro de consulta para filtrar refeições pelo tipo
-            const { tipo } = req.query;
-    
-            // Busca todas as refeições com os alimentos associados
-            const refeicoesEncontradas = await RefeicaoModel.find({}).populate('alimentos');
-    
+            const { tipo, nomePersonalizado } = req.query;
+
+            // Monta a query de busca para o tipo de refeição e nome personalizado, se fornecido
+            const query = {
+                ...(tipo && { tipo }),
+                ...(nomePersonalizado && { nomePersonalizado })
+            };
+
+            // Busca todas as refeições com os alimentos associados e filtra pelo tipo/nome personalizado
+            const refeicoesEncontradas = await RefeicaoModel.find(query).populate('alimentos');
+
             if (!refeicoesEncontradas || refeicoesEncontradas.length === 0) {
-                return res.status(404).json({ message: `Nenhuma refeição encontrada.` });
+                return res.status(404).json({ message: 'Nenhuma refeição encontrada.' });
             }
-    
-            // Filtra as refeições se um tipo for fornecido
-            const refeicoesFiltradas = tipo
-                ? refeicoesEncontradas.filter(refeicao => 
-                    refeicao.tipo.toLowerCase().includes(tipo.toString().toLowerCase())
-                )
-                : refeicoesEncontradas; // Se não houver tipo, usa todas as refeições
-    
+
             // Mapeia cada refeição para calcular as calorias totais e estruturar os dados
-            const refeicoesComAlimentos = await Promise.all(refeicoesFiltradas.map(async (refeicao) => {
+            const refeicoesComAlimentos = await Promise.all(refeicoesEncontradas.map(async (refeicao) => {
                 let totalCalorias = 0;
                 const alimentosComCalorias = refeicao.alimentos.map((alimento: any) => {
                     const {
@@ -70,7 +75,7 @@ class Refeicao {
                     } = calcularCalorias(alimento.lipidios, alimento.proteina, alimento.carboidrato);
                     
                     totalCalorias += caloriasTotais;
-    
+
                     return {
                         descricao: alimento.descricao,
                         lipidios,
@@ -80,35 +85,37 @@ class Refeicao {
                         caloriasProteina,
                         caloriasCarboidrato,
                         totalCalorias: caloriasTotais, // Total de calorias do alimento
-                        caloriasAlimento: alimento.energia, // Calorias do alimento como está no banco de dados
+                        caloriasAlimento: alimento.energia, // Calorias do alimento no banco de dados
                     };
                 });
-    
+
                 return {
                     tipo: refeicao.tipo,
+                    nomePersonalizado: refeicao.nomePersonalizado,
                     alimentos: alimentosComCalorias,
                     totalCaloriasRefeicao: totalCalorias,
                 };
             }));
-    
-            // Se não houver refeições filtradas, retorna uma mensagem
-            if (refeicoesComAlimentos.length === 0) {
-                return res.status(404).json({ message: `Nenhuma refeição encontrada para o tipo: "${tipo}"` });
-            }
-    
-            return res.json(refeicoesComAlimentos); // Retorna todas as refeições com os dados
+
+            return res.json(refeicoesComAlimentos);
         } catch (error: any) {
+            console.error('Erro ao listar alimentos:', error);
             return res.status(500).json({ message: 'Erro ao listar alimentos', error: error.message || error });
         }
     }
 
-    // Método para deletar os alimentos que estão nas refeições criadas
+    // Método para deletar alimentos de uma refeição específica
     public async delete(req: Request, res: Response): Promise<Response> {
-        const { refeicao, descricao } = req.body;
+        const { refeicao, nomePersonalizado, descricao } = req.body;
         try {
-            // Remove o alimento da refeição pelo tipo e descrição
+            // Define a query para buscar a refeição específica usando tipo e nome personalizado, se houver
+            const query = nomePersonalizado
+                ? { tipo: refeicao, nomePersonalizado }
+                : { tipo: refeicao };
+
+            // Remove o alimento da refeição pelo tipo, nome personalizado (se houver) e descrição
             const refeicaoAtualizada = await RefeicaoModel.findOneAndUpdate(
-                { tipo: refeicao },
+                query,
                 { $pull: { alimentos: { descricao: descricao } } },
                 { new: true }
             );
@@ -119,7 +126,7 @@ class Refeicao {
             }
 
             // Busca novamente a refeição com alimentos atualizados para confirmar a remoção
-            const refeicaoConfirmada = await RefeicaoModel.findOne({ tipo: refeicao }).populate('alimentos');
+            const refeicaoConfirmada = await RefeicaoModel.findOne(query).populate('alimentos');
             
             // Confirma se o alimento foi realmente removido
             const alimentoRemovido = !refeicaoConfirmada?.alimentos.some((alimento: any) => alimento.descricao === descricao);
@@ -127,7 +134,10 @@ class Refeicao {
                 return res.status(404).json({ message: 'Alimento não encontrado na refeição' });
             }
 
-            return res.status(200).json({ message: `Alimento '${descricao}' removido da refeição '${refeicao}' com sucesso`, refeicao: refeicaoConfirmada });
+            return res.status(200).json({ 
+                message: `Alimento '${descricao}' removido da refeição '${refeicao}' com sucesso`, 
+                refeicao: refeicaoConfirmada 
+            });
         } catch (error: any) {
             console.error('Erro ao deletar alimento da refeição:', error);
             return res.status(500).json({ message: 'Erro ao deletar alimento da refeição', error: error.message || error });
