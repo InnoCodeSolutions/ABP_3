@@ -15,6 +15,7 @@ const RefeicaoPage: React.FC = () => {
                 if (Array.isArray(response)) {
                     const refeicoesFormatadas = response.map((refeicao) => ({
                         refeicao: refeicao.tipo,
+                        nomePersonalizado: refeicao.nomePersonalizado || 'Nome da refeição não informado',
                         totalCaloriasRefeicao: refeicao.totalCaloriasRefeicao,
                         alimentos: refeicao.alimentos.map((alimento: ItemAlimentoBackendProps) => ({
                             ...alimento,
@@ -53,8 +54,9 @@ const RefeicaoPage: React.FC = () => {
                         <div className="max-h-[60vh] overflow-y-auto">
                             {refeicoes.map((refeicao) => (
                                 <ItemRefeicao
-                                    key={refeicao.refeicao} // Usa o nome da refeição como chave única
-                                    tipo={refeicao.refeicao} 
+                                    key={refeicao.refeicao}
+                                    tipo={refeicao.refeicao}
+                                    nomePersonalizado={refeicao.nomePersonalizado} // Verifique se `nomePersonalizado` é passado
                                     alimentos={refeicao.alimentos}
                                     totalCaloriasRefeicao={refeicao.totalCaloriasRefeicao}
                                 />

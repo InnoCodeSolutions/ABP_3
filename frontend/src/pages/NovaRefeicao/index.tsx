@@ -12,6 +12,7 @@ type Food = {
 interface FoodData {
   refeicao: string;
   descricao: string;
+  nomePersonalizado?: string;
 }
 
 const NovaRefeicao: React.FC = () => {
@@ -23,6 +24,14 @@ const NovaRefeicao: React.FC = () => {
   const [foodOptions, setFoodOptions] = useState<Food[]>([]);
   const [allFoods, setAllFoods] = useState<Food[]>([]);
 
+  // Definindo `mealImages` antes do uso no JSX
+  const mealImages: { [key: string]: string } = {
+    'Café da Manhã': '/img/cafeDaManha.png',
+    Almoço: '/img/almoco.png',
+    'Café da Tarde': '/img/cafeDaTarde.png',
+    Janta: '/img/janta.png',
+  };
+
   const addFood = useCallback((food: Food) => {
     setSelectedFoods((prevFoods) => [...prevFoods, food]);
   }, []);
@@ -32,13 +41,6 @@ const NovaRefeicao: React.FC = () => {
   };
 
   const totalCalories = selectedFoods.reduce((sum, food) => sum + food.calories, 0);
-
-  const mealImages: { [key: string]: string } = {
-    'Café da Manhã': '/img/cafeDaManha.png',
-    Almoço: '/img/almoco.png',
-    'Café da Tarde': '/img/cafeDaTarde.png',
-    Janta: '/img/janta.png',
-  };
 
   const fetchAllFoods = async () => {
     const result = await buscaAlimento.buscaAlimento();
@@ -70,11 +72,13 @@ const NovaRefeicao: React.FC = () => {
     }
   }, [searchQuery, allFoods]);
 
+  // Definindo `handleFinalizeMeal` antes do uso no JSX
   const handleFinalizeMeal = useCallback(async () => {
     try {
       for (const food of selectedFoods) {
         const foodData: FoodData = {
           descricao: food.name,
+          nomePersonalizado: mealName,
           refeicao: mealType || "",
         };
   
@@ -116,8 +120,7 @@ const NovaRefeicao: React.FC = () => {
                   key={meal}
                   className="flex flex-col items-center justify-center w-40 h-40 bg-blue-500 text-white rounded shadow-lg transition-transform transform hover:scale-105"
                   onClick={() => {
-                    setMealType(meal); // Atualiza o mealType com o nome da refeição clicada
-                    setMealName(meal);  // Atualiza mealName para refletir a refeição selecionada
+                    setMealType(meal);   
                   }}
                 >
                   <img src={mealImages[meal]} alt={meal} className="w-16 h-16 mb-2" />
@@ -128,7 +131,7 @@ const NovaRefeicao: React.FC = () => {
           </div>
         ) : (
           <div className="w-full max-w-lg">
-            <h2 className="text-2xl font-bold mb-4 text-gray-800">1. Selecione os alimentos para {mealType}</h2>
+            <h2 className="text-2xl font-bold mb-4 text-gray-800">1. Selecione os alimentos para {mealName}</h2>
             <div className="mb-6">
               <input
                 type="text"
