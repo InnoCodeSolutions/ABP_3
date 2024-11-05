@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-// Interface for Food in a Meal
+// Interface para Alimento utilizado em uma Refeição
 interface AlimentoNaRefeicao {
   id: string;
   preparacao: string;
@@ -44,16 +44,16 @@ interface AlimentoNaRefeicao {
   vitamina_c_mg: number;
 }
 
-// Interface for Meal
+// Interface para a Refeição
 interface Refeicao extends Document {
   tipo: string;
-  alimentos: AlimentoNaRefeicao[]; // Array of food items in the meal
-  createdAt?: Date; // Creation date
-  updatedAt?: Date; // Update date
-  nomePersonalizado?: string; // Optional personalized name field
+  alimentos: AlimentoNaRefeicao[]; // Array de comidas na refeição
+  createdAt?: Date; // Data de criação
+  updatedAt?: Date; // Data de atualização
+  nomePersonalizado?: string;  // Novo campo opcional
 }
 
-// Defining the RefeicaoSchema
+// Definição do RefeicaoSchema
 const RefeicaoSchema: Schema = new Schema(
   {
     tipo: {
@@ -68,6 +68,7 @@ const RefeicaoSchema: Schema = new Schema(
         message: 'O tipo de refeição não pode ser nulo ou vazio',
       },
     },
+    nomePersonalizado: { type: String }, // Campo opcional para nome personalizado
     alimentos: [
       {
         id: { type: String, required: true },
@@ -114,10 +115,10 @@ const RefeicaoSchema: Schema = new Schema(
     ],
   },
   {
-    timestamps: true, // Automatically manage createdAt and updatedAt
+    timestamps: true, // Habilita createdAt e updatedAt automaticamente
   }
 );
 
-// Exporting the Meal model
+// Exporta o modelo de Refeição
 const RefeicaoModel = mongoose.model<Refeicao>('Refeicao', RefeicaoSchema);
 export default RefeicaoModel;
