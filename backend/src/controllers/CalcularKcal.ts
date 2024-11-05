@@ -2,13 +2,21 @@ import { Request, Response } from 'express';
 import RefeicaoModel from '../models/Refeicao';
 import AlimentoModel from '../models/Alimento';
 
+function formatDate(date: Date): string {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
 // Classe Refeicao
 class Refeicao {
     // Método para adicionar um alimento a uma refeição específica
     public create = async (req: Request, res: Response): Promise<Response> => {
         try {
             const { refeicao, descricao } = req.body;
-            console.log("dados vindo do frontend",req.body);
+            console.log("dados vindo do frontend", req.body);
 
             // Verificação se o tipo de refeição não é nulo ou vazio
             if (!refeicao || refeicao.trim() === '') {
@@ -50,7 +58,7 @@ class Refeicao {
     
             // Filtra as refeições se um tipo for fornecido
             const refeicoesFiltradas = tipo
-                ? refeicoesEncontradas.filter(refeicao => 
+                ? refeicoesEncontradas.filter(refeicao =>
                     refeicao.tipo.toLowerCase().includes(tipo.toString().toLowerCase())
                 )
                 : refeicoesEncontradas; // Se não houver tipo, usa todas as refeições
@@ -58,6 +66,10 @@ class Refeicao {
             // Mapeia cada refeição para calcular as calorias totais e estruturar os dados
             const refeicoesComAlimentos = await Promise.all(refeicoesFiltradas.map(async (refeicao) => {
                 let totalCalorias = 0;
+                const alimentodata: any = refeicao.updatedAt; // Obtenha a data de atualização
+                const dataRefeicao = formatDate(alimentodata);
+                // Adicionando o console.log para mostrar alimentodata
+    
                 const alimentosComCalorias = refeicao.alimentos.map((alimento: any) => {
                     const {
                         lipidios,
@@ -68,7 +80,7 @@ class Refeicao {
                         caloriasCarboidrato,
                         totalCalorias: caloriasTotais
                     } = calcularCalorias(alimento.lipidios, alimento.proteina, alimento.carboidrato);
-                    
+    
                     totalCalorias += caloriasTotais;
     
                     return {
@@ -83,14 +95,13 @@ class Refeicao {
                         caloriasAlimento: alimento.energia, // Calorias do alimento como está no banco de dados
                     };
                 });
-    
                 return {
                     tipo: refeicao.tipo,
                     alimentos: alimentosComCalorias,
                     totalCaloriasRefeicao: totalCalorias,
+                    alimentodate: dataRefeicao, // Corrigido para chamar formatDate corretamente
                 };
             }));
-    
             // Se não houver refeições filtradas, retorna uma mensagem
             if (refeicoesComAlimentos.length === 0) {
                 return res.status(404).json({ message: `Nenhuma refeição encontrada para o tipo: "${tipo}"` });
@@ -101,6 +112,7 @@ class Refeicao {
             return res.status(500).json({ message: 'Erro ao listar alimentos', error: error.message || error });
         }
     }
+    
 
     // Método para deletar os alimentos que estão nas refeições criadas
     public async delete(req: Request, res: Response): Promise<Response> {
@@ -120,7 +132,7 @@ class Refeicao {
 
             // Busca novamente a refeição com alimentos atualizados para confirmar a remoção
             const refeicaoConfirmada = await RefeicaoModel.findOne({ tipo: refeicao }).populate('alimentos');
-            
+
             // Confirma se o alimento foi realmente removido
             const alimentoRemovido = !refeicaoConfirmada?.alimentos.some((alimento: any) => alimento.descricao === descricao);
             if (!alimentoRemovido) {

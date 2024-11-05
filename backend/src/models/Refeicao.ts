@@ -48,70 +48,74 @@ interface AlimentoNaRefeicao {
 interface Refeicao extends Document {
   tipo: string;
   alimentos: AlimentoNaRefeicao[]; // Array de objetos de Alimento diretamente na refeição
+  createdAt?: Date; // Data de criação
+  updatedAt?: Date; // Data de atualização
 }
 
 // Definição do RefeicaoSchema
-const RefeicaoSchema: Schema = new Schema({
-  tipo: {
-    type: String,
-    required: [true, 'O tipo de refeição é obrigatório'],
-    enum: {
-      values: ['cafeDaManha', 'almoco', 'cafeDaTarde', 'jantar'],
-      message: '{VALUE} não é um tipo de refeição válido'
+const RefeicaoSchema: Schema = new Schema(
+  {
+    tipo: {
+      type: String,
+      required: [true, 'O tipo de refeição é obrigatório'],
+      enum: {
+        values: ['cafeDaManha', 'almoco', 'cafeDaTarde', 'jantar'],
+        message: '{VALUE} não é um tipo de refeição válido',
+      },
+      validate: {
+        validator: (v: string) => v !== null && v.trim() !== '',
+        message: 'O tipo de refeição não pode ser nulo ou vazio',
+      },
     },
-    validate: {
-      validator: (v: string) => v !== null && v.trim() !== '',
-      message: 'O tipo de refeição não pode ser nulo ou vazio'
-    }
+    alimentos: [
+      {
+        id: { type: String, required: true },
+        preparacao: { type: String, required: true },
+        descricao: { type: String, required: true },
+        energia: { type: Number, required: true },
+        proteina: { type: Number, required: true },
+        lipidios: { type: Number, required: true },
+        carboidrato: { type: Number, required: true },
+        fibra_alimentar_g: { type: Number, required: true },
+        colesterol_mg: { type: Number, required: true },
+        agsaturado_g: { type: Number, required: true },
+        agmono_g: { type: Number, required: true },
+        agpoli_g: { type: Number, required: true },
+        aglinoleico_g: { type: Number, required: true },
+        aglinolenico_g: { type: Number, required: true },
+        agtranstotal_g: { type: Number, required: true },
+        acucartotal_g: { type: Number, required: true },
+        acucaradicao_g: { type: Number, required: true },
+        calcio_mg: { type: Number, required: true },
+        magnesio_mg: { type: Number, required: true },
+        manganes_mg: { type: Number, required: true },
+        fosforo_mg: { type: Number, required: true },
+        ferro_mg: { type: Number, required: true },
+        sodio_mg: { type: Number, required: true },
+        sodioadicao_mg: { type: Number, required: true },
+        potassio_mg: { type: Number, required: true },
+        cobre_mg: { type: Number, required: true },
+        zinco_mg: { type: Number, required: true },
+        selenio_mg: { type: Number, required: true },
+        retinol_mcg: { type: Number, required: true },
+        vitamina_a_mcg: { type: Number, required: true },
+        tiamina_mg: { type: Number, required: true },
+        riboflavina_mg: { type: Number, required: true },
+        niacina_mg: { type: Number, required: true },
+        niacina_ne_mg: { type: Number, required: true },
+        piridoxina_mg: { type: Number, required: true },
+        cobalamina_mg: { type: Number, required: true },
+        folato_mcg: { type: Number, required: true },
+        vitamina_d_mcg: { type: Number, required: true },
+        vitamina_e_mg: { type: Number, required: true },
+        vitamina_c_mg: { type: Number, required: true },
+      },
+    ],
+  },
+  {
+    timestamps: true, // Habilita createdAt e updatedAt automaticamente
   }
-  ,
-  alimentos: [
-    {
-      id: { type: String, required: true },
-      preparacao: { type: String, required: true },
-      descricao: { type: String, required: true },
-      energia: { type: Number, required: true },
-      proteina: { type: Number, required: true },
-      lipidios: { type: Number, required: true },
-      carboidrato: { type: Number, required: true },
-      fibra_alimentar_g: { type: Number, required: true },
-      colesterol_mg: { type: Number, required: true },
-      agsaturado_g: { type: Number, required: true },
-      agmono_g: { type: Number, required: true },
-      agpoli_g: { type: Number, required: true },
-      aglinoleico_g: { type: Number, required: true },
-      aglinolenico_g: { type: Number, required: true },
-      agtranstotal_g: { type: Number, required: true },
-      acucartotal_g: { type: Number, required: true },
-      acucaradicao_g: { type: Number, required: true },
-      calcio_mg: { type: Number, required: true },
-      magnesio_mg: { type: Number, required: true },
-      manganes_mg: { type: Number, required: true },
-      fosforo_mg: { type: Number, required: true },
-      ferro_mg: { type: Number, required: true },
-      sodio_mg: { type: Number, required: true },
-      sodioadicao_mg: { type: Number, required: true },
-      potassio_mg: { type: Number, required: true },
-      cobre_mg: { type: Number, required: true },
-      zinco_mg: { type: Number, required: true },
-      selenio_mg: { type: Number, required: true },
-      retinol_mcg: { type: Number, required: true },
-      vitamina_a_mcg: { type: Number, required: true },
-      tiamina_mg: { type: Number, required: true },
-      riboflavina_mg: { type: Number, required: true },
-      niacina_mg: { type: Number, required: true },
-      niacina_ne_mg: { type: Number, required: true },
-      piridoxina_mg: { type: Number, required: true },
-      cobalamina_mg: { type: Number, required: true },
-      folato_mcg: { type: Number, required: true },
-      vitamina_d_mcg: { type: Number, required: true },
-      vitamina_e_mg: { type: Number, required: true },
-      vitamina_c_mg: { type: Number, required: true },
-    }
-  ]
-}, {
-  timestamps: true // Habilita createdAt e updatedAt automaticamente
-});
+);
 
 // Exporta o modelo de Refeição
 const RefeicaoModel = mongoose.model<Refeicao>('Refeicao', RefeicaoSchema);
