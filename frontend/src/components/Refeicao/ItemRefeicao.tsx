@@ -3,7 +3,7 @@ import { Alimento, ItemRefeicaoProps } from "../../types";
 import ModalRefeicao from "./ModalRefeição";
 import { Button } from "../Button";
 
-const ItemRefeicao: React.FC<ItemRefeicaoProps> = ({ nomePersonalizado, tipo, alimentos, totalCaloriasRefeicao }) => {
+const ItemRefeicao: React.FC<ItemRefeicaoProps> = ({ alimentodate ,nomePersonalizado, tipo, alimentos, totalCaloriasRefeicao }) => {
     const [showModal, setShowModal] = useState(false);
 
     const toggleModal = () => setShowModal(!showModal);
@@ -16,7 +16,7 @@ const ItemRefeicao: React.FC<ItemRefeicaoProps> = ({ nomePersonalizado, tipo, al
 
     return (
         <div className="bg-white rounded-lg shadow p-2 mb-2">
-            <h2 className="font-bold text-xl mb-1"> - {nomePersonalizado}</h2> {/* Fallback aqui */}
+            <h2 className="font-bold text-xl mb-1"> - {nomePersonalizado} - ({alimentodate})</h2> {/* Fallback aqui */}
             <h3 className="text-md text-gray-700 mb-2">
                 {tipo} | Total de Calorias: <span className="font-semibold">{totalCaloriasRefeicao.toFixed(2)} kcal</span>
             </h3>

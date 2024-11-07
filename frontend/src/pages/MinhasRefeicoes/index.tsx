@@ -15,6 +15,7 @@ const RefeicaoPage: React.FC = () => {
                 if (Array.isArray(response)) {
                     const refeicoesFormatadas = response.map((refeicao) => ({
                         refeicao: refeicao.tipo,
+                        alimentodate :refeicao.alimentodate,
                         nomePersonalizado: refeicao.nomePersonalizado || 'Nome da refeição não informado',
                         totalCaloriasRefeicao: refeicao.totalCaloriasRefeicao,
                         alimentos: refeicao.alimentos.map((alimento: ItemAlimentoBackendProps) => ({
@@ -56,6 +57,7 @@ const RefeicaoPage: React.FC = () => {
                                 <ItemRefeicao
                                     key={refeicao.refeicao}
                                     tipo={refeicao.refeicao}
+                                    alimentodate = {refeicao.alimentodate}
                                     nomePersonalizado={refeicao.nomePersonalizado} // Verifique se `nomePersonalizado` é passado
                                     alimentos={refeicao.alimentos}
                                     totalCaloriasRefeicao={refeicao.totalCaloriasRefeicao}

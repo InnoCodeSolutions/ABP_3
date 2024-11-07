@@ -22,6 +22,7 @@ export interface AlimentosApiResposta {
 }
 
 export interface RefeicoesApiResposta {
+    alimentodate: string;
     refeicao: string;
     alimentos: Alimento[];
     totalCaloriasRefeicao: number;
@@ -48,4 +49,5 @@ export interface ItemRefeicaoProps {
     alimentos: Alimento[]; // Lista de alimentos
     totalCaloriasRefeicao: number; // Total de calorias da refeição
     nomePersonalizado?: string;
+    alimentodate: string;
 }
