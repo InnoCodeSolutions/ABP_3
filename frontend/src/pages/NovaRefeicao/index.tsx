@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import buscaAlimento from '../../services/Alimentos';
 import refeicaoService from '../../services/Refeicao';
@@ -16,6 +17,8 @@ interface FoodData {
 }
 
 const NovaRefeicao: React.FC = () => {
+  const navigate = useNavigate();
+  
   const [mealType, setMealType] = useState<string | null>(null);
   const [mealName, setMealName] = useState<string>('');
   const [selectedFoods, setSelectedFoods] = useState<Food[]>([]);
@@ -24,7 +27,6 @@ const NovaRefeicao: React.FC = () => {
   const [foodOptions, setFoodOptions] = useState<Food[]>([]);
   const [allFoods, setAllFoods] = useState<Food[]>([]);
 
-  // Definindo `mealImages` antes do uso no JSX
   const mealImages: { [key: string]: string } = {
     'Café da Manhã': '/img/cafeDaManha.png',
     Almoço: '/img/almoco.png',
@@ -72,7 +74,6 @@ const NovaRefeicao: React.FC = () => {
     }
   }, [searchQuery, allFoods]);
 
-  // Definindo `handleFinalizeMeal` antes do uso no JSX
   const handleFinalizeMeal = useCallback(async () => {
     try {
       for (const food of selectedFoods) {
@@ -196,12 +197,25 @@ const NovaRefeicao: React.FC = () => {
                   </li>
                 ))}
               </ul>
-              <button
-                className="px-4 py-2 bg-blue-500 text-white rounded"
-                onClick={() => setShowConfirmation(false)}
-              >
-                Fechar
-              </button>
+              <div className="flex justify-center space-x-4">
+                <button
+                  className="px-4 py-2 bg-blue-500 text-white rounded"
+                  onClick={() => {
+                    setShowConfirmation(false);
+                    setMealType(null);
+                    setMealName('');
+                    setSelectedFoods([]);
+                  }}
+                >
+                  Cadastrar Nova Refeição
+                </button>
+                <button
+                  className="px-4 py-2 bg-gray-500 text-white rounded"
+                  onClick={() => navigate('/Home')}
+                >
+                  Voltar para Home
+                </button>
+              </div>
             </div>
           </div>
         )}

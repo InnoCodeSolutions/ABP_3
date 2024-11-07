@@ -31,7 +31,8 @@ const ItemRefeicao: React.FC<ItemRefeicaoProps> = ({ alimentodate ,nomePersonali
                                         Lipídios: {alimento.lipidios.toFixed(2)}g |
                                         Proteína: {alimento.proteina.toFixed(2)}g |
                                         Carboidrato: {alimento.carboidrato.toFixed(2)}g |
-                                        Total Calorias: {alimento.totalCalorias.toFixed(2)} kcal
+                                        Total Calorias: {alimento.totalCalorias.toFixed(2)} kcal |
+                                        Data Consumo : {alimentodate}
                                     </p>
                                 </div>
                             </li>

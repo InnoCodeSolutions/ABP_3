@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import InputCampo from "./InputCampo";
 import SelectCampo from "./SelectCampo";
-import Perfil from "../../services/Perfil"
+import Perfil from "../../services/Perfil";
 import { Button } from "../Button";
 
 const Formulario: React.FC = () => {
@@ -102,7 +102,7 @@ const Formulario: React.FC = () => {
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100 p-8">
             <form
-                className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
+                className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md border border-gray-300"
                 onSubmit={handleSubmit}
             >
                 <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">

@@ -93,9 +93,13 @@ const Home: React.FC = () => {
           peso: peso,
           classificacao: classificacao
         });
+        if (classificacao === '') {
+          navigate('/Cadastro');
+        };
       })
       .catch(error => {
         console.error('Erro ao buscar os dados do perfil:', error.message);
+        navigate('/Cadastro');
       });
   }, [navigate]);
 
