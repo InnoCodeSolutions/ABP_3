@@ -129,7 +129,7 @@ const Formulario: React.FC = () => {
                 {errors.nome && <p className="text-red-500 text-sm mt-1">{errors.nome}</p>}
 
                 <InputCampo
-                    label="Insira aqui o seu peso (em kg)"
+                    label="Insira aqui o seu peso (em kg) - Ex: 79.24"
                     name="peso"
                     value={formData.peso}
                     onChange={handleChange}
@@ -139,7 +139,7 @@ const Formulario: React.FC = () => {
                 {errors.peso && <p className="text-red-500 text-sm mt-1">{errors.peso}</p>}
 
                 <InputCampo
-                    label="Insira aqui a sua altura (em centímetros)"
+                    label="Insira aqui a sua altura (em centímetros) - Ex: 180"
                     name="altura"
                     value={formData.altura}
                     onChange={handleChange}

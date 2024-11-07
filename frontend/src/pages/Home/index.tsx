@@ -118,7 +118,7 @@ const Home: React.FC = () => {
               <div className="flex justify-center pt-2">
                 <img src="/img/calculadora-de-calorias.png" width="100" height="100" />
               </div>
-              <p className="text-lg text-gray-600">{userData.tmb} kcal/dia</p>
+              <p className="text-lg text-gray-600">{userData.tmb.toFixed(2)} kcal/dia</p>
             </div>
             <div className="p-4 bg-white bg-opacity-90 rounded-lg shadow-lg hover:shadow-xl transition-transform transform hover:-translate-y-2">
               <h2 className="text-xl font-semibold text-gray-800">IMC</h2>

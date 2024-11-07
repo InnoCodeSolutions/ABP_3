@@ -4,20 +4,20 @@ import { Button } from '../Button';
 
 interface LoginFormProps {
   onLogin: (mail: string, password: string) => void;
-  onRegister: (mail: string, password: string, name: string,lastName: string) => void;
+  onRegister: (mail: string, password: string) => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onRegister }) => {
   const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
+  // const [name, setName] = useState('');
+  // const [lastName, setLastName] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isRegistering) {
-      onRegister(mail, password, name,lastName);
+      onRegister(mail, password);
     } else {
       onLogin(mail, password);
     }
@@ -49,7 +49,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onRegister }) => {
 
               {isRegistering ? (
                 <>
-                  <div className="flex space-x-2 mb-2">
+                  {/* <div className="flex space-x-2 mb-2">
                     <input
                       type="text"
                       placeholder="Nome"
@@ -64,7 +64,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onRegister }) => {
                       onChange={(e) => setLastName(e.target.value)}
                       className="w-1/2 p-2 border border-gray-300 rounded-md"
                     />
-                  </div>
+                  </div> */}
                   <div className="mb-4">
                     <input
                       type="text"
