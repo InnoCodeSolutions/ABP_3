@@ -11,6 +11,7 @@ const buttonVariants = tv({
             pesquisar: 'bg-zinc-800 text-zinc-200 hover:bg-zinc-700 ml-2',
             transparent: 'bg-transparent text-lime-950 hover:bg-zinc-800 hover:text-zinc-200 font-nort',
             redonded: 'bg-transparent text-lime-950 hover:bg-zinc-800 hover:text-zinc-200 font-nort rounded-full ml-2',
+            done: 'bg-zinc-800 text-zinc-200 font-nort hover:bg-white hover:text-lime-950',
         },
 
         size: {

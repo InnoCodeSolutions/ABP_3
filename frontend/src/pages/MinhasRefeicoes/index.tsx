@@ -8,6 +8,7 @@ const RefeicaoPage: React.FC = () => {
     const [refeicoes, setRefeicoes] = useState<RefeicoesApiResposta[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+
     useEffect(() => {
         const fetchRefeicoes = async () => {
             try {
@@ -15,7 +16,7 @@ const RefeicaoPage: React.FC = () => {
                 if (Array.isArray(response)) {
                     const refeicoesFormatadas = response.map((refeicao) => ({
                         refeicao: refeicao.tipo,
-                        alimentodate :refeicao.alimentodate,
+                        alimentodate: refeicao.alimentodate,
                         nomePersonalizado: refeicao.nomePersonalizado || 'Nome da refeição não informado',
                         totalCaloriasRefeicao: refeicao.totalCaloriasRefeicao,
                         alimentos: refeicao.alimentos.map((alimento: ItemAlimentoBackendProps) => ({
@@ -34,45 +35,43 @@ const RefeicaoPage: React.FC = () => {
                 setLoading(false);
             }
         };
-    
+
         fetchRefeicoes();
     }, []);
-    
-    
 
     return (
-        <div className="min-h-screen bg-gray-80">
+        <div className="min-h-screen bg-gray-100">
             <Header />
             <main className="flex items-center justify-center pt-16 pb-16">
-                <div className="bg-white bg-opacity-80 rounded-lg shadow-lg p-8 w-full max-w-4xl">
-                    <h1 className="text-3xl font-semibold text-gray-800 pb-8">Minhas Refeições</h1>
+                <div className="bg-white bg-opacity-90 rounded-lg shadow-lg p-10 w-full max-w-5xl">
+                    <h1 className="text-4xl font-semibold text-gray-800 pb-8 text-center">Minhas Refeições</h1>
 
                     {loading ? (
-                        <div className="text-gray-600">Carregando...</div>
+                        <div className="text-gray-600 text-center">Carregando...</div>
                     ) : error ? (
-                        <div className="text-red-600">{error}</div>
+                        <div className="text-red-600 text-center">{error}</div>
                     ) : refeicoes.length > 0 ? (
-                        <div className="max-h-[60vh] overflow-y-auto">
+                        <div className="grid grid-cols-1 md:grid-cols-1 gap-6 max-h-[70vh] overflow-y-auto">
                             {refeicoes.map((refeicao) => (
                                 <ItemRefeicao
                                     key={refeicao.refeicao}
                                     tipo={refeicao.refeicao}
-                                    alimentodate = {refeicao.alimentodate}
                                     nomePersonalizado={refeicao.nomePersonalizado} // Verifique se `nomePersonalizado` é passado
                                     alimentos={refeicao.alimentos}
                                     totalCaloriasRefeicao={refeicao.totalCaloriasRefeicao}
+                                    alimentodate={refeicao.alimentodate}
                                 />
                             ))}
                         </div>
                     ) : (
-                        <div className="text-gray-600">Nenhuma refeição encontrada.</div>
+                        <div className="text-gray-600 text-center">Nenhuma refeição encontrada.</div>
                     )}
 
-                    <div className="flex justify-center items-center pt-3">
-                        <h1 className="text-md text-gray-800">
-                            Precisa Cadastrar sua Refeição? Cadastre-os 
-                            <a href="/novarefeicao" className="text-blue-600 hover:underline"> aqui</a>
-                        </h1>
+                    <div className="flex justify-center items-center pt-8">
+                        <h2 className="text-lg text-gray-800">
+                            Precisa cadastrar sua refeição? Cadastre-a 
+                            <a href="/novarefeicao" className="text-blue-600 hover:underline ml-1">aqui</a>
+                        </h2>
                     </div>
                 </div>
             </main>

@@ -50,5 +50,6 @@ export interface ItemRefeicaoProps {
     totalCaloriasRefeicao: number; // Total de calorias da refeição
     nomePersonalizado?: string;
     alimentodate: string;
+    onClose?: () => void;
     
 }
