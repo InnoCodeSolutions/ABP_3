@@ -116,8 +116,8 @@ tela de edição de dados pessoais, para cálculo da Taxa Metabólica Basal.</p>
 | :--:   | :-----------:  | :--------: |
 | **02** | Dashboard de Consumo Calórico  | Alta |
 | **02** | Sincronização de com aplicativo de exercício | Média |
-| **02** | Disparos de Alertas  Média |
-| **02** | Histórico consumo  Alta |
+| **02** | Disparos de Alertas  | Média |
+| **02** | Histórico consumo  | Alta |
 
 
 [Assista ao vídeo de demonstração aqui](https://www.youtube.com/watch?v=9zNIedji9bk)
