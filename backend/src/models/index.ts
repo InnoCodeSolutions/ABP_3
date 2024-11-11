@@ -23,17 +23,7 @@ const UserSchema = new Schema({
     maxlength: [10, "A senha pode ter no máximo 10 caracteres"],
     select: false,
     required: [true, "A senha é obrigatória"],
-  },
-  name: {
-    type: String,
-    trim: true,
-    required: [true, "O nome é obrigatório"],
-  },  
-  lastName: {
-    type: String,
-    trim: true,
-    required: [true, "O sobrenome é obrigatório"],
-  },
+  }
 });
 
 const PerfilSchema = new Schema({
