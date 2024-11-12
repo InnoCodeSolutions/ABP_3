@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import InputCampo from "./InputCampo";
 import SelectCampo from "./SelectCampo";
-import Perfil from "../../services/Perfil"
+import Perfil from "../../services/Perfil";
 import { Button } from "../Button";
 
 const Formulario: React.FC = () => {
@@ -102,7 +102,7 @@ const Formulario: React.FC = () => {
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100 p-8">
             <form
-                className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
+                className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md border border-gray-300"
                 onSubmit={handleSubmit}
             >
                 <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
@@ -129,7 +129,7 @@ const Formulario: React.FC = () => {
                 {errors.nome && <p className="text-red-500 text-sm mt-1">{errors.nome}</p>}
 
                 <InputCampo
-                    label="Insira aqui o seu peso (em kg)"
+                    label="Insira aqui o seu peso (em kg) - Ex: 79.24"
                     name="peso"
                     value={formData.peso}
                     onChange={handleChange}
@@ -139,7 +139,7 @@ const Formulario: React.FC = () => {
                 {errors.peso && <p className="text-red-500 text-sm mt-1">{errors.peso}</p>}
 
                 <InputCampo
-                    label="Insira aqui a sua altura (em centímetros)"
+                    label="Insira aqui a sua altura (em centímetros) - Ex: 180"
                     name="altura"
                     value={formData.altura}
                     onChange={handleChange}

@@ -1,62 +1,51 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-// define os schemas
+// Define os schemas
 const UserSchema = new Schema({
   mail: {
     type: String,
-    maxlength: [50, "O e-mail pode ter no máximo 30 caracteres"],
+    maxlength: [50, "O e-mail pode ter no máximo 50 caracteres"], // Corrigido para 50 caracteres
     unique: true,
     required: [true, "O e-mail é obrigatório"],
     validate: {
       validator: function (value: string) {
-        // expressão regular para validar o formato do e-mail
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expressão regular para validar o formato do e-mail
         return regex.test(value);
       },
-      message: (props: any) =>
-        `${props.value} não é um formato de e-mail válido`,
+      message: (props: any) => `${props.value} não é um formato de e-mail válido`,
     },
   },
   password: {
     type: String,
     trim: true,
     minlength: [6, "A senha precisa ter no mínimo 6 caracteres"],
-    maxlength: [10, "A senha precisa ter no máximo 10 caracteres"],
+    maxlength: [10, "A senha pode ter no máximo 10 caracteres"],
     select: false,
     required: [true, "A senha é obrigatória"],
-  },
-  name: {
-    type: String,
-    trim: true,
-    select: false,
-  required: [true, "O nome é obrigatório"],
-  },  
-  lastName: {
-    type: String,
-    trim: true,
-    select: false,
-    required: [true, "O sobrenome é obrigatório"],
   }
-
 });
 
-// mongoose.model compila o modelo
 const PerfilSchema = new Schema({
   mail: {
     type: String,
-    maxlength: [50, "O e-mail pode ter no máximo 30 caracteres"],
+    maxlength: [50, "O e-mail pode ter no máximo 50 caracteres"], // Corrigido para 50 caracteres
     unique: true,
     required: [true, "O e-mail é obrigatório"],
     validate: {
       validator: function (value: string) {
-        // expressão regular para validar o formato do e-mail
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expressão regular para validar o formato do e-mail
         return regex.test(value);
       },
-      message: (props: any) =>
-        `${props.value} não é um formato de e-mail válido`,
-    }},
+      message: (props: any) => `${props.value} não é um formato de e-mail válido`,
+    },
+  },
+  nome: { // Nome do usuário para ser exibido no dashboard
+    type: String,
+    required: [true, "O nome é obrigatório"],
+    maxlength: [50, "O nome pode ter no máximo 50 caracteres"],
+    trim: true,
+  },
   peso: {
     type: Number, // Alterado para Number para representar pesos de forma mais apropriada
     required: [true, "O peso é obrigatório"],
@@ -86,12 +75,9 @@ const PerfilSchema = new Schema({
     max: [12, "A Genero deve ser um valor razoável (0-30)"], // Validação para garantir que a idade esteja dentro de um intervalo razoável
   },
   tmb: { type: Number, required: true }
-})
+});
 
-
-
-// mongoose.model compila o modelo
+// Compila os modelos
 const User = mongoose.model("User", UserSchema);
-const Perfil = mongoose.model("Perfil", PerfilSchema)
-export { Perfil,User};
-
+const Perfil = mongoose.model("Perfil", PerfilSchema);
+export { Perfil, User };

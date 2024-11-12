@@ -1,44 +1,63 @@
 import api from "../api/axios";
-import { AlimentosApiResposta, ErrorProps, ItemAlimentoBackendProps } from "../types";
+import { RefeicoesApiResposta, ErrorProps, RefeicaoRequest } from "../types";
 
-class Alimento {
-    async buscaAlimento(query: string = "", page: number = 1, pageSize: number = 2000): Promise<AlimentosApiResposta | ErrorProps> {
+class Refeicao {
+
+    async buscarRefeicoes(): Promise<RefeicoesApiResposta | ErrorProps> {
         try {
             const token = localStorage.getItem("authToken");
-            // Realiza a requisição GET com o token no header
-            const { data } = await api.get(`/alimento?q=${query}`, {
+
+            const { data } = await api.get(`/Refeicao`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
 
-            console.log("Dados da API:", data);
-            return data; 
-        } catch (error: any) {
-            console.error("Erro ao buscar alimento:", error.message);
-            return { erro: error.message }; 
-        }
-    }
-
-    async adicionarAlimento(alimentoData: ItemAlimentoBackendProps): Promise<AlimentosApiResposta | ErrorProps> {
-        try {
-            const token = localStorage.getItem("authToken");
-
-            const { data } = await api.post(`/refeicao`, alimentoData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            console.log("Alimento adicionado:", data);
+            console.log("Dados das refeições da API:", data);
             return data;
         } catch (error: any) {
-            console.error("Erro ao adicionar alimento:", error.message);
+            console.error("Erro ao buscar refeições:", error.message);
             return { erro: error.message };
         }
     }
 
+
+    async adicionarRefeicao(refeicaoData: RefeicaoRequest): Promise<RefeicoesApiResposta | ErrorProps> {
+        try {
+            const token = localStorage.getItem("authToken");
+
+            const { data } = await api.post(`/Refeicao`, refeicaoData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            console.log("Refeição adicionada:", data);
+            return data;
+        } catch (error: any) {
+            console.error("Erro ao adicionar refeição:", error.message);
+            return { erro: error.message };
+        }
+    }
+
+    async deletarRefeicao(id: string): Promise<RefeicoesApiResposta | ErrorProps> {
+        try {
+            const token = localStorage.getItem("authToken");
+
+            const { data } = await api.delete(`/Refeicao/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            console.log("Refeição deletada:", data);
+            return data;
+        } catch (error: any) {
+            console.error("Erro ao deletar refeição:", error.message);
+            return { erro: error.message };
+        }
+    }
 }
 
-const buscaAlimento = new Alimento();
-export default buscaAlimento;
+const refeicaoService = new Refeicao();
+export default refeicaoService;

@@ -114,10 +114,10 @@ tela de edição de dados pessoais, para cálculo da Taxa Metabólica Basal.</p>
 
 | Sprint | Funcionalidade | Prioridade |
 | :--:   | :-----------:  | :--------: |
-| **02** | Dashboard de Consumo Calórico | US18 | Alta |
-| **02** | Sincronização de com aplicativo de exercício| US19 | Média |
-| **02** | Disparos de Alertas | US20 | Média |
-| **02** | Histórico consumo | US21 | Alta |
+| **02** | Dashboard de Consumo Calórico  | Alta |
+| **02** | Sincronização de com aplicativo de exercício | Média |
+| **02** | Disparos de Alertas  | Média |
+| **02** | Histórico consumo  | Alta |
 
 
 [Assista ao vídeo de demonstração aqui](https://www.youtube.com/watch?v=9zNIedji9bk)
@@ -147,9 +147,43 @@ tela de edição de dados pessoais, para cálculo da Taxa Metabólica Basal.</p>
 | Subtarefa  | Criação da Tela para adicionar as informações para cálculo de Taxa Metabólica Basal |
 | Subtarefa  | Criação da rota no backend para cadastro das informações e o cálculo das calorias |
 </details>
-<details>
+
+<details>    
 <summary><h2>Sprint 3</h2></summary>
 <p>Focada para proporcionar ao usuário uma experiência completa e personalizada de gestão de metas de saúde e nutrição.</p>
+<b>Sprint Backlog</b>
+    
+| Sprint | Funcionalidade | Prioridade |
+| :--:   | :-----------:  | :--------: |
+| **03** |  Cadastro de Metas  | Média |
+| **03** | Listagem de Metas  | Média |
+| **03** | Alteração de Metas | Média|
+| **03** | Exclusão de Metas  | Média |
+| **03** | Customização de Interface  | Baixa |
+| **03** | Relatório Personalizado com Base nas Refeições/Consumo Calórico | Média |
+
+## Gráfico de Burndown
+![Gráfico de Burndown](docs/burndown_spt3.PNG)
+
+<h2>Tarefas</h2>
+<p>Seguindo a diretriz do projeto da utilização de épico,User Story, tarefas e subtarefas</p>
+<p>Para a finalização na Sprint 3, os esforços foram focados para desenvolver a tela de refeição e seu histórico de refeições realizadas, com a busca de alimentos integrada no backend, assim como ajustes no experiência do usuário.</p>
+
+| Tipo       | Descrição |
+| :--:       | :--------:| 
+| Épico      | Criação das Interfaces de Nova Refeição e Minhas Refeições |
+| User Story | Acesso ao histórico de refeições realizadas, assim como criação de nova refeição |
+| Subtarefa  | Criação da Tela para adicionar Refeições, com a busca de alimentos integrado ao backend |
+| Subtarefa  | Busca de alimentos do banco de dados disponível na tela de montagem de refeição |
+| Subtarefa  | Integração da tela de Minhas Refeições com o backend para acessar as refeições gravadas |
+| Subtarefa  | Filtragem de refeições gravadas, assim como a gravação de data da realização |
+
+| Tipo       | Descrição |
+| :--:       | :--------:|
+| Épico      | Alerta na página principal sobre dados da saúde do usuário |
+| User Story | Exibição de alertas sobre consumo calórico e IMC do usuário  |
+| Subtarefa  | Integração dos indicadores no dashboard inicial para exibir o estado de saúde do usuário|
+
 
 [Link para o design no Figma](https://www.figma.com/design/UkagBqobEihk0MpPQKeJ6N/Untitled?node-id=0-1&node-type=canvas)
 

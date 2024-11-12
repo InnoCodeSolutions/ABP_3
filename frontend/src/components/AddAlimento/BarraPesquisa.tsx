@@ -57,14 +57,6 @@ const BarraPesq: React.FC<BarraPesquisaProps> = ({ onSearch, onCancel, onAdd }) 
                 Pesquisar
             </Button>
 
-            <Button 
-                variant='redonded' 
-                size='default'
-                onClick={onAdd} 
-                className="text-black font-semibold ml-4"
-            >
-                +
-            </Button>
         </div>
     );
 };

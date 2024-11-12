@@ -1,56 +1,65 @@
-import React from "react";
+import React, { useState } from "react";
+import { Alimento, ItemRefeicaoProps } from "../../types";
+import ModalRefeicao from "./ModalRefeição";
+import { Button } from "../Button";
 
-interface Alimento {
-    id: number; // ID do alimento
-    descricao: string; // Descrição do alimento
-    lipidios: number; // Quantidade de lipídios
-    proteina: number; // Quantidade de proteína
-    carboidrato: number; // Quantidade de carboidratos
-    totalCalorias: number; // Total de calorias do alimento
-    tipo: string; // Tipo do alimento
-}
+const ItemRefeicao: React.FC<ItemRefeicaoProps> = ({ alimentodate, nomePersonalizado, tipo, alimentos, totalCaloriasRefeicao }) => {
+    const [showModal, setShowModal] = useState(false);
 
-interface ItemRefeicaoProps {
-    tipo: string; // Tipo da refeição
-    alimentos: Alimento[]; // Lista de alimentos
-    totalCaloriasRefeicao: number; // Total de calorias da refeição
-}
+    const toggleModal = () => setShowModal(!showModal);
 
-const ItemRefeicao: React.FC<ItemRefeicaoProps> = ({ tipo, alimentos, totalCaloriasRefeicao }) => {
-    // Agrupando alimentos por tipo
     const alimentosPorTipo = alimentos.reduce((acc: Record<string, Alimento[]>, alimento) => {
         acc[alimento.tipo] = acc[alimento.tipo] || [];
         acc[alimento.tipo].push(alimento);
         return acc;
-    }, {});
+    }, {} as Record<string, Alimento[]>);
 
     return (
-        <div className="bg-white rounded-lg shadow p-2 mb-2"> {/* Ajuste no padding e margin */}
-            <h2 className="font-bold text-xl mb-1"> - {tipo}</h2> {/* Exibe o tipo da refeição */}
-            <h3 className="text-md text-gray-700 mb-2">
-                Total de Calorias: <span className="font-semibold">{totalCaloriasRefeicao} kcal</span>
+        <div className="bg-white rounded-lg shadow p-2 m-4">
+            <h2 className="font-bold text-xl mb-1 flex justify-between">
+                <div>{nomePersonalizado}</div> 
+            </h2>
+            <h3 className="text-md text-gray-700 mb-2 flex justify-between">
+                <div>{tipo} | Total de Calorias: <span className="font-semibold">{totalCaloriasRefeicao.toFixed(2)} kcal</span></div>
+                <div className="text-gray-700 ">Criado em: <span className="font-semibold">{alimentodate}</span></div>
             </h3>
             {Object.entries(alimentosPorTipo).map(([tipoAlimento, alimentos]) => (
                 <div key={tipoAlimento} className="mb-2">
-                    <ul className="mt-2">
-                        {alimentos.length > 0 ? (
-                            alimentos.map((alimento) => (
-                                <li key={alimento.id} className="border-b py-2 flex justify-between items-center"> {/* Adicione uma key única aqui */}
-                                    <span className="font-semibold text-gray-800">{alimento.descricao}</span>
-                                    <span className="text-gray-600">
-                                        Lipídios: {alimento.lipidios}g | 
-                                        Proteína: {alimento.proteina}g | 
-                                        Carboidrato: {alimento.carboidrato}g | 
-                                        Total Calorias: {alimento.totalCalorias} kcal
-                                    </span>
-                                </li>
-                            ))
-                        ) : (
-                            <li className="py-2 text-gray-600">Nenhum alimento encontrado.</li>
+                    <ul className="mb-2">
+                        {alimentos.slice(0, 3).map((alimento) => (
+                            <li key={alimento.id} className="border-b py-2">
+                                <span className="font-semibold text-gray-800">{alimento.descricao}</span>
+                                <div className="text-gray-600">
+                                    <p>
+                                        Lipídios: {alimento.lipidios.toFixed(2)}g |
+                                        Proteína: {alimento.proteina.toFixed(2)}g |
+                                        Carboidrato: {alimento.carboidrato.toFixed(2)}g |
+                                        Total Calorias: {alimento.totalCalorias.toFixed(2)} kcal
+                                    </p>
+                                </div>
+                            </li>
+                        ))}
+                        {alimentos.length > 0 && (
+                            <div className="pt-2 flex justify-end">
+                                <Button onClick={toggleModal} variant="secondary" size="full" >
+                                    Ver mais
+                                </Button>
+                            </div>
                         )}
                     </ul>
                 </div>
             ))}
+
+            {showModal && (
+                <ModalRefeicao
+                    tipo={tipo}
+                    alimentos={alimentos}
+                    onClose={toggleModal} 
+                    totalCaloriasRefeicao={totalCaloriasRefeicao}
+                    alimentodate={alimentodate}     
+                    nomePersonalizado={nomePersonalizado}     
+                 />
+            )}
         </div>
     );
 };

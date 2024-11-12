@@ -1,60 +1,77 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
 import ItemRefeicao from "../../components/Refeicao/ItemRefeicao";
-import axios from "axios";
+import refeicaoService from "../../services/Refeicao";
+import { RefeicoesApiResposta, Alimento, ItemAlimentoBackendProps } from "../../types";
 
 const RefeicaoPage: React.FC = () => {
-    // Estado para armazenar a lista de refeições e o estado de carregamento
-    const [refeicoes, setRefeicoes] = useState<any[]>([]); // Mudamos para um array
+    const [refeicoes, setRefeicoes] = useState<RefeicoesApiResposta[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        // Função para buscar as refeições
         const fetchRefeicoes = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/refeicao');
-                console.log(response.data); // Verifique os dados recebidos
-                setRefeicoes(response.data); // Define a lista de refeições recebida
+                const response = await refeicaoService.buscarRefeicoes();
+                if (Array.isArray(response)) {
+                    const refeicoesFormatadas = response.map((refeicao) => ({
+                        refeicao: refeicao.tipo,
+                        alimentodate: refeicao.alimentodate,
+                        nomePersonalizado: refeicao.nomePersonalizado || 'Nome da refeição não informado',
+                        totalCaloriasRefeicao: refeicao.totalCaloriasRefeicao,
+                        alimentos: refeicao.alimentos.map((alimento: ItemAlimentoBackendProps) => ({
+                            ...alimento,
+                            id: alimento.descricao, // Gera um ID único com base em 'descricao'
+                            totalCalorias: alimento.totalCalorias, // Usa 'totalCalorias' da resposta da API
+                        })) as Alimento[],
+                    }));
+                    setRefeicoes(refeicoesFormatadas);
+                } else {
+                    setError("Erro ao buscar as refeições. Tente novamente.");
+                }
             } catch (error) {
-                console.error('Erro ao buscar as refeições:', error);
-                setRefeicoes([]); // Em caso de erro, garante que o estado das refeições seja um array vazio
+                setError("Erro ao buscar as refeições. Tente novamente.");
             } finally {
-                setLoading(false); // Atualiza o estado de carregamento
+                setLoading(false);
             }
         };
 
-        fetchRefeicoes(); // Chama a função para buscar as refeições
+        fetchRefeicoes();
     }, []);
 
     return (
-        <div className="min-h-screen bg-gray-80">
+        <div className="min-h-screen bg-gray-100">
             <Header />
             <main className="flex items-center justify-center pt-16 pb-16">
-                <div className="bg-white bg-opacity-80 rounded-lg shadow-lg p-8 w-full max-w-4xl">
-                    <h1 className="text-3xl font-semibold text-gray-800 pb-8">Minhas Refeições</h1>
+                <div className="bg-white bg-opacity-90 rounded-lg shadow-lg p-10 w-full max-w-5xl">
+                    <h1 className="text-4xl font-semibold text-gray-800 pb-8 text-center">Minhas Refeições</h1>
 
                     {loading ? (
-                        <div className="text-gray-600">Carregando...</div>
+                        <div className="text-gray-600 text-center">Carregando...</div>
+                    ) : error ? (
+                        <div className="text-red-600 text-center">{error}</div>
                     ) : refeicoes.length > 0 ? (
-                        <div className="max-h-[60vh] overflow-y-auto"> {/* Container com overflow */}
+                        <div className="grid grid-cols-1 md:grid-cols-1 gap-6 max-h-[70vh] overflow-y-auto">
                             {refeicoes.map((refeicao) => (
                                 <ItemRefeicao
-                                    key={refeicao.id} // Adicione uma chave única
-                                    tipo={refeicao.tipo} // Passando o tipo da refeição
-                                    alimentos={refeicao.alimentos} // Passando a lista de alimentos
-                                    totalCaloriasRefeicao={refeicao.totalCaloriasRefeicao} // Passando o total de calorias da refeição
+                                    key={refeicao.refeicao}
+                                    tipo={refeicao.refeicao}
+                                    nomePersonalizado={refeicao.nomePersonalizado} // Verifique se `nomePersonalizado` é passado
+                                    alimentos={refeicao.alimentos}
+                                    totalCaloriasRefeicao={refeicao.totalCaloriasRefeicao}
+                                    alimentodate={refeicao.alimentodate}
                                 />
                             ))}
                         </div>
                     ) : (
-                        <div className="text-gray-600">Nenhuma refeição encontrada.</div>
+                        <div className="text-gray-600 text-center">Nenhuma refeição encontrada.</div>
                     )}
 
-                    <div className="flex justify-center items-center pt-3">
-                        <h1 className="text-md text-gray-800">
-                            Precisa Cadastrar sua Refeição? Cadastre-os 
-                            <a href="/novarefeicao" className="text-blue-600 hover:underline"> aqui</a>
-                        </h1>
+                    <div className="flex justify-center items-center pt-8">
+                        <h2 className="text-lg text-gray-800">
+                            Precisa cadastrar sua refeição? Cadastre-a 
+                            <a href="/novarefeicao" className="text-blue-600 hover:underline ml-1">aqui</a>
+                        </h2>
                     </div>
                 </div>
             </main>
