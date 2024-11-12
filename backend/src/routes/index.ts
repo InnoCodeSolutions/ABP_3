@@ -26,7 +26,7 @@ const authController = new AuthController(authService);
 // Rotas que não requerem autenticação
 routes.use('/cadastro', userRoutes); // Cadastro de usuários
 routes.post('/login', login); // Rota de login
-routes.use('/Refeicao', Refeicao);
+routes.use('/refeicao', Refeicao);
 
 // Rotas que requerem autenticação
 routes.use('/perfil',authMiddleware, perfilRoutes); // Perfil do usuário

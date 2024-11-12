@@ -5,6 +5,7 @@ import CadastroPage from '../pages/Cadastro';
 import AddAlimentoPage from '../pages/AddAlimento';
 import NovaRefeicao from '../pages/NovaRefeicao';
 import Home from '../pages/Home';
+import RefeicaoPage from '../pages/MinhasRefeicoes';
 
 const AppRoutes: React.FC = () => {
     return (
@@ -26,6 +27,10 @@ const AppRoutes: React.FC = () => {
             <Route
                 path="/novarefeicao"
                 element={<NovaRefeicao />} />
+
+            <Route
+                path="/refeicao"
+                element={<RefeicaoPage />} />
 
         </Routes>
     );

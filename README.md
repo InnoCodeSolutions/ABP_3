@@ -104,20 +104,23 @@ tela de edição de dados pessoais, para cálculo da Taxa Metabólica Basal.</p>
 | User Story | Cadastro de perfil de usuário contendo dados para cálculo das calorias |
 | Subtarefa  | Criação da Tela para adicionar as informações para cálculo de Taxa Metabólica Basal |
 | Subtarefa  | Criação da rota no backend para cadastro das informações e o cálculo das calorias |
+
 </details>
 
 <details>
 <summary><h2>Sprint 2</h2></summary>
 <p>Focada na entrega de Dashboard,sincronização com aplicativo de exercícios,visto também a necessidade de alertas e histórico de consumo.</p>
-
 <b>Sprint Backlog:<b>
 
 | Sprint | Funcionalidade | Prioridade |
 | :--:   | :-----------:  | :--------: |
-| **02** | Dashboard de Consumo Calórico | Alta |
-| **02** | Sincronização de com aplicativo de exercício | Média |
-| **02** | Disparos de Alertas  | Média |
-| **02** | Histórico consumo | Alta |
+| **02** | Dashboard de Consumo Calórico | US18 | Alta |
+| **02** | Sincronização de com aplicativo de exercício| US19 | Média |
+| **02** | Disparos de Alertas | US20 | Média |
+| **02** | Histórico consumo | US21 | Alta |
+
+
+[Assista ao vídeo de demonstração aqui](https://www.youtube.com/watch?v=9zNIedji9bk)
 
 ## Gráfico de Burndown
 ![Gráfico de Burndown](/docs/burndown_spt2.png)
@@ -137,9 +140,20 @@ tela de edição de dados pessoais, para cálculo da Taxa Metabólica Basal.</p>
 | Subtarefa  | Criação de rota POST para gravar dados do perfil do usuário no backend |
 | Subtarefa  | Busca de alimentos conectada com o backend |
 
+| Tipo       | Descrição |
+| :--:       | :--------:| 
+| Épico      | CRUD do perfil do usuário  |
+| User Story | Cadastro de perfil de usuário contendo dados para cálculo das calorias |
+| Subtarefa  | Criação da Tela para adicionar as informações para cálculo de Taxa Metabólica Basal |
+| Subtarefa  | Criação da rota no backend para cadastro das informações e o cálculo das calorias |
 </details>
+<details>
+<summary><h2>Sprint 3</h2></summary>
+<p>Focada para proporcionar ao usuário uma experiência completa e personalizada de gestão de metas de saúde e nutrição.</p>
 
 [Link para o design no Figma](https://www.figma.com/design/UkagBqobEihk0MpPQKeJ6N/Untitled?node-id=0-1&node-type=canvas)
+
+</details>
 
 <span id="backlog"></span>
 <h1 align="center">Backlog do Projeto</h1>
@@ -200,13 +214,13 @@ tela de edição de dados pessoais, para cálculo da Taxa Metabólica Basal.</p>
 |US19|Como Usuário eu quero sincronizar com aplicativo de exercício para acompanhar a perca de peso aliado a exercícios físicos.|
 |US20|Como Usuário quero receber alertas para estar atualiado sobre o consumo calóricos.|
 |US21|Como Usuário quero ter acesso ao histórico de consumo para gerar relátorio de consumo.|
-<!-- |US22||
- |US23||
-|US24||
-|US25||
-|US26||
-|US27||
- --> 
+|US22|Como usuário, quero cadastrar metas de saúde e nutrição para controlar meus objetivos de peso, consumo calórico, e atividades físicas, para que eu possa monitorar meu progresso de forma organizada.|
+ |US23|Como usuário, quero ver uma lista das minhas metas cadastradas, para que eu possa acompanhar quais metas estão ativas ou expiradas.|
+|US24|Como usuário, quero poder alterar as metas que já cadastrei, para que eu possa ajustá-las de acordo com novas necessidades ou mudanças de rotina.|
+|US25|Como usuário, quero poder excluir metas que não são mais relevantes ou que foram concluídas, para manter a organização do meu painel de metas.|
+|US26|Como usuário, quero personalizar a interface do sistema de metas, para que ela se adapte às minhas preferências visuais e de usabilidade.|
+|US27|Como usuário, quero gerar relatórios personalizados baseados nas minhas refeições e consumo calórico, para acompanhar melhor minha evolução nutricional.|
+
 
 
 

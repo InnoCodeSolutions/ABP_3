@@ -24,7 +24,7 @@ class Alimento {
         try {
             const token = localStorage.getItem("authToken");
 
-            const { data } = await api.post(`/alimento`, alimentoData, {
+            const { data } = await api.post(`/refeicao`, alimentoData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -37,6 +37,7 @@ class Alimento {
             return { erro: error.message };
         }
     }
+
 }
 
 const buscaAlimento = new Alimento();
